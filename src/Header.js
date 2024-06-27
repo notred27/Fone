@@ -1,5 +1,6 @@
 import React from 'react';
-import './app.css';
+import './App.css';
+
 import userImg from './images/user.png';
 import facetimeImg from './images/facetime.png';
 import arrowImg from './images/arrow.png';

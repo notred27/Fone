@@ -1,5 +1,6 @@
 import React, {useRef}from 'react';
-import './app.css';
+import './App.css';
+
 
 
 function DateHeader({date, time}) {

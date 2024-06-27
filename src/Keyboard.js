@@ -1,7 +1,8 @@
 import React, {useRef, useState} from 'react'
 import micImg from './images/mic.png'
 import uploadImg from './images/upload.png'
-import './app.css'
+import './App.css';
+
 
 function Keyboard({createMessage}) {
     const textRef = useRef(null);

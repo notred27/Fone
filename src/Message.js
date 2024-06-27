@@ -1,5 +1,6 @@
 import React, {useRef}from 'react';
-import './app.css';
+import './App.css';
+
 import msgTail from './images/msg_tail.png'
 import msgTail2 from './images/msg_tail2.png'
 
