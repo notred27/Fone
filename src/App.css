@@ -58,7 +58,20 @@
     -ms-overflow-style: none;  /* IE 10+ */
   }
 
+  .centered{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
 
   input:focus {
     outline:none;
+  }
+
+
+  @keyframes logo-sway {
+    30% { rotate: 10deg}
+    60% {rotate: -10deg}
+
+    100% {rotate: 0deg}
   }

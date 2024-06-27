@@ -2,18 +2,24 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
+import Welcome from './Welcome.js'
 
-import ChatPane from './ChatPane';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
+
+
+    <Welcome />
+
+
+
 {/* <div style = {{height:"30vh"}}/> */}
-<div style={{width:"8cm", height:"15cm", overflow:"hidden", marginLeft:"auto", marginRight:"auto", backgroundColor:"white"}}>
+{/* <div style={{width:"8cm", height:"15cm", overflow:"hidden", marginLeft:"auto", marginRight:"auto", backgroundColor:"white"}}>
 
   <ChatPane/>
-</div>
+</div> */}
   
 
 
