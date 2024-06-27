@@ -6,7 +6,7 @@ import arrowImg from './images/arrow.png';
 
 
 
-function Header({name}) {
+function Header({name, func}) {
 
     function hide_buttons() {
         let buttons = document.getElementsByClassName("HideButton")
@@ -14,15 +14,18 @@ function Header({name}) {
         for (let i = 0; i < buttons.length; i++) {
             if (buttons[i].style.display === "none") {
                 buttons[i].style.display = "block"
+                func("block")
 
             } else {
                 buttons[i].style.display = "none"
+                func("none")
+
             }
         }
     }
 
     return (
-        <div style={{backgroundColor:"rgba(240, 240, 240, 0.97)", height:"fit-content", borderBottom:"#AAAAAA 2px solid", display:"grid", gridTemplateColumns:"20% 60% 20%", textAlign:"center", position:"sticky", top:"0px"}}>
+        <div style={{backgroundColor:"rgba(240, 240, 240, 0.97)", height:"fit-content", borderBottom:"#AAAAAA 2px solid", display:"grid", gridTemplateColumns:"20% 60% 20%", textAlign:"center", position:"sticky", top:"0px", zIndex:"100"}}>
             <img src = {arrowImg} alt = "flair" style = {{height:"20px", marginLeft:"20px", marginTop:"22px"}}/>
 
             <figure>

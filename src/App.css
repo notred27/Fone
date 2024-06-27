@@ -1,5 +1,5 @@
 .blue {
-    color:rgb(17, 136, 255);
+    color:rgb(0, 102, 255);
     margin:10px;
 
 }
@@ -29,7 +29,7 @@
 }
 
 .serverMsg {
-    background-color:rgb(230, 230, 230);
+    background-color:rgb(233, 233, 235);
     color:black;
 }
 
