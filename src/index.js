@@ -2,18 +2,17 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-import Welcome from './Welcome.js'
-
-
+import App from './App.js'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
 
 
-    <Welcome />
 
+    <App />
 
+    
 
 {/* <div style = {{height:"30vh"}}/> */}
 {/* <div style={{width:"8cm", height:"15cm", overflow:"hidden", marginLeft:"auto", marginRight:"auto", backgroundColor:"white"}}>
