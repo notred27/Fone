@@ -8,19 +8,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
 
-
-
     <App />
-
-    
-
-{/* <div style = {{height:"30vh"}}/> */}
-{/* <div style={{width:"8cm", height:"15cm", overflow:"hidden", marginLeft:"auto", marginRight:"auto", backgroundColor:"white"}}>
-
-  <ChatPane/>
-</div> */}
-  
-
 
   </React.StrictMode>
 );

@@ -7,13 +7,47 @@ import DateHeader from './DateHeader';
 import Keyboard from './Keyboard';
 
 
+import {
+  query,
+  collection,
+  orderBy,
+  onSnapshot,
+  limit,
+} from "firebase/firestore";
+import { db } from "./firebase.js";
+
+
 function ChatPane() {
     const [messages, setMessages] = useState([{"type": "readFlair", "content": ["Delivered", ""]}]);
-    const [isHidden, setIsHidden] = useState("block");
+    const [isHidden, setIsHidden] = useState("none");
+    const [debugMode, setDebugMode] = useState(false);
+
     const inputTextRef = useRef(null);
     const inputRadioRef = useRef(null);
     const scrollPaneRef = useRef(null);
 
+
+    useEffect(() => {
+        const q = query(
+          collection(db, "messages"),
+          orderBy("createdAt", "desc"),
+          limit(50)
+        );
+        const unsubscribe = onSnapshot(q, (QuerySnapshot) => {
+          const fetchedMessages = [];
+          QuerySnapshot.forEach((doc) => {
+            fetchedMessages.push({ ...doc.data(), id: doc.id });
+          });
+          const sortedMessages = fetchedMessages.sort(
+            (a, b) => a.createdAt - b.createdAt
+          );
+          setMessages(sortedMessages);
+        });
+        return () => unsubscribe;
+      }, []);
+
+
+    
 
 
     function addMessage(newMsg, msgType) {
@@ -37,6 +71,24 @@ function ChatPane() {
     }
 
 
+    function enterDebug() {
+
+        if (debugMode) {
+            setIsHidden("none");
+        } else {
+            setIsHidden("block");
+        }
+        setDebugMode(!debugMode);
+
+        let buttons = document.getElementsByClassName("HideButton")
+        for (let i = 0; i < buttons.length; i++) {
+            buttons[i].style.display = isHidden
+        }
+
+        scrollPaneRef.current.scrollTop = scrollPaneRef.current.scrollHeight;
+    }
+
+    // Change structure so this is also triggered when debug mode is activated
     useEffect(() => {
         scrollPaneRef.current.scrollTop = scrollPaneRef.current.scrollHeight;
     }, [messages]);
@@ -46,17 +98,17 @@ function ChatPane() {
 
 
     return (
-        <div ref = {scrollPaneRef} className= "disable-scrollbars" style={{width:"100%", height:"100%", overflowY:"scroll",overscrollBehaviorY:"none"}}>
-            <Header name = {"Joseph"} func = {setIsHidden}/>
+        <div ref = {scrollPaneRef} className= "disable-scrollbars" style={{width:"100%", height:"100%", overflowY:"scroll", overscrollBehaviorY:"none"}}>
+            <Header name = {"Joseph"} hideFunc = {enterDebug}/>
             
             <div className='date'><span style={{fontWeight:"bold"}}>Text Message</span></div>
 
 
             {/* This block of code is temporary to show what a fully fleshed out chat could look like. Lorem Ipsum */}
-            <DateHeader date ={"Today"} time={"12:19 PM"} />
+            {/* <DateHeader date ={"Today"} time={"12:19 PM"} /> */}
             
             
-            <Message msg ={"Hello world!"} msgStyle = {"clientMsg"} />
+            {/* <Message msg ={"Hello world!"} msgStyle = {"clientMsg"} />
             <Message msg={"This is a response!"}  msgStyle = {"serverMsg"}/>
             <Message msg ={"Hello world2!"} msgStyle = {"clientMsg"}/>
             <Message msg ={"Is the world even here? Is the world even here? Is the world even here?"} msgStyle = {"clientMsg"} />
@@ -78,27 +130,27 @@ function ChatPane() {
             <Message msg ={"woot!"} msgStyle = {"clientMsg"}/>
 
 
-            <Message msg ={"Yessss"} msgStyle = {"clientMsg"}/>
+            <Message msg ={"Yessss"} msgStyle = {"clientMsg"}/> */}
 
 
 
             {messages.map((item, idx) => {
-                switch(item["type"]) {
+                switch(item.type) {
                     case "clientMsg":
-                        return <Message msg = {item["content"]}
+                        return <Message msg = {item.text}
                                         key = {idx} 
                                         msgStyle = {"clientMsg"} 
                                         btnStyle = {isHidden}/>
 
                     case "serverMsg":
-                        return <Message msg = {item["content"]}
+                        return <Message msg = {item.text}
                                         key = {idx}
                                         msgStyle = {"serverMsg"}
                                         btnStyle = {isHidden}/>
 
                     case "date":
-                        return <DateHeader  date = {item["content"][0]}
-                                            time = {item["content"][1]}
+                        return <DateHeader  date = {item.text}
+                                            time = {item.text}
                                             key = {idx}
                                             btnStyle = {isHidden} />
 
@@ -111,7 +163,7 @@ function ChatPane() {
             {/* <p  className='chatMsg'  style ={{marginLeft:"auto", padding:"0px",marginTop:"0px",fontSize:"0.6em", color:"#777777", fontWeight:"bold"}}>Delivered</p> */}
             {/* <div className='chatMsg'  style ={{marginLeft:"auto", padding:"0px",marginTop:"0px",fontSize:"0.6em", color:"#777777"}}><span style={{ fontWeight:"bold"}}>Read</span> 3:06 PM</div> */}
 
-            
+            {debugMode ? 
         
             <div className="HideButton" style = {{position:"sticky", bottom:"0px", padding:"10px", backgroundColor:"#ECECEC"}}>
                 <form ref = {inputRadioRef} >
@@ -129,9 +181,9 @@ function ChatPane() {
                 <button onClick={() => (addMessage(inputTextRef.current.value, inputRadioRef.current.elements["addType"].value))}>Add message</button>
             </div>
 
+            :
 
-
-            <Keyboard createMessage = {sendMessage} />
+            <Keyboard createMessage = {sendMessage} />}
             
         </div>
 

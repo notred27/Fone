@@ -7,23 +7,9 @@ import arrowImg from './images/arrow.png';
 
 
 
-function Header({name, func}) {
+function Header({name, hideFunc}) {
 
-    function hide_buttons() {
-        let buttons = document.getElementsByClassName("HideButton")
 
-        for (let i = 0; i < buttons.length; i++) {
-            if (buttons[i].style.display === "none") {
-                buttons[i].style.display = "block"
-                func("block")
-
-            } else {
-                buttons[i].style.display = "none"
-                func("none")
-
-            }
-        }
-    }
 
     return (
         <div style={{backgroundColor:"rgba(240, 240, 240, 0.97)", height:"fit-content", borderBottom:"#AAAAAA 2px solid", display:"grid", gridTemplateColumns:"20% 60% 20%", textAlign:"center", position:"sticky", top:"0px", zIndex:"100"}}>
@@ -34,7 +20,7 @@ function Header({name, func}) {
                 <figcaption className='title' style={{textAlign:"center"}}>{name}</figcaption>
             </figure>
 
-            <img src = {facetimeImg} alt = "toggleEdit" onClick={() => (hide_buttons())} style = {{width:"40px", marginRight:"20px", marginTop:"16px"}}/>
+            <img src = {facetimeImg} alt = "toggleEdit" onClick={() => (hideFunc())} style = {{width:"40px", marginRight:"20px", marginTop:"16px"}}/>
         </div>
 
     )
