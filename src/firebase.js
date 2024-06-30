@@ -1,7 +1,8 @@
 import { initializeApp } from "firebase/app";
-import { getStorage } from "firebase/storage";
-import { getAuth, GoogleAuthProvider } from "firebase/auth";
+// import { getStorage } from "firebase/storage";
+import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
+import {query, orderBy, onSnapshot, limit, addDoc, deleteDoc, doc,  collection, serverTimestamp} from "firebase/firestore";
 
 
 const FIREBASE_API_CONFIG = {
@@ -27,3 +28,21 @@ const app = initializeApp(FIREBASE_API_CONFIG);
 
 export const auth = getAuth(app)
 export const db = getFirestore(app)
+
+export const deleteMessage = async (messageDocId) => {
+
+  await deleteDoc(doc(db, "messages", messageDocId));
+
+}
+
+export const sendMessage = async (msg, msgType) => {
+  const { uid, displayName, photoURL } = auth.currentUser;
+  await addDoc(collection(db, "messages"), {
+      text: msg,
+      type: msgType,
+      name: displayName,
+      avatar: photoURL,
+      createdAt: serverTimestamp(),
+      uid,
+      });
+}

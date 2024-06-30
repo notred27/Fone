@@ -8,9 +8,7 @@ import arrowImg from './images/arrow.png';
 
 
 function Header({name, hideFunc}) {
-
-
-
+    
     return (
         <div style={{backgroundColor:"rgba(240, 240, 240, 0.97)", height:"fit-content", borderBottom:"#AAAAAA 2px solid", display:"grid", gridTemplateColumns:"20% 60% 20%", textAlign:"center", position:"sticky", top:"0px", zIndex:"100"}}>
             <img src = {arrowImg} alt = "flair" style = {{height:"20px", marginLeft:"20px", marginTop:"22px"}}/>

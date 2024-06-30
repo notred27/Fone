@@ -7,18 +7,12 @@ import DateHeader from './DateHeader';
 import Keyboard from './Keyboard';
 
 
-import {
-  query,
-  collection,
-  orderBy,
-  onSnapshot,
-  limit,
-} from "firebase/firestore";
-import { db } from "./firebase.js";
+import {query, orderBy, onSnapshot, limit, collection} from "firebase/firestore";
+import {db, deleteMessage, sendMessage} from './firebase.js';
 
 
 function ChatPane() {
-    const [messages, setMessages] = useState([{"type": "readFlair", "content": ["Delivered", ""]}]);
+    const [messages, setMessages] = useState([]);
     const [isHidden, setIsHidden] = useState("none");
     const [debugMode, setDebugMode] = useState(false);
 
@@ -27,6 +21,7 @@ function ChatPane() {
     const scrollPaneRef = useRef(null);
 
 
+    // Query Firebase DB and render recieved messages
     useEffect(() => {
         const q = query(
           collection(db, "messages"),
@@ -38,41 +33,28 @@ function ChatPane() {
           QuerySnapshot.forEach((doc) => {
             fetchedMessages.push({ ...doc.data(), id: doc.id });
           });
-          const sortedMessages = fetchedMessages.sort(
-            (a, b) => a.createdAt - b.createdAt
-          );
-          setMessages(sortedMessages);
+
+            setMessages(fetchedMessages.reverse());
+            scrollPaneRef.current.scrollTop = scrollPaneRef.current.scrollHeight;
+
         });
         return () => unsubscribe;
       }, []);
 
-
+    // Change structure so this is also triggered when debug mode is activated
+    // useEffect(() => {
+    // }, [messages]);
     
 
 
-    function addMessage(newMsg, msgType) {
-        if(msgType === "sender") {
-            setMessages((prevMessages) => [...prevMessages, {"type": "clientMsg", "content": newMsg}]);
+    function sendDebugMessage(event, newMsg, msgType) {
+        event.preventDefault();
+        sendMessage(newMsg, msgType)
 
-        } else if(msgType === "reciever") {
-            setMessages((prevMessages) => [...prevMessages, {"type": "serverMsg", "content": newMsg}]);
-
-        } else {
-            let m = newMsg.split(",")
-            setMessages((prevMessages) => [...prevMessages, {"type": "date", "content": m}]);
-        }
-    }
-
-    function sendMessage(msg) {
-        setMessages((prevMessages) => prevMessages.filter(item => item["type"] !== "readFlair"));
-        setMessages((prevMessages) => [...prevMessages, 
-            {"type": "clientMsg", "content": msg},
-            {"type": "readFlair", "content": ["Delivered", ""]}]);              // TODO: Change this text accordingly
     }
 
 
     function enterDebug() {
-
         if (debugMode) {
             setIsHidden("none");
         } else {
@@ -88,103 +70,85 @@ function ChatPane() {
         scrollPaneRef.current.scrollTop = scrollPaneRef.current.scrollHeight;
     }
 
-    // Change structure so this is also triggered when debug mode is activated
-    useEffect(() => {
-        scrollPaneRef.current.scrollTop = scrollPaneRef.current.scrollHeight;
-    }, [messages]);
+
+    const renderedMessages = messages.map((item) => {
+        switch(item.type) {
+            default: return;
+
+            case "clientMsg":
+                return <Message msg = {item.text}
+                                id = {item.id} 
+                                key = {item.id} 
+
+                                msgStyle = {"clientMsg"} 
+                                btnStyle = {isHidden}
+                                removeFunc = {deleteMessage} />
+
+            case "serverMsg":
+                return <Message msg = {item.text}
+                                id = {item.id}
+                                key = {item.id} 
+
+                                msgStyle = {"serverMsg"}
+                                btnStyle = {isHidden}
+                                removeFunc = {deleteMessage} 
+                                />
+
+            case "date":
+                return <DateHeader  date = {item.text}
+                                    time = {item.text}
+                                    id = {item.id}
+                                    key = {item.id} 
+
+                                    btnStyle = {isHidden} />
+
+            case "readFlair":
+                return <div key = "readFlair" className='chatMsg'  style ={{marginLeft:"auto", padding:"0px",marginTop:"0px",fontSize:"0.6em", color:"#777777"}}><span style={{ fontWeight:"bold"}}>{item["content"][0]}</span> {item["content"][1]}</div>
+        }
+    })
 
 
 
 
 
     return (
-        <div ref = {scrollPaneRef} className= "disable-scrollbars" style={{width:"100%", height:"100%", overflowY:"scroll", overscrollBehaviorY:"none"}}>
-            <Header name = {"Joseph"} hideFunc = {enterDebug}/>
+        <div style = {{height:"100%", width: "100%"}}>
+            <div ref = {scrollPaneRef} className= "disable-scrollbars" style={{width:"100%", height:"calc(100% - 40px)", overflowY:"scroll", overscrollBehaviorY:"none"}}>
+                <Header name = {"Joseph"} hideFunc = {enterDebug}/>
             
-            <div className='date'><span style={{fontWeight:"bold"}}>Text Message</span></div>
+                    {/* Header for Messages text */}
+                    <div className='date'><span style={{fontWeight:"bold"}}>Text Message</span></div>
 
+                    {renderedMessages}
 
-            {/* This block of code is temporary to show what a fully fleshed out chat could look like. Lorem Ipsum */}
-            {/* <DateHeader date ={"Today"} time={"12:19 PM"} /> */}
-            
-            
-            {/* <Message msg ={"Hello world!"} msgStyle = {"clientMsg"} />
-            <Message msg={"This is a response!"}  msgStyle = {"serverMsg"}/>
-            <Message msg ={"Hello world2!"} msgStyle = {"clientMsg"}/>
-            <Message msg ={"Is the world even here? Is the world even here? Is the world even here?"} msgStyle = {"clientMsg"} />
-            <Message msg ={"Hello world!"} msgStyle = {"clientMsg"}/>
-            <Message msg={"This is a response!"}  msgStyle = {"serverMsg"}/>
-            <Message msg ={"Hello world2!"} msgStyle = {"clientMsg"}/>
-            <Message msg ={"Is the world even here?"} msgStyle = {"clientMsg"} />
-            <Message msg ={"Hello world!"} msgStyle = {"serverMsg"}/>
-            <Message msg={"This is a response!"} msgStyle = {"serverMsg"}/>
-            <Message msg ={"Hello world2!"} msgStyle = {"clientMsg"}/>
+                {/* These were two entries for the readFlare */}
+                {/* <p  className='chatMsg'  style ={{marginLeft:"auto", padding:"0px",marginTop:"0px",fontSize:"0.6em", color:"#777777", fontWeight:"bold"}}>Delivered</p> */}
+                {/* <div className='chatMsg'  style ={{marginLeft:"auto", padding:"0px",marginTop:"0px",fontSize:"0.6em", color:"#777777"}}><span style={{ fontWeight:"bold"}}>Read</span> 3:06 PM</div> */}
 
-            <DateHeader date ={"Today"} time={"3:06 PM"} />
-
-            <Message msg ={"Is the world even here?"} msgStyle = {"serverMsg"}/>
-            <Message msg ={"Hello world!"} msgStyle = {"clientMsg"}/>
-            <Message msg={"This is a response!"} msgStyle = {"serverMsg"}/>
-            <Message msg ={"Hello world2!"} msgStyle = {"clientMsg"}/>
-            <Message msg ={"Is the world even here?"} msgStyle = {"clientMsg"}/>
-            <Message msg ={"woot!"} msgStyle = {"clientMsg"}/>
-
-
-            <Message msg ={"Yessss"} msgStyle = {"clientMsg"}/> */}
-
-
-
-            {messages.map((item, idx) => {
-                switch(item.type) {
-                    case "clientMsg":
-                        return <Message msg = {item.text}
-                                        key = {idx} 
-                                        msgStyle = {"clientMsg"} 
-                                        btnStyle = {isHidden}/>
-
-                    case "serverMsg":
-                        return <Message msg = {item.text}
-                                        key = {idx}
-                                        msgStyle = {"serverMsg"}
-                                        btnStyle = {isHidden}/>
-
-                    case "date":
-                        return <DateHeader  date = {item.text}
-                                            time = {item.text}
-                                            key = {idx}
-                                            btnStyle = {isHidden} />
-
-                    case "readFlair":
-                        return <div key = "readFlair" className='chatMsg'  style ={{marginLeft:"auto", padding:"0px",marginTop:"0px",fontSize:"0.6em", color:"#777777"}}><span style={{ fontWeight:"bold"}}>{item["content"][0]}</span> {item["content"][1]}</div>
-                }
-            })}
-
-            {/* These were two entries for the readFlare */}
-            {/* <p  className='chatMsg'  style ={{marginLeft:"auto", padding:"0px",marginTop:"0px",fontSize:"0.6em", color:"#777777", fontWeight:"bold"}}>Delivered</p> */}
-            {/* <div className='chatMsg'  style ={{marginLeft:"auto", padding:"0px",marginTop:"0px",fontSize:"0.6em", color:"#777777"}}><span style={{ fontWeight:"bold"}}>Read</span> 3:06 PM</div> */}
+            </div>
 
             {debugMode ? 
-        
+            
             <div className="HideButton" style = {{position:"sticky", bottom:"0px", padding:"10px", backgroundColor:"#ECECEC"}}>
                 <form ref = {inputRadioRef} >
-                    <input type="radio" id = "addType0" name="addType" value = "sender"/>
-                    <label >Sent Msg</label>
+                    <input type="radio" id = "addType0" name="addType" value = "clientMsg"/>
+                    <label >Blue Msg</label>
 
-                    <input type="radio" id = "addType1" name="addType" value = "reciever"/>
-                    <label >Recieved Msg</label>
+                    <input type="radio" id = "addType1" name="addType" value = "serverMsg"/>
+                    <label >Gray Msg</label>
 
                     <input type="radio" id = "addType2" name="addType" value = "header"/>
-                    <label >Time</label>
+                    <label >Timestamp</label>
                 </form>
 
                 <input id ="chat_adder" ref = {inputTextRef}></input>
-                <button onClick={() => (addMessage(inputTextRef.current.value, inputRadioRef.current.elements["addType"].value))}>Add message</button>
+                <button onClick={(event) => (sendDebugMessage(event, inputTextRef.current.value, inputRadioRef.current.elements["addType"].value))}>Add message</button>
             </div>
 
             :
 
             <Keyboard createMessage = {sendMessage} />}
-            
+
         </div>
 
     )

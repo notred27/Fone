@@ -11,18 +11,7 @@ import './App.css';
 
 const App = () => {
     const [user] = useAuthState(auth);
-    console.log(user)
-
-// {/* <div>
-
-// <SignIn />
-
-// <div style={{width:"8cm", height:"15cm", overflow:"hidden", marginLeft:"auto", marginRight:"auto", backgroundColor:"white"}}>
-
-//     <ChatPane/>
-// </div>
-// </div> */}
-
+   
     return (
         <div>
             
@@ -49,7 +38,6 @@ const App = () => {
 
 
                 <div style={{width:"8cm", height:"15cm",  marginLeft:"auto", marginRight:"auto", backgroundColor:"white"}}>
-
                     <ChatPane/>
                 </div>
             
