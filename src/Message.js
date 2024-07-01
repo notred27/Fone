@@ -5,11 +5,11 @@ import msgTail from './images/msg_tail.png'
 import msgTail2 from './images/msg_tail2.png'
 
 
-function Message({id, msg, btnStyle, msgStyle, removeFunc}) {
+function Message({id, msg, btnStyle, msgStyle, removeFunc, chatroomId}) {
 
     function showBody() {
         console.log("Removing message" + id)
-        removeFunc(id)
+        removeFunc(chatroomId, id)
     }
 
     // TODO: Fix this so only the png needs to be swapped out

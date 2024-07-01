@@ -2,7 +2,7 @@ import { initializeApp } from "firebase/app";
 // import { getStorage } from "firebase/storage";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
-import {query, orderBy, onSnapshot, limit, addDoc, deleteDoc, doc,  collection, serverTimestamp} from "firebase/firestore";
+import {setDoc, addDoc, deleteDoc, doc,  collection, serverTimestamp} from "firebase/firestore";
 
 
 const FIREBASE_API_CONFIG = {
@@ -29,20 +29,44 @@ const app = initializeApp(FIREBASE_API_CONFIG);
 export const auth = getAuth(app)
 export const db = getFirestore(app)
 
-export const deleteMessage = async (messageDocId) => {
+export const deleteMessage = async (chatroomId, messageDocId) => {
 
-  await deleteDoc(doc(db, "messages", messageDocId));
+  await deleteDoc(doc(db, "Chatrooms", chatroomId, "messages", messageDocId));
 
 }
 
-export const sendMessage = async (msg, msgType) => {
+export const sendMessage = async (chatroomId, msg, msgType) => {
   const { uid, displayName, photoURL } = auth.currentUser;
-  await addDoc(collection(db, "messages"), {
+  await addDoc(collection(db, "Chatrooms", chatroomId, "messages"), {
       text: msg,
       type: msgType,
-      name: displayName,
-      avatar: photoURL,
       createdAt: serverTimestamp(),
       uid,
       });
+}
+
+
+export const createConversation = async () => {
+  const { uid, displayName, photoURL } = auth.currentUser;
+
+  const chatId =  doc(collection(db, "Chatrooms"));
+  
+  // Set chatroom fields
+  await setDoc(doc(db, "Chatrooms", chatId.id), {
+      username: "Username",
+      userPic: photoURL,
+      createdAt: serverTimestamp(),
+      uid
+    })
+
+  // Create messages collection for this chatroom
+  await addDoc(collection(db, "Chatrooms", chatId.id, "messages"), {
+    createdAt: serverTimestamp(),
+    uid,
+  })
+
+  return chatId.id;
+
+  
+ 
 }

@@ -12,6 +12,10 @@
   margin:10px;
 }
 
+.convoCard:hover{
+  background-color:#65a0ff;
+}
+
 
 .blue {
     color:rgb(0, 102, 255);
@@ -61,6 +65,22 @@
     padding:5px;
     padding-left:10px;
     width:80%;
+    caret-color: rgb(0, 102, 255);
+}
+
+
+.headerBox {
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+  background-color:rgba(240, 240, 240, 0.8);
+  height:fit-content;
+  border-bottom:#AAAAAA 2px solid;
+  display:grid;
+  grid-template-columns:20% 60% 20%;
+  text-align:center;
+  position:sticky;
+  top:0px;
+  z-index:100;
 }
 
 .disable-scrollbars::-webkit-scrollbar {

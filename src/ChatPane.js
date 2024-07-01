@@ -11,7 +11,7 @@ import {query, orderBy, onSnapshot, limit, collection} from "firebase/firestore"
 import {db, deleteMessage, sendMessage} from './firebase.js';
 
 
-function ChatPane() {
+function ChatPane({chatroomId}) {
     const [messages, setMessages] = useState([]);
     const [isHidden, setIsHidden] = useState("none");
     const [debugMode, setDebugMode] = useState(false);
@@ -19,17 +19,19 @@ function ChatPane() {
     const inputTextRef = useRef(null);
     const inputRadioRef = useRef(null);
     const scrollPaneRef = useRef(null);
+    const [deliveredIdx, setDeliveredIdx]  = useState(0);
 
 
     // Query Firebase DB and render recieved messages
     useEffect(() => {
         const q = query(
-          collection(db, "messages"),
+          collection(db, "Chatrooms", chatroomId, "messages"),
           orderBy("createdAt", "desc"),
           limit(50)
         );
         const unsubscribe = onSnapshot(q, (QuerySnapshot) => {
           const fetchedMessages = [];
+
           QuerySnapshot.forEach((doc) => {
             fetchedMessages.push({ ...doc.data(), id: doc.id });
           });
@@ -41,16 +43,12 @@ function ChatPane() {
         return () => unsubscribe;
       }, []);
 
-    // Change structure so this is also triggered when debug mode is activated
-    // useEffect(() => {
-    // }, [messages]);
-    
+
 
 
     function sendDebugMessage(event, newMsg, msgType) {
         event.preventDefault();
-        sendMessage(newMsg, msgType)
-
+        sendMessage(chatroomId, newMsg, msgType)
     }
 
 
@@ -71,7 +69,7 @@ function ChatPane() {
     }
 
 
-    const renderedMessages = messages.map((item) => {
+    const renderedMessages = messages.map((item, idx) => {
         switch(item.type) {
             default: return;
 
@@ -82,7 +80,8 @@ function ChatPane() {
 
                                 msgStyle = {"clientMsg"} 
                                 btnStyle = {isHidden}
-                                removeFunc = {deleteMessage} />
+                                removeFunc = {deleteMessage}
+                                chatroomId = {chatroomId} />
 
             case "serverMsg":
                 return <Message msg = {item.text}
@@ -92,6 +91,7 @@ function ChatPane() {
                                 msgStyle = {"serverMsg"}
                                 btnStyle = {isHidden}
                                 removeFunc = {deleteMessage} 
+                                chatroomId = {chatroomId}
                                 />
 
             case "date":
@@ -108,13 +108,13 @@ function ChatPane() {
     })
 
 
-
-
+    // console.log(renderedMessages)
+    renderedMessages.splice(messages.length, 0, <p  className='chatMsg'  style ={{marginLeft:"auto", padding:"0px",marginTop:"0px",fontSize:"0.6em", color:"#777777", fontWeight:"bold"}}>Delivered</p>)
 
     return (
         <div style = {{height:"100%", width: "100%"}}>
             <div ref = {scrollPaneRef} className= "disable-scrollbars" style={{width:"100%", height:"calc(100% - 40px)", overflowY:"scroll", overscrollBehaviorY:"none"}}>
-                <Header name = {"Joseph"} hideFunc = {enterDebug}/>
+                <Header initialName = {"Joseph"} hideFunc = {enterDebug}/>
             
                     {/* Header for Messages text */}
                     <div className='date'><span style={{fontWeight:"bold"}}>Text Message</span></div>
@@ -129,7 +129,7 @@ function ChatPane() {
 
             {debugMode ? 
             
-            <div className="HideButton" style = {{position:"sticky", bottom:"0px", padding:"10px", backgroundColor:"#ECECEC"}}>
+            <div style = {{position:"sticky", bottom:"0px", padding:"10px", backgroundColor:"#ECECEC"}}>
                 <form ref = {inputRadioRef} >
                     <input type="radio" id = "addType0" name="addType" value = "clientMsg"/>
                     <label >Blue Msg</label>
@@ -147,7 +147,7 @@ function ChatPane() {
 
             :
 
-            <Keyboard createMessage = {sendMessage} />}
+            <Keyboard createMessage = {sendMessage} chatroomId = {chatroomId}  />}
 
         </div>
 
