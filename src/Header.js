@@ -22,7 +22,7 @@ function Header({initialName, hideFunc}) {
     }
     
     return (
-        <div className= 'headerBox' >
+        <div className= 'headerBox' style={{alignItems:"center"}}>
             <img src = {arrowImg} alt = "flair" style = {{height:"20px", marginLeft:"20px", marginTop:"22px"}}/>
 
             {isHidden ? 

@@ -11,7 +11,7 @@ import {query, orderBy, onSnapshot, limit, doc,  collection} from "firebase/fire
 import {db, deleteMessage, sendMessage} from './firebase.js';
 
 
-function ChatPane({chatroomId}) {
+function ChatPane({chatroomId, hideHead}) {
     const [messages, setMessages] = useState([]);
     const [isHidden, setIsHidden] = useState("none");
     const [debugMode, setDebugMode] = useState(false);
@@ -68,8 +68,10 @@ function ChatPane({chatroomId}) {
     function enterDebug() {
         if (debugMode) {
             setIsHidden("none");
+            hideHead(true)
         } else {
             setIsHidden("block");
+            hideHead(false)
         }
         setDebugMode(!debugMode);
 
