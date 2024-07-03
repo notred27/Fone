@@ -53,7 +53,7 @@ const App = () => {
 
                 {isHidden ? <span></span> :
                 
-                <div style ={{display:"grid", gridTemplateColumns:"20% 60% 20%", alignItems:"center", backgroundColor:"#ececec", marginBottom:"20px", borderBottom:"2px solid #999999", padding:"5px"}} >
+                <div style ={{display:"grid", gridTemplateColumns:"50% 50%", alignItems:"center", backgroundColor:"#ececec", marginBottom:"20px", borderBottom:"2px solid #999999", padding:"5px"}} >
                     {selectedRoom == null ? 
 
                     <span></span>
@@ -62,7 +62,7 @@ const App = () => {
                     <button style={{width:"fit-content"}} onClick={() => (setSelectedRoom(null))}> Back to Chatrooms</button>
                     }
 
-                    <span></span>
+                 
 
                     <div className='flexRow' style={{alignItems:"center", backgroundColor:"#65a0ff", padding:"5px", width:"fit-content", height:"fit-content", borderRadius:"20px", marginRight:"0px", marginLeft:"auto"}}> 
                         {/* <p> Logged in as {user.displayName}</p> */}
@@ -85,7 +85,7 @@ const App = () => {
                         {chatrooms.map((item, idx) => (
                             <div key = {idx} style={{position:"relative"}}>
                                 <button className="convoCard" onClick = {() => {enterChatroom(item)}}> ! </button>
-                                <h6>{item.id}</h6>
+                                <h6>{item.roomName}</h6>
 
                                 {/* TODO: Make a toggle for delete mode and add a confirmation dialogue */}
                                 <button onClick={() => console.log("remove chatroom: " + item.id)} style = {{position:"absolute", top:"0", right:"0", backgroundColor:"#fc8397", color:"#ECECEC", border:"4px solid #ECECEC", fontWeight:"bold", borderRadius:"50px"}}>x</button>

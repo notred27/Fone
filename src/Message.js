@@ -26,7 +26,13 @@ function Message({id, msg, btnStyle, msgStyle, removeFunc, chatroomId}) {
         <div  style = {{position:"relative", width:"100%"}}>
             <div className={`chatMsg ${msgStyle}`} >
                 {msg}
-                <button className = "HideButton" onClick = {() => (showBody())} style = {{display:`${btnStyle}`, position:"relative"}}>X</button>
+
+                <div className='flexRow'>
+                    <button className = "HideButton" onClick = {() => (showBody())} style = {{display:`${btnStyle}`, position:"relative"}}>Remove</button>
+                    <button className = "HideButton" style = {{display:`${btnStyle}`, position:"relative"}}>Hide</button>
+                </div>
+                
+
                 
             </div>
 
