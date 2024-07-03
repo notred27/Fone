@@ -41,9 +41,12 @@ const App = () => {
             <div>
                 <div className='flexRow'>
                     {selectedRoom == null ? 
+
                     <span></span>
                     :
-                    <button onClick={() => (setSelectedRoom(null))}> Back to Chatrooms</button>}
+                    
+                    <button onClick={() => (setSelectedRoom(null))}> Back to Chatrooms</button>
+                    }
 
                     <p> Logged in as {user.displayName}</p>
                     <img src = {user.photoURL} alt = "userImg" style = {{width:"40px", height:"40px", borderRadius:"20px"}}></img>
@@ -79,7 +82,8 @@ const App = () => {
 
                     </div>
                     :
-                    <div style={{width:"8cm", height:"15cm",  marginLeft:"auto", marginRight:"auto", backgroundColor:"white"}}>
+                    
+                    <div style={{width:"min(100vw, 100vmin)", height:"100vh",  marginLeft:"auto", marginRight:"auto", backgroundColor:"white"}}>
                         <ChatPane chatroomId = {selectedRoom}/>
                     </div>
                 }

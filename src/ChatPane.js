@@ -7,7 +7,7 @@ import DateHeader from './DateHeader';
 import Keyboard from './Keyboard';
 
 
-import {query, orderBy, onSnapshot, limit, collection} from "firebase/firestore";
+import {query, orderBy, onSnapshot, limit, doc,  collection} from "firebase/firestore";
 import {db, deleteMessage, sendMessage} from './firebase.js';
 
 
@@ -20,6 +20,8 @@ function ChatPane({chatroomId}) {
     const inputRadioRef = useRef(null);
     const scrollPaneRef = useRef(null);
     const [deliveredIdx, setDeliveredIdx]  = useState(0);
+    const [headerName, setHeaderName]  = useState("Username");
+
 
 
     // Query Firebase DB and render recieved messages
@@ -44,6 +46,17 @@ function ChatPane({chatroomId}) {
       }, []);
 
 
+    //   TODO: Fix this so it triggers on initial load
+    function getInitialName() {
+        const q = query(doc(db, "Chatrooms", chatroomId))
+
+        onSnapshot(q, (snapshot) => {
+            setHeaderName(snapshot.data().username)
+        })
+     
+        console.log(headerName)
+        return headerName
+    }
 
 
     function sendDebugMessage(event, newMsg, msgType) {
@@ -114,7 +127,7 @@ function ChatPane({chatroomId}) {
     return (
         <div style = {{height:"100%", width: "100%"}}>
             <div ref = {scrollPaneRef} className= "disable-scrollbars" style={{width:"100%", height:"calc(100% - 40px)", overflowY:"scroll", overscrollBehaviorY:"none"}}>
-                <Header initialName = {"Joseph"} hideFunc = {enterDebug}/>
+                <Header initialName = {headerName} hideFunc = {enterDebug}/>
             
                     {/* Header for Messages text */}
                     <div className='date'><span style={{fontWeight:"bold"}}>Text Message</span></div>
