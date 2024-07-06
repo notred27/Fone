@@ -4,10 +4,11 @@ import {auth} from './firebase.js';
 import LandingPage from './LandingPage.js';
 import SignIn from './SignIn.js';
 import ChatPane from './ChatPane.js';
+import ConvoCard from './ConvoCard.js';
 import './App.css';
 
 import {query, orderBy, onSnapshot, limit, collection} from "firebase/firestore";
-import {db, createConversation} from './firebase.js';
+import {db, createConversation, deleteConversation} from './firebase.js';
 
 
 const App = () => {
@@ -29,16 +30,16 @@ const App = () => {
             fetchedMessages.push({ ...doc.data(), id: doc.id });
           });
 
-          setChatrooms(fetchedMessages)
+          setChatrooms(fetchedMessages.reverse())
         });
         return () => unsubscribe;
       }, []);
 
 
-    function enterChatroom(item) {
+    function enterChatroom(chatroomId) {
         setIsHidden(true);
-        console.log("Entering chatroom " + item.id); 
-        setSelectedRoom(item.id);
+        console.log("Entering chatroom " + chatroomId); 
+        setSelectedRoom(chatroomId);
     }
 
     
@@ -82,22 +83,16 @@ const App = () => {
                         <h2>Conversations</h2>
                         <div style = {{display:"flex", flexDirection:"row", flexWrap:"wrap", textAlign:"center"}}>
 
-                        {chatrooms.map((item, idx) => (
-                            <div key = {idx} style={{position:"relative"}}>
-                                <button className="convoCard" onClick = {() => {enterChatroom(item)}}> ! </button>
-                                <h6>{item.roomName}</h6>
-
-                                {/* TODO: Make a toggle for delete mode and add a confirmation dialogue */}
-                                <button onClick={() => console.log("remove chatroom: " + item.id)} style = {{position:"absolute", top:"0", right:"0", backgroundColor:"#fc8397", color:"#ECECEC", border:"4px solid #ECECEC", fontWeight:"bold", borderRadius:"50px"}}>x</button>
-                            </div>
-                            
-                            ))}
-
                             <div>
                                 {/* createConversation().then((val) => console.log(val)) */}
                                 <button className="convoCard" onClick = {createConversation}> + </button>
-                                <h6>New Conversation</h6>
+                                <h5>New Conversation</h5>
                             </div>
+
+
+                            {chatrooms.map((item, idx) => (<ConvoCard key = {idx} chatroomId={item.id} chatroomName={item.roomName} enterChatroom={enterChatroom}/>))}
+
+                            
 
                         </div>
 

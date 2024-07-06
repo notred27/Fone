@@ -54,6 +54,7 @@ export const createConversation = async () => {
   // Set chatroom fields
   await setDoc(doc(db, "Chatrooms", chatId.id), {
       username: "Username",
+      roomName: "test room",
       userPic: photoURL,
       createdAt: serverTimestamp(),
       uid
@@ -66,7 +67,8 @@ export const createConversation = async () => {
   })
 
   return chatId.id;
+}
 
-  
- 
+export const deleteConversation = async (chatroomId) => {
+  await deleteDoc(doc(db, "Chatrooms", chatroomId))
 }
