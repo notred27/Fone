@@ -1,19 +1,32 @@
-.convoCard {
-  background-color:#a1c5ff;
-  color:white;
+button.convoCard {
+  background-color:white;
+  color:black;
   font-size:50px;
-  border:8px solid white;
-  border-radius:20px;
+  border:6px solid black;
+  border-radius:25px;
   width:140px;
-  height:200px;
+  height:210px;
   justify-content:center;
   display:flex;
   align-items:center;
   margin:10px;
+  margin-bottom: 0px;
+
 }
 
-.convoCard:hover{
+img.convoCard {
+  margin:10px;
+  margin-bottom: 0px;
+  
+}
+
+/* button.convoCard:hover{
   background-color:#65a0ff;
+} */
+
+.convoCard:hover{
+  filter: brightness(80%);
+  -webkit-filter: brightness(80%);
 }
 
 
@@ -64,7 +77,7 @@
     border:2px solid #CCCCCC;
     padding:5px;
     padding-left:10px;
-    width:80%;
+    width:98%;
     caret-color: rgb(0, 102, 255);
 }
 

@@ -11,7 +11,7 @@ import {query, orderBy, onSnapshot, limit, doc,  collection} from "firebase/fire
 import {db, deleteMessage, sendMessage} from './firebase.js';
 
 
-function ChatPane({chatroomId, hideHead}) {
+function ChatPane({chatroomId, hideHead, exitRoom}) {
     const [messages, setMessages] = useState([]);
     const [isHidden, setIsHidden] = useState("none");
     const [debugMode, setDebugMode] = useState(false);
@@ -129,7 +129,7 @@ function ChatPane({chatroomId, hideHead}) {
     return (
         <div style = {{height:"100%", width: "100%"}}>
             <div ref = {scrollPaneRef} className= "disable-scrollbars" style={{width:"100%", height:"calc(100% - 40px)", overflowY:"scroll", overscrollBehaviorY:"none"}}>
-                <Header initialName = {headerName} hideFunc = {enterDebug}/>
+                <Header initialName = {headerName} hideFunc = {enterDebug} exitRoom = {exitRoom} />
             
                     {/* Header for Messages text */}
                     <div className='date'><span style={{fontWeight:"bold"}}>Text Message</span></div>

@@ -7,7 +7,7 @@ import arrowImg from './images/arrow.png';
 
 
 
-function Header({initialName, hideFunc}) {
+function Header({initialName, hideFunc, exitRoom}) {
     const [isHidden, setIsHidden] = useState(true);
     const [name, setName] = useState(initialName);
     const nameBarRef = useRef(null);
@@ -23,20 +23,33 @@ function Header({initialName, hideFunc}) {
     
     return (
         <div className= 'headerBox' style={{alignItems:"center"}}>
-            <img src = {arrowImg} alt = "flair" style = {{height:"20px", marginLeft:"20px", marginTop:"22px"}}/>
+            <img src = {arrowImg} alt = "flair" style = {{placeSelf:"center", height:"15px"}} onClick={() => (exitRoom(null))}/>
 
             {isHidden ? 
-            <figure>
-                <img src = {userImg} alt = "user" style={{width:"30px"}}></img>
+            <figure style = {{placeSelf:"center", margin:"5px"}}>
+                <img src = {userImg} alt = "user" style={{width:"30px"}} />
                 <figcaption className='title' style={{textAlign:"center"}}>{name}</figcaption>
             </figure>
 
             :
 
-            <input ref = {nameBarRef} placeholder={name} style = {{height:"1em"}}></input>
+
+            <div style = {{placeSelf:"center", margin:"5px"}}>
+                <div >
+                    <img src = {userImg} alt = "user" style={{width:"30px"}} />
+                    <label>
+                       {/* <button>Choose Image</button> */}
+                        <input type = "file"  accept = "image/*" onClick={() => (console.log("profile clicked"))}></input>
+
+                    </label>
+                </div>
+
+                <input ref = {nameBarRef} placeholder={name} style = {{height:"1em"}} />
+
+            </div>
             }
 
-            <img src = {facetimeImg} alt = "toggleEdit" onClick={hideDebug} style = {{width:"40px", marginRight:"20px", marginTop:"16px"}}/>
+            <img src = {facetimeImg} alt = "toggleEdit" onClick={hideDebug} style = {{placeSelf:"center",height:"15px"}}/>
         </div>
 
     )
