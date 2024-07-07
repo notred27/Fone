@@ -26,7 +26,7 @@ function Header({initialName, hideFunc, exitRoom}) {
             <img src = {arrowImg} alt = "flair" style = {{placeSelf:"center", height:"15px"}} onClick={() => (exitRoom(null))}/>
 
             {isHidden ? 
-            <figure style = {{placeSelf:"center", margin:"5px"}}>
+            <figure style = {{placeSelf:"center", margin:"5px", marginTop:"10px"}}>
                 <img src = {userImg} alt = "user" style={{width:"30px"}} />
                 <figcaption className='title' style={{textAlign:"center"}}>{name}</figcaption>
             </figure>

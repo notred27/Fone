@@ -46,7 +46,11 @@ const App = () => {
    
     return (
         <div>
-            
+            <div style={{position:"absolute", top:"calc(50vh - 100px)", left:"calc(50vw - 100px)", width:"30vw", height:"60vh", backgroundColor:"red"}}>
+
+
+
+            </div>
             {!user ? <LandingPage /> :
             
             <div>

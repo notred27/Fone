@@ -33,7 +33,7 @@ function Keyboard({createMessage, chatroomId}) {
         <div className='keyboard' style = {{position:"relative", bottom:"0px", backgroundColor:"white"}}>
             <form style ={{display:"flex", flexDirection:"row", justifyContent:"center"}} >
                 
-                <button style={{border:"0px", borderRadius:"40%", margin:"8px", color:"#888888", paddingLeft:"6px", paddingRight:"6px", fontWeight:"bold"}}>+</button>
+                <button style={{border:"0px", borderRadius:"40%", color:"#888888", paddingLeft:"6px", paddingRight:"6px", marginRight:"6px",marginLeft:"0px", fontWeight:"bold"}}>+</button>
                 
                 <div style ={{position:"relative", width:"80%"}}>
                     <input className='messageInput' ref = {inputRef} onChange={(e) => (changeSendIcon(e.target.value))} placeholder='Message' ></input>
