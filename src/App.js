@@ -46,11 +46,9 @@ const App = () => {
    
     return (
         <div>
-            <div style={{position:"absolute", top:"calc(50vh - 100px)", left:"calc(50vw - 100px)", width:"30vw", height:"60vh", backgroundColor:"red"}}>
+            {/* <div style={{position:"absolute", top:"calc(50vh - 100px)", left:"calc(50vw - 100px)", width:"30vw", height:"60vh", backgroundColor:"red"}}>
+            </div> */}
 
-
-
-            </div>
             {!user ? <LandingPage /> :
             
             <div>
@@ -71,22 +69,21 @@ const App = () => {
                         
                         
                         <h2>Conversations</h2>
-                        <div style = {{display:"flex", flexDirection:"row", flexWrap:"wrap", textAlign:"center"}}>
 
-                            <div>
-                                {/* createConversation().then((val) => console.log(val)) */}
+                        <div id = "convo_card_container" style = {{display:"flex", flexDirection:"row", flexWrap:"wrap", textAlign:"center"}}>
+                            <div id = "add_new_conversation">
                                 <button className="convoCard" onClick = {createConversation}> + </button>
                                 <h5 style = {{margin:"0px", padding:"0px"}}>New Conversation</h5>
                             </div>
 
-
                             {chatrooms.map((item, idx) => (<ConvoCard key = {idx} chatroomId={item.id} chatroomName={item.roomName} style = {item.style} enterChatroom={enterChatroom}/>))}
-
-                            
 
                         </div>
 
                     </div>
+
+
+
                     :
                     
                     <div style={{width:"min(100vw, 100vmin)", height:"100vh",  marginLeft:"auto", marginRight:"auto", backgroundColor:"white"}}>
