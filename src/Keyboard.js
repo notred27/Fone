@@ -37,7 +37,7 @@ function Keyboard({createMessage, chatroomId}) {
                 
                 <div style ={{position:"relative", width:"80%"}}>
                     <input className='messageInput' ref = {inputRef} onChange={(e) => (changeSendIcon(e.target.value))} placeholder='Message' ></input>
-                    <img type = "submit" src = {sendImg} alt ="submit" onClick={(event) => sendMessage(event)} style = {{height:"20px", position:"absolute", right:"5px", top:"6px"}}></img>
+                    <img type = "submit" src = {sendImg} alt ="submit" onClick={(event) => sendMessage(event)} style = {{height:"20px", position:"absolute", right:"2px", top:"6px"}}></img>
                     
                 </div>
                 

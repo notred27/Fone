@@ -124,7 +124,7 @@ function ChatPane({chatroomId, exitRoom}) {
     renderedMessages.splice(messages.length, 0, <p  className='chatMsg'  style ={{marginLeft:"auto", padding:"0px",marginTop:"0px",fontSize:"0.6em", color:"#777777", fontWeight:"bold"}}>Delivered</p>)
 
     return (
-        <div style = {{height:"100%", width: "100%"}}>
+        <div style = {{height:"100%", width: "100%", position:"relative"}}>
             <div ref = {scrollPaneRef} className= "disable-scrollbars" style={{width:"100%", height:"calc(100% - 40px)", overflowY:"scroll", overscrollBehaviorY:"none"}}>
                 <Header chatroomId = {chatroomId} hideFunc = {enterDebug} exitRoom = {exitRoom} />
             
@@ -136,7 +136,7 @@ function ChatPane({chatroomId, exitRoom}) {
                 {/* These were two entries for the readFlare */}
                 {/* <p  className='chatMsg'  style ={{marginLeft:"auto", padding:"0px",marginTop:"0px",fontSize:"0.6em", color:"#777777", fontWeight:"bold"}}>Delivered</p> */}
                 {/* <div className='chatMsg'  style ={{marginLeft:"auto", padding:"0px",marginTop:"0px",fontSize:"0.6em", color:"#777777"}}><span style={{ fontWeight:"bold"}}>Read</span> 3:06 PM</div> */}
-                <img src = {typing} style = {{position:"absolute", bottom:"40px"}}></img>
+                <img src = {typing} style = {{position:"absolute", bottom:"45px", left:"15px"}}></img>
             </div>
 
             {debugMode ? 
