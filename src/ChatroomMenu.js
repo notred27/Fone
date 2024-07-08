@@ -44,59 +44,60 @@ function ChatroomMenu({hidePopup}) {
 
     return (
         <div >
-            <div style = {{backgroundColor:"rgba(0,0,0,0.2)", width:"100vw", height:"100vh", position:"fixed", zIndex:"200"}}>
+            <div style = {{backgroundColor:"rgba(0,0,0,0.2)", width:"100vw", height:"100vh", position:"fixed", zIndex:"200"}}/>
 
-            </div>
+       
         
             <form id = "chatroomPopup" onSubmit={(e) => (createRoom(e))}  style={{position:"absolute", top:"20vh", left:"calc(50vw - 40vmin)", width:"80vmin", height:"auto", zIndex:"999", backgroundColor:"#ececec", borderRadius:"20px", border:"6px solid #888888"}}>
                 
-                <div className = "flexRow">
-                <div style = {{textAlign:"center", position:"relative", width:"150px", padding:"10px"}}>
+                <div className = "flexRow" style = {{ flexWrap:"wrap", alignContent:"center", justifyContent:"center", padding:"10px"}}>
 
-                    <h3>Theme</h3>
-                    <img src = {theme} alt = "chatroomTheme" style = {{width:"50%"}}/>
+                    <div style = {{textAlign:"center", position:"relative", width:"150px", padding:"10px"}}>
+
+                        <h3>Theme</h3>
+                        <img src = {theme} alt = "chatroomTheme" style = {{width:"70%"}}/>
 
 
-                    <div style = {{textAlign:"left"}}>
-                        <input id = "imessageRadio" type="radio" name="conversationTheme" value = "imessage" defaultChecked onClick ={() => (setTheme(iPhoneConvoImage))} />
-                        <label for ="imessageRadio">iMessage</label>
+                        <div style = {{textAlign:"left"}}>
+                            <input id = "imessageRadio" type="radio" name="conversationTheme" value = "imessage" defaultChecked onClick ={() => (setTheme(iPhoneConvoImage))} />
+                            <label for ="imessageRadio">iMessage</label>
 
-                        <br/>
+                            <br/>
 
-                        <input id = "smsRadio" type="radio" name="conversationTheme" value = "sms" onClick ={() => (setTheme(smsConvoImage))}/>
-                        <label for ="smsRadio">SMS</label>
+                            <input id = "smsRadio" type="radio" name="conversationTheme" value = "sms" onClick ={() => (setTheme(smsConvoImage))}/>
+                            <label for ="smsRadio">SMS</label>
 
-                        <br/>
+                            <br/>
 
-                        <input id = "gmessageRadio" type="radio" name="conversationTheme" value = "gmessage" onClick ={() => (setTheme(androidConvoImage))}/>
-                        <label for ="gmessageRadio">G-Messages</label>
+                            <input id = "gmessageRadio" type="radio" name="conversationTheme" value = "gmessage" onClick ={() => (setTheme(androidConvoImage))}/>
+                            <label for ="gmessageRadio">G-Messages</label>
+                        </div>
+
+
                     </div>
-
-
-                </div>
                 
 
 
-                <div>
-                    <h3 style={{marginBottom:"0px"}}>Chatroom Name:</h3>
-                    <br/>
-                    <input id = "roomNameInput" placeholder={`Room ${numRooms}`}/>
+                    <div style = {{padding:"10px"}}>
+                        <h3 style={{marginBottom:"0px"}}>Chatroom Name:</h3>
+                        <br/>
+                        <input id = "roomNameInput" placeholder={`Room ${numRooms}`}/>
 
-                    <br/>
+                        <br/>
 
-                    <h3 style={{marginBottom:"0px"}}>Display Name:</h3>
-                    <br/>
-                    <input id = "displayNameInput" placeholder="Username" />
+                        <h3 style={{marginBottom:"0px"}}>Display Name:</h3>
+                        <br/>
+                        <input id = "displayNameInput" placeholder="Username" />
 
-                    <br/>
+                        <br/>
 
-                    <button type = "submit" style={{fontSize:"1.5em", backgroundColor:"#5c85ff", color:"white", border:"5px solid white", borderRadius:"20px", padding:"5px", marginTop:"20px"}} > Create Chatroom! </button>
+                        <button type = "submit" style={{fontSize:"1.5em", backgroundColor:"#5c85ff", color:"white", border:"5px solid white", borderRadius:"20px", padding:"5px", marginTop:"20px"}} > Create Chatroom! </button>
 
 
-                    <br/>
-                    <button onClick={() =>(hidePopup(false))}>Cancel</button>
+                        <br/>
+                        <button onClick={() =>(hidePopup(false))}>Cancel</button>
 
-                </div>
+                    </div>
 
                 </div>
                 
