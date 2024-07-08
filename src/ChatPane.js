@@ -6,7 +6,7 @@ import Header from './Header';
 import DateHeader from './DateHeader';
 import Keyboard from './Keyboard';
 
-
+import typing from './images/typing.gif'
 import {query, orderBy, onSnapshot, limit, doc,  collection} from "firebase/firestore";
 import {db, deleteMessage, sendMessage} from './firebase.js';
 
@@ -19,7 +19,6 @@ function ChatPane({chatroomId, exitRoom}) {
     const inputTextRef = useRef(null);
     const inputRadioRef = useRef(null);
     const scrollPaneRef = useRef(null);
-    const [headerName, setHeaderName]  = useState("Username");
 
     const [msgTheme, setMsgTheme] = useState("clientMsg")
 
@@ -46,30 +45,17 @@ function ChatPane({chatroomId, exitRoom}) {
 
 
     useEffect(() => {
-        const q = query(doc(db, "Chatrooms", chatroomId))
-
-        onSnapshot(q, (snapshot) => {setMsgTheme(snapshot.data().style)
-        console.log(snapshot.data().style + " test")
-
-
-        })
-
+        if(chatroomId !== null) {
+            const q = query(doc(db, "Chatrooms", chatroomId))
+            onSnapshot(q, (snapshot) => {
+                setMsgTheme(snapshot.data().style);
+            })
+        }
 
 
     },[chatroomId])
 
 
-    //   TODO: Fix this so it triggers on initial load
-    function getInitialName() {
-        const q = query(doc(db, "Chatrooms", chatroomId))
-
-        onSnapshot(q, (snapshot) => {
-            setHeaderName(snapshot.data().username)
-        })
-     
-        console.log(headerName)
-        return headerName
-    }
 
 
     function sendDebugMessage(event, newMsg, msgType) {
@@ -140,7 +126,7 @@ function ChatPane({chatroomId, exitRoom}) {
     return (
         <div style = {{height:"100%", width: "100%"}}>
             <div ref = {scrollPaneRef} className= "disable-scrollbars" style={{width:"100%", height:"calc(100% - 40px)", overflowY:"scroll", overscrollBehaviorY:"none"}}>
-                <Header initialName = {headerName} hideFunc = {enterDebug} exitRoom = {exitRoom} />
+                <Header chatroomId = {chatroomId} hideFunc = {enterDebug} exitRoom = {exitRoom} />
             
                     {/* Header for Messages text */}
                     <div className='date'><span style={{fontWeight:"bold"}}>Text Message</span></div>
@@ -150,7 +136,7 @@ function ChatPane({chatroomId, exitRoom}) {
                 {/* These were two entries for the readFlare */}
                 {/* <p  className='chatMsg'  style ={{marginLeft:"auto", padding:"0px",marginTop:"0px",fontSize:"0.6em", color:"#777777", fontWeight:"bold"}}>Delivered</p> */}
                 {/* <div className='chatMsg'  style ={{marginLeft:"auto", padding:"0px",marginTop:"0px",fontSize:"0.6em", color:"#777777"}}><span style={{ fontWeight:"bold"}}>Read</span> 3:06 PM</div> */}
-
+                <img src = {typing} style = {{position:"absolute", bottom:"40px"}}></img>
             </div>
 
             {debugMode ? 

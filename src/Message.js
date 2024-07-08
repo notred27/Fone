@@ -3,7 +3,7 @@ import './App.css';
 
 import imessageTail from './images/imessageTail.png'
 import smsTail from './images/smsTail.png'
-import msgTail2 from './images/msg_tail2.png'
+import msgTail2 from './images/serverTail.png'
 
 
 function Message({id, msg, btnStyle, msgStyle, removeFunc, chatroomId}) {
@@ -24,7 +24,7 @@ function Message({id, msg, btnStyle, msgStyle, removeFunc, chatroomId}) {
         
         
     } else {
-        tail = <img src = {msgTail2} alt = "msg_tail_icon" style = {{position:"absolute", width:"20px", left:"4px", bottom:"-2px", zIndex:"0"}}></img>
+        tail = <img src = {msgTail2} alt = "msg_tail_icon" style = {{position:"absolute", width:"20px", left:"2px", bottom:"0px", zIndex:"0"}}></img>
     }
 
     return (

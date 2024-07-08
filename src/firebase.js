@@ -83,3 +83,12 @@ export const getNumConversations = async () => {
   return length.data().count;
   // console.log(length.data().count)
 }
+
+export const setDisplayName = async (chatroomId, name) => {
+
+  // Set chatroom display name
+  await setDoc(doc(db, "Chatrooms", chatroomId), {
+      username: name
+      // uid
+    }, {merge:true})
+}

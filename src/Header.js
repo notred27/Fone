@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useRef, useState, useEffect} from 'react';
 import './App.css';
 
 import userImg from './images/user.png';
@@ -6,20 +6,38 @@ import facetimeImg from './images/facetime.png';
 import arrowImg from './images/arrow.png';
 
 
+import {query, onSnapshot, doc} from "firebase/firestore";
+import {db, setDisplayName} from './firebase.js';
 
-function Header({initialName, hideFunc, exitRoom}) {
+
+function Header({chatroomId, hideFunc, exitRoom}) {
     const [isHidden, setIsHidden] = useState(true);
-    const [name, setName] = useState(initialName);
+    const [name, setName] = useState("_");
     const nameBarRef = useRef(null);
 
     const hideDebug = () => {
+
         setIsHidden(!isHidden)
         hideFunc()
 
         if(!isHidden && nameBarRef.current.value !== "") {
             setName(nameBarRef.current.value)
+            setDisplayName( chatroomId, nameBarRef.current.value)
         }
     }
+
+
+    useEffect(() => {
+        if(chatroomId !== null) {
+            const q = query(doc(db, "Chatrooms", chatroomId))
+            onSnapshot(q, (snapshot) => {
+                setName(snapshot.data().username);
+                console.log(snapshot.data().username)
+            })
+        }
+
+
+    },[chatroomId])
     
     return (
         <div className= 'headerBox' style={{alignItems:"center"}}>

@@ -6,6 +6,7 @@ import SignIn from './SignIn.js';
 import ChatPane from './ChatPane.js';
 import ConvoCard from './ConvoCard.js';
 import ChatroomMenu from './ChatroomMenu.js';
+import logo from './images/logo.png'
 
 import './App.css';
 
@@ -63,7 +64,11 @@ const App = () => {
                 {selectedRoom == null ? 
                     <div>
 
-                        <div style ={{display:"grid", gridTemplateColumns:"100%", alignItems:"center", backgroundColor:"#ececec", marginBottom:"20px", borderBottom:"2px solid #999999", padding:"5px"}} >
+                        <div style ={{display:"grid", gridTemplateColumns:" 50% 50%", alignItems:"center", backgroundColor:"#ececec", marginBottom:"20px", borderBottom:"2px solid #999999", padding:"5px"}} >
+                            <img src = {logo}  style = {{height:"40px"}}></img>
+                            
+                            
+                            
                             <div className='flexRow' style={{alignItems:"center", backgroundColor:"#65a0ff", padding:"5px", width:"fit-content", height:"fit-content", borderRadius:"20px", marginRight:"0px", marginLeft:"auto"}}> 
                                 {/* <p> Logged in as {user.displayName}</p> */}
                                 <img src = {user.photoURL} alt = "userImg" style = {{width:"40px", height:"40px", borderRadius:"20px", paddingRight:"5px"}}></img>
