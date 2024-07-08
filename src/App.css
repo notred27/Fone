@@ -22,16 +22,21 @@ img.convoCard {
 
 
 .convoCard:hover{
-  filter: brightness(80%);
-  -webkit-filter: brightness(80%);
+  filter: brightness(90%);
+  -webkit-filter: brightness(90%);
 }
 
 
-.blue {
+button:hover{
+  filter: brightness(90%);
+  -webkit-filter: brightness(90%);
+}
+
+/* .blue {
     color:rgb(0, 102, 255);
     margin:10px;
 
-}
+} */
 
 .title {
     font-weight:600;
@@ -51,10 +56,16 @@ img.convoCard {
     /* z-index: 2; */
 }
 
-.clientMsg {
+.imessageClient {
     background-color:rgb(17, 136, 255);
     color:white;
     margin-left:auto;
+}
+
+.smsClient {
+  background-color:rgb(46, 213, 88);
+  color:white;
+  margin-left:auto;
 }
 
 .serverMsg {

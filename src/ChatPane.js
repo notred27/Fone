@@ -21,7 +21,7 @@ function ChatPane({chatroomId, exitRoom}) {
     const scrollPaneRef = useRef(null);
     const [headerName, setHeaderName]  = useState("Username");
 
-
+    const [msgTheme, setMsgTheme] = useState("clientMsg")
 
     // Query Firebase DB and render recieved messages
     useEffect(() => {
@@ -43,6 +43,20 @@ function ChatPane({chatroomId, exitRoom}) {
         });
         return () => unsubscribe;
       }, []);
+
+
+    useEffect(() => {
+        const q = query(doc(db, "Chatrooms", chatroomId))
+
+        onSnapshot(q, (snapshot) => {setMsgTheme(snapshot.data().style)
+        console.log(snapshot.data().style + " test")
+
+
+        })
+
+
+
+    },[chatroomId])
 
 
     //   TODO: Fix this so it triggers on initial load
@@ -90,7 +104,7 @@ function ChatPane({chatroomId, exitRoom}) {
                                 id = {item.id} 
                                 key = {item.id} 
 
-                                msgStyle = {"clientMsg"} 
+                                msgStyle = {msgTheme + "Client"} 
                                 btnStyle = {isHidden}
                                 removeFunc = {deleteMessage}
                                 chatroomId = {chatroomId} />

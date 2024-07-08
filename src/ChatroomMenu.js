@@ -95,9 +95,11 @@ function ChatroomMenu({hidePopup}) {
 
 
                         <br/>
-                        <button onClick={() =>(hidePopup(false))}>Cancel</button>
+                       
 
                     </div>
+
+                    <button style ={{position:"absolute", right:"10px", color:"white", backgroundColor:"#5c85ff", borderRadius:"20px", padding:"5px", border:"0px"}} onClick={() =>(hidePopup(false))}>Back</button>
 
                 </div>
                 

@@ -1,7 +1,8 @@
 import React from 'react';
 import './App.css';
 
-import msgTail from './images/msg_tail.png'
+import imessageTail from './images/imessageTail.png'
+import smsTail from './images/smsTail.png'
 import msgTail2 from './images/msg_tail2.png'
 
 
@@ -15,9 +16,13 @@ function Message({id, msg, btnStyle, msgStyle, removeFunc, chatroomId}) {
     // TODO: Fix this so only the png needs to be swapped out
     let tail = null
 
-    if(msgStyle === "clientMsg") {
-        tail = <img src = {msgTail} alt = "msg_tail_icon" style = {{position:"absolute", width:"20px", right:"5px", bottom:"-1px", zIndex:"0"}}></img>
+    if(msgStyle === "imessageClient") {
+        tail = <img src = {imessageTail} alt = "msg_tail_icon" style = {{position:"absolute", width:"10px", right:"6px", bottom:"0px", zIndex:"0"}}></img>
 
+    } else if (msgStyle === "smsClient") {
+        tail = <img src = {smsTail} alt = "msg_tail_icon" style = {{position:"absolute", width:"10px", right:"6px", bottom:"0px", zIndex:"0"}}></img>
+        
+        
     } else {
         tail = <img src = {msgTail2} alt = "msg_tail_icon" style = {{position:"absolute", width:"20px", left:"4px", bottom:"-2px", zIndex:"0"}}></img>
     }
