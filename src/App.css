@@ -68,6 +68,12 @@ button:hover{
   margin-left:auto;
 }
 
+.gmessageClient {
+  background-color:rgb(17, 136, 255);
+  color:white;
+  margin-left:auto;
+}
+
 .serverMsg {
     background-color:rgb(233, 233, 233);
     color:black;

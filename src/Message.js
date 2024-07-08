@@ -23,8 +23,12 @@ function Message({id, msg, btnStyle, msgStyle, removeFunc, chatroomId}) {
         tail = <img src = {smsTail} alt = "msg_tail_icon" style = {{position:"absolute", width:"10px", right:"6px", bottom:"0px", zIndex:"0"}}></img>
         
         
+    } else if (msgStyle === "gmessageClient") {
+        tail = <img src = {imessageTail} alt = "msg_tail_icon" style = {{position:"absolute", width:"10px", right:"6px", bottom:"0px", zIndex:"0"}}></img>
+
+
     } else {
-        tail = <img src = {msgTail2} alt = "msg_tail_icon" style = {{position:"absolute", width:"20px", left:"2px", bottom:"0px", zIndex:"0"}}></img>
+        tail = <img src = {msgTail2} alt = "msg_tail_icon" style = {{position:"absolute", width:"20px", left:"2px", bottom:"-3px", zIndex:"0"}}></img>
     }
 
     return (

@@ -65,13 +65,14 @@ const App = () => {
                     <div>
 
                         <div style ={{display:"grid", gridTemplateColumns:" 50% 50%", alignItems:"center", backgroundColor:"#ececec", marginBottom:"20px", borderBottom:"2px solid #999999", padding:"5px"}} >
-                            <img src = {logo}  style = {{height:"40px"}}></img>
+                            <img src = {logo} alt = "logo_header" style = {{height:"40px"}}></img>
                             
                             
                             
                             <div className='flexRow' style={{alignItems:"center", backgroundColor:"#65a0ff", padding:"5px", width:"fit-content", height:"fit-content", borderRadius:"20px", marginRight:"0px", marginLeft:"auto"}}> 
-                                {/* <p> Logged in as {user.displayName}</p> */}
                                 <img src = {user.photoURL} alt = "userImg" style = {{width:"40px", height:"40px", borderRadius:"20px", paddingRight:"5px"}}></img>
+                                <p>{user.displayName}</p>
+
                                 <SignIn />
                             </div>
                         </div>
