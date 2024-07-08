@@ -48,13 +48,13 @@ function ChatroomMenu({hidePopup}) {
 
             </div>
         
-            <form id = "chatroomPopup" onSubmit={(e) => (createRoom(e))} className = "flexRow" style={{position:"absolute", top:"20vh", left:"calc(50vw - 40vmin)", width:"80vmin", height:"auto", zIndex:"999", backgroundColor:"#ececec", borderRadius:"20px", border:"6px solid #888888"}}>
+            <form id = "chatroomPopup" onSubmit={(e) => (createRoom(e))}  style={{position:"absolute", top:"20vh", left:"calc(50vw - 40vmin)", width:"80vmin", height:"auto", zIndex:"999", backgroundColor:"#ececec", borderRadius:"20px", border:"6px solid #888888"}}>
                 
-
+                <div className = "flexRow">
                 <div style = {{textAlign:"center", position:"relative", width:"150px", padding:"10px"}}>
 
                     <h3>Theme</h3>
-                    <img src = {theme} alt = "chatroomTheme" />
+                    <img src = {theme} alt = "chatroomTheme" style = {{width:"50%"}}/>
 
 
                     <div style = {{textAlign:"left"}}>
@@ -98,7 +98,7 @@ function ChatroomMenu({hidePopup}) {
 
                 </div>
 
-
+                </div>
                 
             </form>
         </div>
