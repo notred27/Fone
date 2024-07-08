@@ -1,7 +1,7 @@
 import { initializeApp } from "firebase/app";
 // import { getStorage } from "firebase/storage";
 import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
+import { getCountFromServer, getFirestore, query} from "firebase/firestore";
 import {setDoc, addDoc, deleteDoc, doc,  collection, serverTimestamp} from "firebase/firestore";
 
 
@@ -36,7 +36,7 @@ export const deleteMessage = async (chatroomId, messageDocId) => {
 }
 
 export const sendMessage = async (chatroomId, msg, msgType) => {
-  const { uid, displayName, photoURL } = auth.currentUser;
+  const { uid } = auth.currentUser;
   await addDoc(collection(db, "Chatrooms", chatroomId, "messages"), {
       text: msg,
       type: msgType,
@@ -46,18 +46,19 @@ export const sendMessage = async (chatroomId, msg, msgType) => {
 }
 
 
-export const createConversation = async () => {
+export const createConversation = async (roomName, userName, theme) => {
   const { uid, displayName, photoURL } = auth.currentUser;
 
   const chatId =  doc(collection(db, "Chatrooms"));
   
   // Set chatroom fields
   await setDoc(doc(db, "Chatrooms", chatId.id), {
-      username: "Username",
-      roomName: "test room",
+      style: theme,
+      username: userName,
+      roomName: roomName,
       userPic: photoURL,
       createdAt: serverTimestamp(),
-      uid
+      // uid
     })
 
   // Create messages collection for this chatroom
@@ -66,9 +67,19 @@ export const createConversation = async () => {
     uid,
   })
 
-  return chatId.id;
+  // return chatId.id;
 }
 
 export const deleteConversation = async (chatroomId) => {
+  // FIXME: Come up with a solution to delete the messages subcollections 
   await deleteDoc(doc(db, "Chatrooms", chatroomId))
+}
+
+export const getNumConversations = async () => {
+  const q = query( collection(db, "Chatrooms"));
+  const length = await getCountFromServer(q);
+  // .then(results => return )
+
+  return length.data().count;
+  // console.log(length.data().count)
 }

@@ -17,12 +17,9 @@ button.convoCard {
 img.convoCard {
   margin:10px;
   margin-bottom: 0px;
-  
 }
 
-/* button.convoCard:hover{
-  background-color:#65a0ff;
-} */
+
 
 .convoCard:hover{
   filter: brightness(80%);

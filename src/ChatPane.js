@@ -11,7 +11,7 @@ import {query, orderBy, onSnapshot, limit, doc,  collection} from "firebase/fire
 import {db, deleteMessage, sendMessage} from './firebase.js';
 
 
-function ChatPane({chatroomId, hideHead, exitRoom}) {
+function ChatPane({chatroomId, exitRoom}) {
     const [messages, setMessages] = useState([]);
     const [isHidden, setIsHidden] = useState("none");
     const [debugMode, setDebugMode] = useState(false);
@@ -19,7 +19,6 @@ function ChatPane({chatroomId, hideHead, exitRoom}) {
     const inputTextRef = useRef(null);
     const inputRadioRef = useRef(null);
     const scrollPaneRef = useRef(null);
-    const [deliveredIdx, setDeliveredIdx]  = useState(0);
     const [headerName, setHeaderName]  = useState("Username");
 
 
@@ -68,10 +67,8 @@ function ChatPane({chatroomId, hideHead, exitRoom}) {
     function enterDebug() {
         if (debugMode) {
             setIsHidden("none");
-            hideHead(true)
         } else {
             setIsHidden("block");
-            hideHead(false)
         }
         setDebugMode(!debugMode);
 
@@ -86,7 +83,7 @@ function ChatPane({chatroomId, hideHead, exitRoom}) {
 
     const renderedMessages = messages.map((item, idx) => {
         switch(item.type) {
-            default: return;
+            default: return null;
 
             case "clientMsg":
                 return <Message msg = {item.text}
@@ -146,7 +143,7 @@ function ChatPane({chatroomId, hideHead, exitRoom}) {
             
             <div style = {{position:"sticky", bottom:"0px", padding:"10px", backgroundColor:"#ECECEC"}}>
                 <form ref = {inputRadioRef} >
-                    <input type="radio" id = "addType0" name="addType" value = "clientMsg"/>
+                    <input type="radio" id = "addType0" name="addType" value = "clientMsg" defaultChecked/>
                     <label >Blue Msg</label>
 
                     <input type="radio" id = "addType1" name="addType" value = "serverMsg"/>

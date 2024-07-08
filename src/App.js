@@ -5,17 +5,19 @@ import LandingPage from './LandingPage.js';
 import SignIn from './SignIn.js';
 import ChatPane from './ChatPane.js';
 import ConvoCard from './ConvoCard.js';
+import ChatroomMenu from './ChatroomMenu.js';
+
 import './App.css';
 
 import {query, orderBy, onSnapshot, limit, collection} from "firebase/firestore";
-import {db, createConversation, deleteConversation} from './firebase.js';
+import {db} from './firebase.js';
 
 
 const App = () => {
     const [user] = useAuthState(auth);
     const [chatrooms, setChatrooms] = useState([]);
     const [selectedRoom, setSelectedRoom] = useState(null);
-    const [isHidden, setIsHidden] = useState(false)
+    const [chatroomPopupShowing, setChatroomPopupShowing] = useState(false);
 
     useEffect(() => {
         const q = query(
@@ -37,21 +39,23 @@ const App = () => {
 
 
     function enterChatroom(chatroomId) {
-        setIsHidden(true);
         console.log("Entering chatroom " + chatroomId); 
         setSelectedRoom(chatroomId);
     }
+
+
+
+ 
 
     
    
     return (
         <div>
-            {/* <div style={{position:"absolute", top:"calc(50vh - 100px)", left:"calc(50vw - 100px)", width:"30vw", height:"60vh", backgroundColor:"red"}}>
-            </div> */}
+            { chatroomPopupShowing && <ChatroomMenu hidePopup = {setChatroomPopupShowing}/> }
 
             {!user ? <LandingPage /> :
             
-            <div>
+            <div >
 
                
 
@@ -72,7 +76,7 @@ const App = () => {
 
                         <div id = "convo_card_container" style = {{display:"flex", flexDirection:"row", flexWrap:"wrap", textAlign:"center"}}>
                             <div id = "add_new_conversation">
-                                <button className="convoCard" onClick = {createConversation}> + </button>
+                                <button className="convoCard" onClick = {() => (setChatroomPopupShowing(true))}> + </button>
                                 <h5 style = {{margin:"0px", padding:"0px"}}>New Conversation</h5>
                             </div>
 
@@ -87,7 +91,7 @@ const App = () => {
                     :
                     
                     <div style={{width:"min(100vw, 100vmin)", height:"100vh",  marginLeft:"auto", marginRight:"auto", backgroundColor:"white"}}>
-                        <ChatPane chatroomId = {selectedRoom} hideHead = {setIsHidden} exitRoom = {setSelectedRoom} />
+                        <ChatPane chatroomId = {selectedRoom} exitRoom = {setSelectedRoom} />
                     </div>
                 }
 
