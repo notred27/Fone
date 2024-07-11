@@ -32,7 +32,6 @@ function Header({chatroomId, hideFunc, exitRoom}) {
             const q = query(doc(db, "Chatrooms", chatroomId))
             onSnapshot(q, (snapshot) => {
                 setName(snapshot.data().username);
-                console.log(snapshot.data().username)
             })
         }
 
@@ -57,7 +56,7 @@ function Header({chatroomId, hideFunc, exitRoom}) {
                     <img src = {userImg} alt = "user" style={{width:"30px"}} />
                     <label>
                        {/* <button>Choose Image</button> */}
-                        <input type = "file"  accept = "image/*" onClick={() => (console.log("profile clicked"))}></input>
+                        <input type = "file"  accept = "image/*" onClick={() => (console.log("profile clicked"))} onChange={() => (console.log("File selected"))} ></input>
 
                     </label>
                 </div>

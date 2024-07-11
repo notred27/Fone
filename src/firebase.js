@@ -45,6 +45,17 @@ export const sendMessage = async (chatroomId, msg, msgType) => {
       });
 }
 
+export const sendTimestamp = async (chatroomId, date, time) => {
+  const { uid } = auth.currentUser;
+  await addDoc(collection(db, "Chatrooms", chatroomId, "messages"), {
+      date: date,
+      time: time,
+      type: "timestamp",
+      createdAt: serverTimestamp(),
+      uid,
+      });
+}
+
 
 export const createConversation = async (roomName, userName, theme) => {
   const { uid, displayName, photoURL } = auth.currentUser;

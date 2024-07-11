@@ -5,6 +5,7 @@ import Message from './Message';
 import Header from './Header';
 import DateHeader from './DateHeader';
 import Keyboard from './Keyboard';
+import DebugMenu from './DebugMenu.js';
 
 import typing from './images/typing.gif'
 import {query, orderBy, onSnapshot, limit, doc,  collection} from "firebase/firestore";
@@ -15,12 +16,14 @@ function ChatPane({chatroomId, exitRoom}) {
     const [messages, setMessages] = useState([]);
     const [isHidden, setIsHidden] = useState("none");
     const [debugMode, setDebugMode] = useState(false);
+    const [deliveredIdx, setDeliveredIdx] = useState(0);
+    const [msgTheme, setMsgTheme] = useState("clientMsg");
+
 
     const inputTextRef = useRef(null);
     const inputRadioRef = useRef(null);
     const scrollPaneRef = useRef(null);
 
-    const [msgTheme, setMsgTheme] = useState("clientMsg")
 
     // Query Firebase DB and render recieved messages
     useEffect(() => {
@@ -32,18 +35,29 @@ function ChatPane({chatroomId, exitRoom}) {
         const unsubscribe = onSnapshot(q, (QuerySnapshot) => {
           const fetchedMessages = [];
 
+          let idx = 0;
+          let clientSeen = true
+
           QuerySnapshot.forEach((doc) => {
+            if(doc.data().type === "serverMsg" && clientSeen) {
+                idx += 1;
+            } else {
+                clientSeen = false;
+                setDeliveredIdx(idx)
+            }
+
             fetchedMessages.push({ ...doc.data(), id: doc.id });
           });
 
+
             setMessages(fetchedMessages.reverse());
-            scrollPaneRef.current.scrollTop = scrollPaneRef.current.scrollHeight;
 
         });
         return () => unsubscribe;
       }, []);
 
 
+    //   Set chatroom theme on initial entry
     useEffect(() => {
         if(chatroomId !== null) {
             const q = query(doc(db, "Chatrooms", chatroomId))
@@ -51,18 +65,18 @@ function ChatPane({chatroomId, exitRoom}) {
                 setMsgTheme(snapshot.data().style);
             })
         }
+    },[chatroomId]);
 
 
-    },[chatroomId])
+    // Scroll to the most recent message when a new message is added / chatroom is entered
+    useEffect(() => {
+        scrollPaneRef.current.scrollTop = scrollPaneRef.current.scrollHeight;
+
+    },[messages]);
 
 
 
-
-    function sendDebugMessage(event, newMsg, msgType) {
-        event.preventDefault();
-        sendMessage(chatroomId, newMsg, msgType)
-    }
-
+   
 
     function enterDebug() {
         if (debugMode) {
@@ -106,9 +120,9 @@ function ChatPane({chatroomId, exitRoom}) {
                                 chatroomId = {chatroomId}
                                 />
 
-            case "date":
-                return <DateHeader  date = {item.text}
-                                    time = {item.text}
+            case "timestamp":
+                return <DateHeader  date = {item.date}
+                                    time = {item.time}
                                     id = {item.id}
                                     key = {item.id} 
 
@@ -121,7 +135,7 @@ function ChatPane({chatroomId, exitRoom}) {
 
 
     // console.log(renderedMessages)
-    renderedMessages.splice(messages.length, 0, <p  className='chatMsg'  style ={{marginLeft:"auto", padding:"0px",marginTop:"0px",fontSize:"0.6em", color:"#777777", fontWeight:"bold"}}>Delivered</p>)
+    renderedMessages.splice(messages.length - deliveredIdx, 0, <p  className='chatMsg'  style ={{marginLeft:"auto", padding:"0px",marginTop:"0px",fontSize:"0.6em", color:"#777777", fontWeight:"bold"}}>Delivered</p>)
 
     return (
         <div style = {{height:"100%", width: "100%", position:"relative"}}>
@@ -136,26 +150,30 @@ function ChatPane({chatroomId, exitRoom}) {
                 {/* These were two entries for the readFlare */}
                 {/* <p  className='chatMsg'  style ={{marginLeft:"auto", padding:"0px",marginTop:"0px",fontSize:"0.6em", color:"#777777", fontWeight:"bold"}}>Delivered</p> */}
                 {/* <div className='chatMsg'  style ={{marginLeft:"auto", padding:"0px",marginTop:"0px",fontSize:"0.6em", color:"#777777"}}><span style={{ fontWeight:"bold"}}>Read</span> 3:06 PM</div> */}
-                <img src = {typing} alt = "typing_gif" style = {{position:"absolute", bottom:"45px", left:"15px"}}></img>
+
+                {/* Typing icon */}
+                {/* <img src = {typing} alt = "typing_gif" style = {{position:"absolute", bottom:"45px", left:"15px"}}></img> */}
             </div>
 
             {debugMode ? 
             
-            <div style = {{position:"sticky", bottom:"0px", padding:"10px", backgroundColor:"#ECECEC"}}>
-                <form ref = {inputRadioRef} >
-                    <input type="radio" id = "addType0" name="addType" value = "clientMsg" defaultChecked/>
-                    <label >Blue Msg</label>
+            // <div style = {{position:"sticky", bottom:"0px", padding:"10px", backgroundColor:"#ECECEC"}}>
+            //     <form ref = {inputRadioRef} >
+            //         <input type="radio" id = "addType0" name="addType" value = "clientMsg" defaultChecked/>
+            //         <label >Blue Msg</label>
 
-                    <input type="radio" id = "addType1" name="addType" value = "serverMsg"/>
-                    <label >Gray Msg</label>
+            //         <input type="radio" id = "addType1" name="addType" value = "serverMsg"/>
+            //         <label >Gray Msg</label>
 
-                    <input type="radio" id = "addType2" name="addType" value = "header"/>
-                    <label >Timestamp</label>
-                </form>
+            //         <input type="radio" id = "addType2" name="addType" value = "header"/>
+            //         <label >Timestamp</label>
+            //     </form>
 
-                <input id ="chat_adder" ref = {inputTextRef}></input>
-                <button onClick={(event) => (sendDebugMessage(event, inputTextRef.current.value, inputRadioRef.current.elements["addType"].value))}>Add message</button>
-            </div>
+            //     <input id ="chat_adder" ref = {inputTextRef}></input>
+            //     <button onClick={(event) => (sendDebugMessage(event, inputTextRef.current.value, inputRadioRef.current.elements["addType"].value))}>Add message</button>
+            // </div>
+
+            <DebugMenu chatroomId = {chatroomId} ></DebugMenu>
 
             :
 

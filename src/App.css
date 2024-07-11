@@ -121,6 +121,18 @@ button:hover{
   }
 
 
+  .debugItem {
+    padding: 10px;
+    border:#777777 solid 2px;
+    border-radius: 15px;
+    width:60%;
+    margin:5px;
+    background-color: #ffffff;
+  }
+
+  .debugItem > h3{
+    text-decoration: underline;
+  }
 
   .centered{
     display: block;

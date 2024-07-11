@@ -3,7 +3,7 @@ import './App.css';
 
 
 
-function DateHeader({date, time}) {
+function DateHeader({date, time, btnStyle}) {
     const bodyRef = useRef(null)
 
     function showBody() {
@@ -19,7 +19,7 @@ function DateHeader({date, time}) {
 
 
         <div className='date' ref = {bodyRef} ><span style={{ fontWeight:"bold"}}>{date},</span> {time} 
-            <button className = "HideButton" onClick = {() => (showBody())}>X</button>
+            <button className = "HideButton" style = {{display:`${btnStyle}`}} onClick = {() => (showBody())}>X</button>
         
         </div>
 
