@@ -6,6 +6,7 @@ import Header from './Header';
 import DateHeader from './DateHeader';
 import Keyboard from './Keyboard';
 import DebugMenu from './DebugMenu.js';
+import Image from './Image.js'
 
 import typing from './images/typing.gif'
 import {query, orderBy, onSnapshot, limit, doc,  collection} from "firebase/firestore";
@@ -16,12 +17,14 @@ function ChatPane({chatroomId, exitRoom}) {
     const [messages, setMessages] = useState([]);
     const [isHidden, setIsHidden] = useState("none");
     const [debugMode, setDebugMode] = useState(false);
+
+
     const [deliveredIdx, setDeliveredIdx] = useState(0);
+    const [deliveredMsg, setDeliveredMsg] = useState("");
+
     const [msgTheme, setMsgTheme] = useState("clientMsg");
 
 
-    const inputTextRef = useRef(null);
-    const inputRadioRef = useRef(null);
     const scrollPaneRef = useRef(null);
 
 
@@ -63,7 +66,11 @@ function ChatPane({chatroomId, exitRoom}) {
             const q = query(doc(db, "Chatrooms", chatroomId))
             onSnapshot(q, (snapshot) => {
                 setMsgTheme(snapshot.data().style);
+                setDeliveredMsg(snapshot.data().messageflair);
             })
+
+
+
         }
     },[chatroomId]);
 
@@ -95,7 +102,7 @@ function ChatPane({chatroomId, exitRoom}) {
     }
 
 
-    const renderedMessages = messages.map((item, idx) => {
+    const renderedMessages = messages.map((item) => {
         switch(item.type) {
             default: return null;
 
@@ -130,58 +137,43 @@ function ChatPane({chatroomId, exitRoom}) {
 
             case "readFlair":
                 return <div key = "readFlair" className='chatMsg'  style ={{marginLeft:"auto", padding:"0px",marginTop:"0px",fontSize:"0.6em", color:"#777777"}}><span style={{ fontWeight:"bold"}}>{item["content"][0]}</span> {item["content"][1]}</div>
+
+            case "sentImage":
+
+                return <Image imageType = {"sentImg"} id = {item.id} key = {item.id} url = {item.url} chatroomId={chatroomId} btnStyle={isHidden} removeFunc = {deleteMessage}/>
+
+            case "recievedImage":
+
+                return <Image imageType = {"recievedImg"} id = {item.id} key = {item.id} url = {item.url} chatroomId={chatroomId} btnStyle={isHidden} removeFunc = {deleteMessage}/>
+                
+
+
         }
     })
 
 
-    // console.log(renderedMessages)
-    renderedMessages.splice(messages.length - deliveredIdx, 0, <p  className='chatMsg'  style ={{marginLeft:"auto", padding:"0px",marginTop:"0px",fontSize:"0.6em", color:"#777777", fontWeight:"bold"}}>Delivered</p>)
+    renderedMessages.splice(messages.length - deliveredIdx, 0, <p  className='chatMsg'  style ={{marginLeft:"auto", padding:"0px",marginTop:"0px",fontSize:"0.6em", color:"#777777", fontWeight:"bold"}}>{deliveredMsg}</p>)
 
     return (
-        <div style = {{height:"100%", width: "100%", position:"relative"}}>
-            <div ref = {scrollPaneRef} className= "disable-scrollbars" style={{width:"100%", height:"calc(100% - 40px)", overflowY:"scroll", overscrollBehaviorY:"none"}}>
-                <Header chatroomId = {chatroomId} hideFunc = {enterDebug} exitRoom = {exitRoom} />
-            
-                    {/* Header for Messages text */}
-                    <div className='date'><span style={{fontWeight:"bold"}}>Text Message</span></div>
+        <div className='flexRow'>
 
-                    {renderedMessages}
+            <div style = {{width:"min(100vw, 100vmin)", height:"100vh",  marginLeft:"auto", marginRight:"auto", backgroundColor:"white", position:"relative"}}>
+                <div ref = {scrollPaneRef} className= "disable-scrollbars" style={{width:"100%", height:"calc(100% - 40px)", overflowY:"scroll", overscrollBehaviorY:"none"}}>
+                    <Header chatroomId = {chatroomId} hideFunc = {enterDebug} exitRoom = {exitRoom} />
+                
+                        {/* Header for Messages text */}
+                        <div className='date'><span style={{fontWeight:"bold"}}>Text Message</span></div>
 
-                {/* These were two entries for the readFlare */}
-                {/* <p  className='chatMsg'  style ={{marginLeft:"auto", padding:"0px",marginTop:"0px",fontSize:"0.6em", color:"#777777", fontWeight:"bold"}}>Delivered</p> */}
-                {/* <div className='chatMsg'  style ={{marginLeft:"auto", padding:"0px",marginTop:"0px",fontSize:"0.6em", color:"#777777"}}><span style={{ fontWeight:"bold"}}>Read</span> 3:06 PM</div> */}
+                        {renderedMessages}
+                </div>
 
-                {/* Typing icon */}
-                {/* <img src = {typing} alt = "typing_gif" style = {{position:"absolute", bottom:"45px", left:"15px"}}></img> */}
+                <Keyboard createMessage = {sendMessage} chatroomId = {chatroomId}  />
             </div>
 
-            {debugMode ? 
-            
-            // <div style = {{position:"sticky", bottom:"0px", padding:"10px", backgroundColor:"#ECECEC"}}>
-            //     <form ref = {inputRadioRef} >
-            //         <input type="radio" id = "addType0" name="addType" value = "clientMsg" defaultChecked/>
-            //         <label >Blue Msg</label>
-
-            //         <input type="radio" id = "addType1" name="addType" value = "serverMsg"/>
-            //         <label >Gray Msg</label>
-
-            //         <input type="radio" id = "addType2" name="addType" value = "header"/>
-            //         <label >Timestamp</label>
-            //     </form>
-
-            //     <input id ="chat_adder" ref = {inputTextRef}></input>
-            //     <button onClick={(event) => (sendDebugMessage(event, inputTextRef.current.value, inputRadioRef.current.elements["addType"].value))}>Add message</button>
-            // </div>
-
-            <DebugMenu chatroomId = {chatroomId} ></DebugMenu>
-
-            :
-
-            <Keyboard createMessage = {sendMessage} chatroomId = {chatroomId}  />}
+            {debugMode && <DebugMenu chatroomId = {chatroomId} setDeliveredMsg = {setDeliveredMsg} />}
 
         </div>
-
     )
 }
 
-export default ChatPane
+export default ChatPane;

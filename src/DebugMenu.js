@@ -1,12 +1,12 @@
-import React from 'react'
+import React, {useRef} from 'react'
 
-import {db, deleteMessage, sendMessage, sendTimestamp} from './firebase.js';
-
-
-function DebugMenu({chatroomId}) {
+import {db, deleteMessage, sendMessage, sendTimestamp, setMessageFlair, sendImage} from './firebase.js';
 
 
+function DebugMenu({chatroomId, setDeliveredMsg}) {
 
+
+    const imageSubmit = useRef(null);
 
     function addMessage(event) {
         event.preventDefault();
@@ -28,6 +28,23 @@ function DebugMenu({chatroomId}) {
         const time = document.getElementById('timestampForm').elements['formTime'].value;
 
         sendTimestamp(chatroomId, date, time)
+    }
+
+
+    function sendImageToServer(event) {
+        event.preventDefault();
+
+
+        const imageLink = URL.createObjectURL(document.getElementById('imageForm').elements['imageUpload'].files[0]);
+        const imageType = document.getElementById('imageForm').elements['addImg'].value;
+
+        
+        // URL.createObjectURL(imageSubmit.current.files[0]);
+
+        console.log(imageType + " " + imageLink);
+
+        sendImage(chatroomId, imageLink, imageType)
+
     }
 
     return (
@@ -58,8 +75,8 @@ function DebugMenu({chatroomId}) {
                 <h3 style={{margin:"5px"}}>Timestamp</h3>
 
                 <form id = "timestampForm">
-                    <input id = "formDate" placeholder="Date" />
-                    <input id = "formTime" placeholder="Time" />
+                    <input id = "formDate" placeholder="Date" style = {{ width:"8em"}} />
+                    <input id = "formTime" placeholder="Time" style = {{ width:"8em"}} />
                     <button onClick={(e) => (addDate(e))}>Add Date</button>
                 </form>
             </div>
@@ -70,13 +87,17 @@ function DebugMenu({chatroomId}) {
                 <h3 style={{margin:"5px"}}>Recipt</h3>
 
                 <form id = "reciptForm" >
-                    <input type="radio" id = "reciptType0" name="reciptType" value = "delivered" />
-                    <label >Delivered</label>
-
-                    <input type="radio" id = "reciptType1" name="reciptType" value = "seen"/>
+                    <input type="radio" id = "reciptType1" name="reciptType" value = "seen" onClick={() => {setDeliveredMsg("Seen"); setMessageFlair(chatroomId, "Seen")}} />
                     <label >Seen</label>
 
-                    <input type="radio" id = "reciptType2" name="reciptType" value = "none" defaultChecked />
+                    <br/>
+
+                    <input type="radio" id = "reciptType0" name="reciptType" value = "delivered" onClick={() => {setDeliveredMsg("Delivered"); setMessageFlair(chatroomId, "Delivered")}}/>
+                    <label >Delivered</label>
+
+                    <br/>
+
+                    <input type="radio" id = "reciptType2" name="reciptType" value = "none" defaultChecked onClick={() => {setDeliveredMsg("Seen"); setMessageFlair(chatroomId, "")}} />
                     <label >None</label>
                 </form>
 
@@ -89,6 +110,32 @@ function DebugMenu({chatroomId}) {
                 <label >Show Typing Icon</label>
             </div>
                 
+
+            <div className="debugItem">
+                <h3 style={{margin:"5px"}}>Add Image</h3>
+
+
+                <form id = "imageForm"> 
+
+                    <input id = "imageUpload" ref = {imageSubmit} type='file' accept = "image/*" />
+
+
+                    <br/>
+
+                    <input type="radio" id = "addImg0" name="addImg" value = "sentImage" defaultChecked/>
+                    <label >Sent Image</label>
+
+                    <input type="radio" id = "addImg1" name="addImg" value = "recievedImage"/>
+                    <label >Received Image</label>
+
+                    <br/>
+
+                    <button onClick={(e) => (sendImageToServer(e))}>Submit</button>
+                </form>
+
+
+            </div>
+
         </div>
     )
 }

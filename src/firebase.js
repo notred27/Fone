@@ -56,6 +56,16 @@ export const sendTimestamp = async (chatroomId, date, time) => {
       });
 }
 
+export const sendImage = async (chatroomId, imageURL, imageType) => {
+  const { uid } = auth.currentUser;
+  await addDoc(collection(db, "Chatrooms", chatroomId, "messages"), {
+      url: imageURL,
+      type: imageType,
+      createdAt: serverTimestamp(),
+      uid,
+      });
+}
+
 
 export const createConversation = async (roomName, userName, theme) => {
   const { uid, displayName, photoURL } = auth.currentUser;
@@ -103,3 +113,12 @@ export const setDisplayName = async (chatroomId, name) => {
       // uid
     }, {merge:true})
 }
+
+export const setMessageFlair = async (chatroomId, flair) => {
+  // Set chatroom flair style
+  await setDoc(doc(db, "Chatrooms", chatroomId), {
+    messageflair: flair
+    // uid
+  }, {merge:true})
+}
+

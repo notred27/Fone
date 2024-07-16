@@ -96,9 +96,9 @@ const App = () => {
 
                     :
                     
-                    <div style={{width:"min(100vw, 100vmin)", height:"100vh",  marginLeft:"auto", marginRight:"auto", backgroundColor:"white"}}>
+                    // <div style={{width:"min(100vw, 100vmin)", height:"100vh",  marginLeft:"auto", marginRight:"auto", backgroundColor:"white"}}>
                         <ChatPane chatroomId = {selectedRoom} exitRoom = {setSelectedRoom} />
-                    </div>
+                    // </div>
                 }
 
                 
