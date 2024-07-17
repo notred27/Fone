@@ -9,8 +9,10 @@ function Image({id, url, imageType, btnStyle, removeFunc, chatroomId}) {
     return (
         <div style = {{position:"relative", width:"100%"}}>
             {/* <div className={`${imageType}`} style = {{marginRight:"10px"}} > */}
+               
+                <img className={`${imageType}`} src = {url} alt = "msg_pic"></img>
+
                 
-                <img  src = {url} style={{maxWidth:"90%", maxHeight:"40vh", paddingLeft:"10px", paddingLeft:"auto"}}></img>
 
                 <div className='flexRow'>
                     <button className = "HideButton" onClick = {() => (showBody())} style = {{display:`${btnStyle}`, position:"relative"}}>Remove</button>

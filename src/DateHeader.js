@@ -3,14 +3,11 @@ import './App.css';
 
 
 
-function DateHeader({date, time, btnStyle}) {
+function DateHeader({date, time, btnStyle, removeFunc, chatroomId, id}) {
     const bodyRef = useRef(null)
 
     function showBody() {
-    console.log(bodyRef.current.style.display)
-    bodyRef.current.style.display = "none"
-
-    //Fix this to somehow remove the objects from the actual html
+        removeFunc(chatroomId, id);
     }
     
 

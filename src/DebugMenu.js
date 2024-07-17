@@ -1,6 +1,6 @@
 import React, {useRef} from 'react'
 
-import {db, deleteMessage, sendMessage, sendTimestamp, setMessageFlair, sendImage} from './firebase.js';
+import {sendMessage, sendTimestamp, setMessageFlair, fileUpload} from './firebase.js';
 
 
 function DebugMenu({chatroomId, setDeliveredMsg}) {
@@ -34,16 +34,11 @@ function DebugMenu({chatroomId, setDeliveredMsg}) {
     function sendImageToServer(event) {
         event.preventDefault();
 
-
-        const imageLink = URL.createObjectURL(document.getElementById('imageForm').elements['imageUpload'].files[0]);
         const imageType = document.getElementById('imageForm').elements['addImg'].value;
+        const file = document.getElementById('imageForm').elements['imageUpload'].files[0];
 
-        
-        // URL.createObjectURL(imageSubmit.current.files[0]);
-
-        console.log(imageType + " " + imageLink);
-
-        sendImage(chatroomId, imageLink, imageType)
+        // Upload the file to a storage server, and upload a pointer to firestore
+        fileUpload(chatroomId, imageType, file)
 
     }
 

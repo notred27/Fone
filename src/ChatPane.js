@@ -28,6 +28,7 @@ function ChatPane({chatroomId, exitRoom}) {
     const scrollPaneRef = useRef(null);
 
 
+
     // Query Firebase DB and render recieved messages
     useEffect(() => {
         const q = query(
@@ -132,6 +133,9 @@ function ChatPane({chatroomId, exitRoom}) {
                                     time = {item.time}
                                     id = {item.id}
                                     key = {item.id} 
+                                    removeFunc = {deleteMessage} 
+
+                                    chatroomId = {chatroomId}
 
                                     btnStyle = {isHidden} />
 

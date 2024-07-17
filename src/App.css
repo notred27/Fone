@@ -57,9 +57,9 @@ button:hover{
 }
 
 .imessageClient {
-    background-color:rgb(17, 136, 255);
-    color:white;
-    margin-left:auto;
+  background-color:rgb(17, 136, 255);
+  color:white;
+  margin-left:auto;
 }
 
 .smsClient {
@@ -88,13 +88,16 @@ button:hover{
 
 .sentImg {
   margin-right: 10px;
+  max-width:90%;
+  max-height:40vh;
   margin-left: auto;
+
 }
 
 .recievedImg {
   margin-left: 10px;
-  margin-right: auto;
-
+  max-width:90%;
+  max-height:40vh;
 }
 
 

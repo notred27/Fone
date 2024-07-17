@@ -4,6 +4,8 @@ import { getAuth } from "firebase/auth";
 import { getCountFromServer, getFirestore, query} from "firebase/firestore";
 import {setDoc, addDoc, deleteDoc, doc,  collection, serverTimestamp} from "firebase/firestore";
 
+import { getStorage, ref, uploadBytes, getDownloadURL  } from "firebase/storage";
+
 
 const FIREBASE_API_CONFIG = {
 
@@ -24,10 +26,14 @@ const FIREBASE_API_CONFIG = {
   };
   
 
+
 const app = initializeApp(FIREBASE_API_CONFIG);
+
+
 
 export const auth = getAuth(app)
 export const db = getFirestore(app)
+
 
 export const deleteMessage = async (chatroomId, messageDocId) => {
 
@@ -51,16 +57,6 @@ export const sendTimestamp = async (chatroomId, date, time) => {
       date: date,
       time: time,
       type: "timestamp",
-      createdAt: serverTimestamp(),
-      uid,
-      });
-}
-
-export const sendImage = async (chatroomId, imageURL, imageType) => {
-  const { uid } = auth.currentUser;
-  await addDoc(collection(db, "Chatrooms", chatroomId, "messages"), {
-      url: imageURL,
-      type: imageType,
       createdAt: serverTimestamp(),
       uid,
       });
@@ -92,7 +88,7 @@ export const createConversation = async (roomName, userName, theme) => {
 }
 
 export const deleteConversation = async (chatroomId) => {
-  // FIXME: Come up with a solution to delete the messages subcollections 
+  // FIXME: Come up with a solution to delete messages subcollections 
   await deleteDoc(doc(db, "Chatrooms", chatroomId))
 }
 
@@ -103,6 +99,7 @@ export const getNumConversations = async () => {
 
   return length.data().count;
   // console.log(length.data().count)
+
 }
 
 export const setDisplayName = async (chatroomId, name) => {
@@ -122,3 +119,31 @@ export const setMessageFlair = async (chatroomId, flair) => {
   }, {merge:true})
 }
 
+export const fileUpload = async (chatroomId, imageType, file) => {
+  const storage = getStorage()
+
+  // Path is roomId/userId_timestamp
+  const { uid } = auth.currentUser;
+  const storageRef = ref(storage, `${chatroomId}/${uid}_${Date.now()}`);
+
+  // const metadata = {
+  //   caption: file.name
+  // }
+
+  // Upload image t Firebase Storage
+  uploadBytes(storageRef, file).then((snapshot) => {
+ 
+    // Get token and access URL
+    getDownloadURL(storageRef).then((url) => 
+      
+      // Upload filepath to firebase so it can be accessed by the app
+      addDoc(collection(db, "Chatrooms", chatroomId, "messages"), {
+        url: url,
+        type: imageType,
+        createdAt: serverTimestamp(),
+        uid,
+        })
+    )
+  });
+
+}
