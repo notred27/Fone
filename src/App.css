@@ -87,11 +87,10 @@ button:hover{
 }
 
 .sentImg {
-  margin-right: 10px;
   max-width:90%;
   max-height:40vh;
-  margin-left: auto;
-
+  float:right;
+  margin: 10px;
 }
 
 .recievedImg {
