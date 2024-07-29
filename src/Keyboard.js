@@ -20,7 +20,7 @@ function Keyboard({createMessage, chatroomId}) {
         }
     }
 
-    // CHanges the microphone icon to the upload icon when text is present in the input bar
+    // Changes the microphone icon to the upload icon when text is present in the input bar
     function changeSendIcon(msg) {
         if(msg === "" && sendImg === uploadImg){
             setSendImg(micImg);
@@ -31,7 +31,7 @@ function Keyboard({createMessage, chatroomId}) {
 
     return (
         <div className='keyboard' style = {{position:"relative", bottom:"0px", backgroundColor:"white"}}>
-            <form style ={{display:"flex", flexDirection:"row", justifyContent:"center"}} >
+            <form style ={{display:"flex", flexDirection:"row", justifyContent:"center"}} onSubmit={(e) => {e.preventDefault(); sendMessage(e)}}>
                 
                 <button style={{border:"0px", borderRadius:"40%", color:"#888888", paddingLeft:"6px", paddingRight:"6px", marginRight:"6px",marginLeft:"0px", fontWeight:"bold"}}>+</button>
                 
