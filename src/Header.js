@@ -57,7 +57,7 @@ function Header({chatroomId, hideFunc, exitRoom}) {
 
             {isHidden ? 
             <figure style = {{placeSelf:"center", margin:"5px", marginTop:"10px"}}>
-                <img src = {userImg} alt = "user" style={{width:"30px", borderRadius:"20px"}} />
+                <img src = {userImg} alt = "user" style={{width:"30px", height:"30px", borderRadius:"20px"}} />
                 <figcaption className='title' style={{textAlign:"center"}}>{name}</figcaption>
             </figure>
 
