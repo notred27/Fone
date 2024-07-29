@@ -21,11 +21,28 @@ img.convoCard {
 
 
 
+
 .convoCard:hover{
   filter: brightness(90%);
   -webkit-filter: brightness(90%);
 }
 
+.kebab-btn{
+  width:30px;
+  padding:0px;
+  position:absolute;
+  bottom:0;
+  right:0;
+  border:none;
+  background-color:rgba(0,0,0,0);
+  border-radius: 50px;
+  transition: 0.1s linear;
+}
+
+
+.kebab-btn:hover{
+  background-color: rgba(5, 155, 255, 0.4);
+}
 
 button:hover{
   filter: brightness(90%);
@@ -47,8 +64,8 @@ button:hover{
     padding:5px;
     padding-left: 10px;
     padding-right: 10px;
-    max-width:200px;
-    margin-top:8px;
+    max-width:70%;
+    margin-top:2px;
     margin-left:10px;
     margin-right:10px;
     

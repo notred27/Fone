@@ -41,7 +41,8 @@ function ChatPane({chatroomId, exitRoom}) {
 
           let idx = 0;
           let clientSeen = true
-
+          let swap = null   //true means last message was a server message
+          
           QuerySnapshot.forEach((doc) => {
             if(doc.data().type === "serverMsg" && clientSeen) {
                 idx += 1;
@@ -50,7 +51,26 @@ function ChatPane({chatroomId, exitRoom}) {
                 setDeliveredIdx(idx)
             }
 
-            fetchedMessages.push({ ...doc.data(), id: doc.id });
+            if(!(doc.data().type === "serverMsg" || doc.data().type === "clientMsg")){
+                swap = null;
+            }
+
+            if(swap == null && (doc.data().type === "serverMsg" || doc.data().type === "clientMsg")) {
+                fetchedMessages.push({ ...doc.data(), id: doc.id, tail: true });
+                swap = doc.data().type !== "serverMsg"
+            }
+
+            // If the next message does not match the type of the last message, make this new message have
+            else if((doc.data().type === "serverMsg" && swap) || (doc.data().type === "clientMsg" && !swap)) {
+                swap = !swap;
+                fetchedMessages.push({ ...doc.data(), id: doc.id, tail: true });
+
+            } else {
+                fetchedMessages.push({ ...doc.data(), id: doc.id, tail: false });
+
+            }
+
+         
           });
 
 
@@ -115,7 +135,9 @@ function ChatPane({chatroomId, exitRoom}) {
                                 msgStyle = {msgTheme + "Client"} 
                                 btnStyle = {isHidden}
                                 removeFunc = {deleteMessage}
-                                chatroomId = {chatroomId} />
+                                chatroomId = {chatroomId}
+                                tailShown = {item.tail}
+                                 />
 
             case "serverMsg":
                 return <Message msg = {item.text}
@@ -126,6 +148,7 @@ function ChatPane({chatroomId, exitRoom}) {
                                 btnStyle = {isHidden}
                                 removeFunc = {deleteMessage} 
                                 chatroomId = {chatroomId}
+                                tailShown = {item.tail}
                                 />
 
             case "timestamp":

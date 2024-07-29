@@ -3,9 +3,8 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getCountFromServer, getFirestore, query} from "firebase/firestore";
 import {setDoc, addDoc, deleteDoc, doc,  collection, serverTimestamp} from "firebase/firestore";
-
+import { getFunctions, httpsCallable } from "firebase/functions";
 import { getStorage, ref, uploadBytes, getDownloadURL  } from "firebase/storage";
-
 
 const FIREBASE_API_CONFIG = {
 
@@ -87,8 +86,30 @@ export const createConversation = async (roomName, userName, theme) => {
   // return chatId.id;
 }
 
+/**
+ * From Firebase 
+ * Call the 'recursiveDelete' callable function with a path to initiate
+ * a server-side delete.
+ */
+// function deleteAtPath(path) {
+//   const functions = getFunctions(app)
+//   var deleteFn = functions.httpsCallable('recursiveDelete');
+//   deleteFn({ path: path })
+//       .then(function(result) {
+//           console.log('Delete success: ' + JSON.stringify(result));
+//       })
+//       .catch(function(err) {
+//           console.log('Delete failed, see console,');
+//           console.warn(err);
+//       });
+// }
+
+
+
 export const deleteConversation = async (chatroomId) => {
   // FIXME: Come up with a solution to delete messages subcollections 
+
+  // deleteAtPath(`Chatrooms/${chatroomId}/messages` )
   await deleteDoc(doc(db, "Chatrooms", chatroomId))
 }
 
@@ -119,6 +140,34 @@ export const setMessageFlair = async (chatroomId, flair) => {
   }, {merge:true})
 }
 
+
+export const profilePicUpload = async (chatroomId, file) => {
+  const storage = getStorage()
+
+  // Path is roomId/userId_timestamp
+  const { uid } = auth.currentUser;
+  const storageRef = ref(storage, `${chatroomId}/profile_picture`);
+
+  // const metadata = {
+  //   caption: file.name
+  // }
+
+  // Upload image to Firebase Storage
+  uploadBytes(storageRef, file).then((snapshot) => {
+ 
+    // Get token and access URL
+    getDownloadURL(storageRef).then((url) => 
+
+      // Upload filepath to firebase so it can be accessed by the app
+      setDoc(doc(db, "Chatrooms", chatroomId), {
+        profile_picture: url
+      }, {merge:true})
+    )
+  });
+}
+
+
+
 export const fileUpload = async (chatroomId, imageType, file) => {
   const storage = getStorage()
 
@@ -130,11 +179,12 @@ export const fileUpload = async (chatroomId, imageType, file) => {
   //   caption: file.name
   // }
 
-  // Upload image t Firebase Storage
+  // Upload image to Firebase Storage
   uploadBytes(storageRef, file).then((snapshot) => {
  
     // Get token and access URL
     getDownloadURL(storageRef).then((url) => 
+      
       
       // Upload filepath to firebase so it can be accessed by the app
       addDoc(collection(db, "Chatrooms", chatroomId, "messages"), {

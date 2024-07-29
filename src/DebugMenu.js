@@ -48,7 +48,7 @@ function DebugMenu({chatroomId, setDeliveredMsg}) {
             <div className="debugItem">
                 <h3 style={{margin:"5px"}}>Message</h3>
 
-                <form id = "messageForm" >
+                <form id = "messageForm" autoComplete='off'>
                     <input type="radio" id = "addType0" name="addType" value = "clientMsg" defaultChecked/>
                     <label >Sent Msg</label>
 

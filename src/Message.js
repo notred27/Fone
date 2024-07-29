@@ -6,7 +6,7 @@ import smsTail from './images/smsTail.png'
 import msgTail2 from './images/serverTail.png'
 
 
-function Message({id, msg, btnStyle, msgStyle, removeFunc, chatroomId}) {
+function Message({id, msg, btnStyle, msgStyle, removeFunc, chatroomId, tailShown = false}) {
 
     function showBody() {
         removeFunc(chatroomId, id);
@@ -38,7 +38,7 @@ function Message({id, msg, btnStyle, msgStyle, removeFunc, chatroomId}) {
                                 
             </div>
 
-            {tail}
+            {tailShown && tail}
 
         </div>
     );

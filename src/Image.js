@@ -2,6 +2,8 @@ function Image({id, url, imageType, btnStyle, removeFunc, chatroomId}) {
 
     function showBody() {
         removeFunc(chatroomId, id);
+
+        // TODO: Also remove image from Storage DB
     }
     
     console.log(imageType)
