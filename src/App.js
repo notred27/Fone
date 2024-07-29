@@ -45,6 +45,7 @@ const App = () => {
     }
 
 
+    document.addEventListener('backbutton', function(e) {e.preventDefault();})
 
  
 
