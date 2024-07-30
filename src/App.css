@@ -18,12 +18,40 @@ button.convoCard {
 
 }
 
+.convoDropdown{
+  align-content: right;
+}
+
+.convoDropdown:hover .convoDropdownItems{
+  display: block;
+}
+
+.convoDropdownItems {
+    display: none;
+    position: absolute;
+    right: 0px;
+    box-shadow:-2px 2px 2px gray;
+
+}
+
+.convoDropdownItems div {
+  background-color: #ececec;
+  padding: 10px;
+}
+
+.convoDropdownItems div:hover {
+  background-color: #bdbdbd;
+}
+
 img.convoCard {
   margin:10px;
   margin-bottom: 0px;
 }
 
-
+.conversationCard:hover {
+  filter: brightness(90%);
+  -webkit-filter: brightness(90%);
+}
 
 
 .convoCard:hover{
@@ -35,8 +63,8 @@ img.convoCard {
   width:30px;
   padding:0px;
   position:absolute;
-  bottom:0;
-  right:0;
+  top:-10px;
+  right:-10px;
   border:none;
   background-color:rgba(0,0,0,0);
   border-radius: 50px;

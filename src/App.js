@@ -79,15 +79,23 @@ const App = () => {
                         </div>
                         
                         
-                        <h2>Conversations</h2>
+                        <h2 style={{marginLeft:"10px", textDecoration:"underline"}}>Conversations</h2>
 
                         <div id = "convo_card_container" style = {{display:"flex", flexDirection:"row", flexWrap:"wrap", textAlign:"center"}}>
-                            <div id = "add_new_conversation">
+                            {/* <div id = "add_new_conversation">
                                 <button className="convoCard" onClick = {() => (setChatroomPopupShowing(true))}> + </button>
                                 <h5 style = {{margin:"0px", padding:"0px"}}>New Conversation</h5>
+                            </div> */}
+
+                            <div className='conversationCard' style = {{display:"flex", justifyContent:"center", alignItems:"center", width:"250px", height:"215px", margin:"10px", backgroundColor:"white", borderRadius:"20px", boxShadow:"-2px 2px 2px gray"}} onClick = {() => (setChatroomPopupShowing(true))}>
+                                <h3>Create New<br/>Conversation!</h3>
                             </div>
 
                             {chatrooms.map((item, idx) => (<ConvoCard key = {idx} chatroomId={item.id} chatroomName={item.roomName} style = {item.style} enterChatroom={enterChatroom}/>))}
+
+
+                            
+
 
                         </div>
 
