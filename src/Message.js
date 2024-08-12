@@ -7,9 +7,9 @@ import smsTail from './images/smsTail.png'
 import msgTail2 from './images/serverTail.png'
 
 
-function Message({id, msg, btnStyle, msgStyle, removeFunc, chatroomId, tailShown = false}) {
+function Message({id, msg, btnStyle,  msgStyle, removeFunc, chatroomId, messageVisable, tailShown = false}) {
     const messageRef = useRef(null)
-    const [isShowing, setIsShowing] = useState(true)
+    const [isShowing, setIsShowing] = useState(messageVisable)
 
     function showBody() {
         removeFunc(chatroomId, id);
@@ -51,7 +51,7 @@ function Message({id, msg, btnStyle, msgStyle, removeFunc, chatroomId, tailShown
     
 
     return (
-        <div ref = {messageRef} style = {{position:"relative", width:"100%", marginBottom:`${tailShown ? "10px" : "0px"}`}}>
+        <div ref = {messageRef} style = {{position:"relative", width:"100%", marginBottom:`${tailShown ? "10px" : "0px"}`, opacity:`${isShowing ? "1" : "0.3"}`}}>
             <div className={`chatMsg ${msgStyle}`} >
                 {msg}
 

@@ -112,9 +112,9 @@ function ChatPane({chatroomId, exitRoom}) {
 
    
 
-    function enterDebug() {
+    function enterDebug(renderedMessages) {
 
-        // forEach()
+
 
         if (debugMode) {
             setIsHidden("none");
@@ -145,7 +145,9 @@ function ChatPane({chatroomId, exitRoom}) {
                                 btnStyle = {isHidden}
                                 removeFunc = {deleteMessage}
                                 chatroomId = {chatroomId}
+                                messageVisable = {item.isShowing}
                                 tailShown = {item.tail}
+
                                  />
 
             case "serverMsg":
@@ -157,7 +159,10 @@ function ChatPane({chatroomId, exitRoom}) {
                                 btnStyle = {isHidden}
                                 removeFunc = {deleteMessage} 
                                 chatroomId = {chatroomId}
+                                messageVisable = {item.isShowing}
                                 tailShown = {item.tail}
+
+
                                 />
 
             case "timestamp":
@@ -195,7 +200,7 @@ function ChatPane({chatroomId, exitRoom}) {
 
             <div style = {{width:"min(100vw, 100vmin)", height:"100vh",  marginLeft:"auto", marginRight:"auto", backgroundColor:"white", position:"relative"}}>
                 <div ref = {scrollPaneRef} className= "disable-scrollbars" style={{width:"100%", height:"calc(100% - 40px)", overflowY:"scroll", overscrollBehaviorY:"none"}}>
-                    <Header chatroomId = {chatroomId} hideFunc = {enterDebug} exitRoom = {exitRoom} />
+                    <Header chatroomId = {chatroomId} hideFunc = {() => enterDebug(renderedMessages)} exitRoom = {exitRoom} />
                 
                         {/* Header for Messages text */}
                         <div className='date'><span style={{fontWeight:"bold"}}>Text Message</span></div>
