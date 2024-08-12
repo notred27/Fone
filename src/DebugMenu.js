@@ -1,6 +1,6 @@
 import React, {useRef} from 'react'
 
-import {sendMessage, sendTimestamp, setMessageFlair, fileUpload} from './firebase.js';
+import {sendMessage, sendTimestamp, setMessageFlair, fileUpload, setTypingStatus} from './firebase.js';
 
 
 function DebugMenu({chatroomId, setDeliveredMsg}) {
@@ -30,6 +30,12 @@ function DebugMenu({chatroomId, setDeliveredMsg}) {
         sendTimestamp(chatroomId, date, time)
     }
 
+    function setTyping() {
+
+        const val = document.getElementById('typingCheckbox').checked;
+        console.log(val)
+        setTypingStatus(chatroomId, val)
+    }
 
     function sendImageToServer(event) {
         event.preventDefault();
@@ -101,8 +107,12 @@ function DebugMenu({chatroomId, setDeliveredMsg}) {
             <div className="debugItem">
                 <h3 style={{margin:"5px"}}>Is Typing?</h3>
 
-                <input type = "checkbox" />
+                <input type = "checkbox" id = "typingCheckbox"  onClick={setTyping}/>
                 <label >Show Typing Icon</label>
+
+                <br/>
+                <input type = "checkbox" />
+                <label >Auto-detect</label>
             </div>
                 
 

@@ -3,7 +3,7 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getCountFromServer, getFirestore, query} from "firebase/firestore";
 import {setDoc, addDoc, deleteDoc, doc,  collection, serverTimestamp} from "firebase/firestore";
-import { getFunctions, httpsCallable } from "firebase/functions";
+// import { getFunctions, httpsCallable } from "firebase/functions";
 import { getStorage, ref, uploadBytes, getDownloadURL  } from "firebase/storage";
 
 const FIREBASE_API_CONFIG = {
@@ -44,6 +44,7 @@ export const sendMessage = async (chatroomId, msg, msgType) => {
   const { uid } = auth.currentUser;
   await addDoc(collection(db, "Chatrooms", chatroomId, "messages"), {
       text: msg,
+      isShowing: true,
       type: msgType,
       createdAt: serverTimestamp(),
       uid,
@@ -132,6 +133,15 @@ export const setDisplayName = async (chatroomId, name) => {
     }, {merge:true})
 }
 
+export const setTypingStatus = async (chatroomId, isTyping) => {
+
+  // Set chatroom display name
+  await setDoc(doc(db, "Chatrooms", chatroomId), {
+      isTyping: isTyping
+      // uid
+    }, {merge:true})
+}
+
 export const setMessageFlair = async (chatroomId, flair) => {
   // Set chatroom flair style
   await setDoc(doc(db, "Chatrooms", chatroomId), {
@@ -140,6 +150,17 @@ export const setMessageFlair = async (chatroomId, flair) => {
   }, {merge:true})
 }
 
+export const hideMessage = async (chatroomId, messageId) => {
+  await setDoc(doc(db, "Chatrooms", chatroomId, "messages", messageId), {
+    isShowing: false
+  }, {merge:true})
+}
+
+export const showMessage = async (chatroomId, messageId) => {
+  await setDoc(doc(db, "Chatrooms", chatroomId, "messages", messageId), {
+    isShowing: true
+  }, {merge:true})
+}
 
 export const profilePicUpload = async (chatroomId, file) => {
   const storage = getStorage()

@@ -1,4 +1,5 @@
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
+import { showMessage, hideMessage } from './firebase';
 import './App.css';
 
 import imessageTail from './images/imessageTail.png'
@@ -8,22 +9,30 @@ import msgTail2 from './images/serverTail.png'
 
 function Message({id, msg, btnStyle, msgStyle, removeFunc, chatroomId, tailShown = false}) {
     const messageRef = useRef(null)
+    const [isShowing, setIsShowing] = useState(true)
 
     function showBody() {
         removeFunc(chatroomId, id);
     }
 
-    function hideMessage() {
-        if(messageRef.current.style.opacity == "" || messageRef.current.style.opacity == "1") {
+    function toggleMessageShow() {
+        if(isShowing) {
             messageRef.current.style.opacity = "0.3"
             // messageRef.current.className = "HideButton"
+            hideMessage(chatroomId, id)
 
         } else {
             messageRef.current.style.opacity = "1"
             // messageRef.current.className = ""
-
+            showMessage(chatroomId, id)
 
         }
+    }
+
+    function toggleDebug() {
+       
+        btnStyle = "block";
+       
     }
 
 
@@ -48,7 +57,12 @@ function Message({id, msg, btnStyle, msgStyle, removeFunc, chatroomId, tailShown
 
                 <div className='flexRow'>
                     <button className = "HideButton" onClick = {() => (showBody())} style = {{display:`${btnStyle}`, position:"relative"}}>Remove</button>
-                    <button className = "HideButton" onClick = {hideMessage} style = {{display:`${btnStyle}`, position:"relative"}}>Hide</button>
+                    
+                    { isShowing ? 
+                        <button className = "HideButton" onClick = {() => {toggleMessageShow(); setIsShowing(false)}} style = {{display:`${btnStyle}`, position:"relative"}}>Hide</button>
+                        :
+                        <button className = "HideButton" onClick = {() => {toggleMessageShow(); setIsShowing(true)}} style = {{display:`${btnStyle}`, position:"relative"}}>Show</button>
+                    }
                 </div>
                                 
             </div>

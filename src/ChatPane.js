@@ -27,6 +27,12 @@ function ChatPane({chatroomId, exitRoom}) {
 
     const scrollPaneRef = useRef(null);
 
+    // useEffect(() => {
+    //     const q = query(
+    //         doc(db, "Chatrooms", chatroomId));
+
+    //         console.log(q)
+    // }, [])
 
 
     // Query Firebase DB and render recieved messages
@@ -107,6 +113,9 @@ function ChatPane({chatroomId, exitRoom}) {
    
 
     function enterDebug() {
+
+        // forEach()
+
         if (debugMode) {
             setIsHidden("none");
         } else {
