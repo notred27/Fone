@@ -145,7 +145,6 @@ function ChatPane({chatroomId, exitRoom}) {
                                 btnStyle = {isHidden}
                                 removeFunc = {deleteMessage}
                                 chatroomId = {chatroomId}
-                                messageVisable = {item.isShowing}
                                 tailShown = {item.tail}
 
                                  />
@@ -159,7 +158,6 @@ function ChatPane({chatroomId, exitRoom}) {
                                 btnStyle = {isHidden}
                                 removeFunc = {deleteMessage} 
                                 chatroomId = {chatroomId}
-                                messageVisable = {item.isShowing}
                                 tailShown = {item.tail}
 
 

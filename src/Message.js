@@ -1,15 +1,26 @@
-import React, {useRef, useState} from 'react';
+import React, {useRef, useState, useEffect} from 'react';
 import { showMessage, hideMessage } from './firebase';
 import './App.css';
 
 import imessageTail from './images/imessageTail.png'
 import smsTail from './images/smsTail.png'
 import msgTail2 from './images/serverTail.png'
+import {query, onSnapshot, doc} from "firebase/firestore";
+import {db} from "./firebase.js"
 
-
-function Message({id, msg, btnStyle,  msgStyle, removeFunc, chatroomId, messageVisable, tailShown = false}) {
+function Message({id, msg, btnStyle,  msgStyle, removeFunc, chatroomId, tailShown = false}) {
     const messageRef = useRef(null)
-    const [isShowing, setIsShowing] = useState(messageVisable)
+    const [isShowing, setIsShowing] = useState(false)
+
+
+    useEffect(() => {
+        if(chatroomId !== null) {
+            const q = query(doc(db, "Chatrooms", chatroomId, "messages", id))
+            onSnapshot(q, (snapshot) => {
+                setIsShowing(snapshot.data().isShowing);
+            })
+        }
+    },[]);
 
     function showBody() {
         removeFunc(chatroomId, id);
@@ -51,7 +62,7 @@ function Message({id, msg, btnStyle,  msgStyle, removeFunc, chatroomId, messageV
     
 
     return (
-        <div ref = {messageRef} style = {{position:"relative", width:"100%", marginBottom:`${tailShown ? "10px" : "0px"}`, opacity:`${isShowing ? "1" : "0.3"}`}}>
+        <div ref = {messageRef} style = {{position:"relative", width:"100%", marginBottom:`${tailShown ? "10px" : "0px"}`, opacity:`${isShowing ? "1" : "0.3"}`, display:`${!isShowing && btnStyle == "none" ? "none" : "block"}`}}>
             <div className={`chatMsg ${msgStyle}`} >
                 {msg}
 
