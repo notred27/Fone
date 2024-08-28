@@ -136,16 +136,23 @@ button:hover{
 }
 
 .sentImg {
-  max-width:90%;
+  /* max-width:90%; */
+  border-radius: 5px;
   max-height:40vh;
+  max-width:80%;
+
   float:right;
-  margin: 10px;
+  margin-right: 10px;
 }
 
 .recievedImg {
-  margin-left: 10px;
-  max-width:90%;
+  border-radius: 5px;
   max-height:40vh;
+  max-width:80%;
+
+  margin-left: 10px;
+  /* max-width:90%; */
+  /* height:auto; */
 }
 
 

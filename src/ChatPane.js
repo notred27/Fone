@@ -6,7 +6,7 @@ import Header from './Header';
 import DateHeader from './DateHeader';
 import Keyboard from './Keyboard';
 import DebugMenu from './DebugMenu.js';
-import Image from './Image.js'
+import ChatroomImage from './ChatroomImage.js'
 
 import typing from './images/typing.gif'
 import {query, orderBy, onSnapshot, limit, doc,  collection} from "firebase/firestore";
@@ -179,11 +179,11 @@ function ChatPane({chatroomId, exitRoom}) {
 
             case "sentImage":
 
-                return <Image imageType = {"sentImg"} id = {item.id} key = {item.id} url = {item.url} chatroomId={chatroomId} btnStyle={isHidden} removeFunc = {deleteMessage}/>
+                return <ChatroomImage imageType = {"sentImg"} id = {item.id} key = {item.id} url = {item.url} chatroomId={chatroomId} btnStyle={isHidden} removeFunc = {deleteMessage}/>
 
             case "recievedImage":
 
-                return <Image imageType = {"recievedImg"} id = {item.id} key = {item.id} url = {item.url} chatroomId={chatroomId} btnStyle={isHidden} removeFunc = {deleteMessage}/>
+                return <ChatroomImage imageType = {"recievedImg"} id = {item.id} key = {item.id} url = {item.url} chatroomId={chatroomId} btnStyle={isHidden} removeFunc = {deleteMessage}/>
                 
 
 

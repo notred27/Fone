@@ -1,4 +1,6 @@
-function Image({id, url, imageType, btnStyle, removeFunc, chatroomId}) {
+function ChatroomImage({id, url, imageType, btnStyle, removeFunc, chatroomId}) {
+    
+
 
     function showBody() {
         removeFunc(chatroomId, id);
@@ -6,15 +8,14 @@ function Image({id, url, imageType, btnStyle, removeFunc, chatroomId}) {
         // TODO: Also remove image from Storage DB
     }
     
-    console.log(imageType)
+    console.log(url)
 
     return (
-        <div style = {{position:"relative", width:"100%"}}>
+        <div style = {{position:"relative", width:"100%", maxHeight:"40vh", overflow:"hidden"}}>
             {/* <div className={`${imageType}`} style = {{marginRight:"10px"}} > */}
                
                 <img className={`${imageType}`} src = {url} alt = "msg_pic"></img>
 
-                
 
                 <div className='flexRow'>
                     <button className = "HideButton" onClick = {() => (showBody())} style = {{display:`${btnStyle}`, position:"relative"}}>Remove</button>
@@ -29,4 +30,4 @@ function Image({id, url, imageType, btnStyle, removeFunc, chatroomId}) {
     );
 }
 
-export default Image;
+export default ChatroomImage;
