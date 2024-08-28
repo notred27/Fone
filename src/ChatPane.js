@@ -1,5 +1,4 @@
 import React, {useState, useRef, useEffect} from 'react';
-import './App.css';
 
 import Message from './Message';
 import Header from './Header';
@@ -8,25 +7,43 @@ import Keyboard from './Keyboard';
 import DebugMenu from './DebugMenu.js';
 import ChatroomImage from './ChatroomImage.js'
 
-import typing from './images/typing.gif'
+// import typing from './images/typing.gif'
 import {query, orderBy, onSnapshot, limit, doc,  collection} from "firebase/firestore";
 import {db, deleteMessage, sendMessage} from './firebase.js';
 
-
+/**
+ * A component that contains the functionality of a chatroom, and is linked to a specific Firestore database ID.
+ * @param {Array<String, Function>} props The ID of the selected chatroom, and a function to set the value of the selected chatroom.
+ */
 function ChatPane({chatroomId, exitRoom}) {
-    const [messages, setMessages] = useState([]);
-    const [isHidden, setIsHidden] = useState("none");
-    const [debugMode, setDebugMode] = useState(false);
+    const [messages, setMessages] = useState([]);      //Array of internal objects that the user can see / interact with.
+    const [isHidden, setIsHidden] = useState("none");  // Holds style information ("block" | "none") that determines if "hidden" components should be rendered.
+    const [debugMode, setDebugMode] = useState(false); // Holds boolean for if the user is currently in debug mode.
 
 
-    const [deliveredIdx, setDeliveredIdx] = useState(0);
-    const [deliveredMsg, setDeliveredMsg] = useState("");
-
-    const [msgTheme, setMsgTheme] = useState("clientMsg");
+    const [deliveredIdx, setDeliveredIdx] = useState(0);    // Holds the index of the last message that the user has sent.
+    const [deliveredMsg, setDeliveredMsg] = useState("");   // Holds flair text (e.g., "Sent", "Seen") that may be displayed under the user's last sent message.
 
 
-    const scrollPaneRef = useRef(null);
+    const scrollPaneRef = useRef(null); // Holds a reference to the div that contains all message and content components
 
+
+     // TODO: Make the styles into an enum (and export it) for ease of use
+     const [msgTheme, setMsgTheme] = useState("clientMsg");  // Holds a string that represents what style the chatroom should be.
+
+     // Set the chatroom theme on initial entry
+     useEffect(() => {
+         if(chatroomId !== null) {
+             const q = query(doc(db, "Chatrooms", chatroomId))
+             onSnapshot(q, (snapshot) => {
+                 setMsgTheme(snapshot.data().style);
+                 setDeliveredMsg(snapshot.data().messageflair);
+             })
+         }
+     },[chatroomId]);
+
+
+    // FIXME: Error with updating scroll
     // useEffect(() => {
     //     const q = query(
     //         doc(db, "Chatrooms", chatroomId));
@@ -34,8 +51,14 @@ function ChatPane({chatroomId, exitRoom}) {
     //         console.log(q)
     // }, [])
 
+    // // Scroll to the most recent message when a new message is added / chatroom is entered
+    // useEffect(() => {
+    //     scrollPaneRef.current.scrollTop = scrollPaneRef.current.scrollHeight;
 
-    // Query Firebase DB and render recieved messages
+    // },[messages]);
+
+
+    // Query Firebase DB and render received messages
     useEffect(() => {
         const q = query(
           collection(db, "Chatrooms", chatroomId, "messages"),
@@ -43,13 +66,14 @@ function ChatPane({chatroomId, exitRoom}) {
           limit(50)
         );
         const unsubscribe = onSnapshot(q, (QuerySnapshot) => {
-          const fetchedMessages = [];
-
-          let idx = 0;
-          let clientSeen = true
-          let swap = null   //true means last message was a server message
-          
-          QuerySnapshot.forEach((doc) => {
+            const fetchedMessages = [];
+            // Find the index of the last message sent by the "display user".
+            // OPTIMIZE: This inner method can probably be changed to be more efficient
+            let idx = 0;
+            let clientSeen = true
+            let swap = null   //true means last message was a server message
+            
+            QuerySnapshot.forEach((doc) => {
             if(doc.data().type === "serverMsg" && clientSeen) {
                 idx += 1;
             } else {
@@ -73,49 +97,28 @@ function ChatPane({chatroomId, exitRoom}) {
 
             } else {
                 fetchedMessages.push({ ...doc.data(), id: doc.id, tail: false });
-
             }
-
-         
-          });
-
+            });
 
             setMessages(fetchedMessages.reverse());
-
         });
         return () => unsubscribe;
-      }, []);
+        // FIXME: change this to depend on something?? I put db but this could be wrong
+        // eslint-disable-next-line
+      }, [db]);
 
 
-    //   Set chatroom theme on initial entry
-    useEffect(() => {
-        if(chatroomId !== null) {
-            const q = query(doc(db, "Chatrooms", chatroomId))
-            onSnapshot(q, (snapshot) => {
-                setMsgTheme(snapshot.data().style);
-                setDeliveredMsg(snapshot.data().messageflair);
-            })
+    
 
 
 
-        }
-    },[chatroomId]);
-
-
-    // Scroll to the most recent message when a new message is added / chatroom is entered
-    useEffect(() => {
-        scrollPaneRef.current.scrollTop = scrollPaneRef.current.scrollHeight;
-
-    },[messages]);
 
 
 
-   
-
-    function enterDebug(renderedMessages) {
-
-
-
+    /**
+     * Toggles debug mode view for the user.
+     */
+    function enterDebug() {
         if (debugMode) {
             setIsHidden("none");
         } else {
@@ -123,6 +126,7 @@ function ChatPane({chatroomId, exitRoom}) {
         }
         setDebugMode(!debugMode);
 
+        // Hide all elements with the class "HideButton"
         let buttons = document.getElementsByClassName("HideButton")
         for (let i = 0; i < buttons.length; i++) {
             buttons[i].style.display = isHidden
@@ -132,6 +136,7 @@ function ChatPane({chatroomId, exitRoom}) {
     }
 
 
+    // TODO: Move this into a single component that all 'sent' components are children of / extend
     const renderedMessages = messages.map((item) => {
         switch(item.type) {
             default: return null;
@@ -179,27 +184,23 @@ function ChatPane({chatroomId, exitRoom}) {
 
             case "sentImage":
 
-                return <ChatroomImage imageType = {"sentImg"} id = {item.id} key = {item.id} url = {item.url} chatroomId={chatroomId} btnStyle={isHidden} removeFunc = {deleteMessage}/>
+                return <ChatroomImage imageType = {"sentImg"} id = {item.id} key = {item.id} url = {item.url} filename = {item.filename} chatroomId={chatroomId} btnStyle={isHidden} removeFunc = {deleteMessage}/>
 
             case "recievedImage":
 
-                return <ChatroomImage imageType = {"recievedImg"} id = {item.id} key = {item.id} url = {item.url} chatroomId={chatroomId} btnStyle={isHidden} removeFunc = {deleteMessage}/>
+                return <ChatroomImage imageType = {"recievedImg"} id = {item.id} key = {item.id} url = {item.url} filename = {item.filename} chatroomId={chatroomId} btnStyle={isHidden} removeFunc = {deleteMessage}/>
                 
-
-
         }
     })
 
-
+    // Insert the message flair into the list of rendered components
     renderedMessages.splice(messages.length - deliveredIdx, 0, <p  className='chatMsg'  style ={{marginLeft:"auto", padding:"0px",marginTop:"0px",fontSize:"0.6em", color:"#777777", fontWeight:"bold"}}>{deliveredMsg}</p>)
 
     return (
         <div className='flexRow'>
-
             <div style = {{width:"min(100vw, 100vmin)", height:"100vh",  marginLeft:"auto", marginRight:"auto", backgroundColor:"white", position:"relative"}}>
                 <div ref = {scrollPaneRef} className= "disable-scrollbars" style={{width:"100%", height:"calc(100% - 40px)", overflowY:"scroll", overscrollBehaviorY:"none"}}>
-                    <Header chatroomId = {chatroomId} hideFunc = {() => enterDebug(renderedMessages)} exitRoom = {exitRoom} />
-                
+                    <Header chatroomId = {chatroomId} hideFunc = {enterDebug} exitRoom = {exitRoom} />
                         {/* Header for Messages text */}
                         <div className='date'><span style={{fontWeight:"bold"}}>Text Message</span></div>
 
@@ -209,6 +210,7 @@ function ChatPane({chatroomId, exitRoom}) {
                 <Keyboard createMessage = {sendMessage} chatroomId = {chatroomId}  />
             </div>
 
+            {/* Display the debug menu to the right only when debug mode is active */}
             {debugMode && <DebugMenu chatroomId = {chatroomId} setDeliveredMsg = {setDeliveredMsg} />}
 
         </div>

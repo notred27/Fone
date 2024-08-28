@@ -1,28 +1,34 @@
 import React, {useRef} from 'react'
-
 import {sendMessage, sendTimestamp, setMessageFlair, fileUpload, setTypingStatus} from './firebase.js';
 
 
 function DebugMenu({chatroomId, setDeliveredMsg}) {
+    const imageSubmit = useRef(null);   // Stores the currently selected file from the "imageForm" form
 
 
-    const imageSubmit = useRef(null);
-
+    /**
+     * Submit the completed "messageForm" and create the corresponding message object in Firestore.
+     * @param {FormEvent} event React HTML form event.
+     */
     function addMessage(event) {
-        event.preventDefault();
+        event.preventDefault(); // Prevent form submission from refreshing page
 
         const messageType = document.getElementById('messageForm').elements['addType'].value;
         const message = document.getElementById('messageForm').elements['messageContent'].value;
 
-        if (message !== "") {
+        if (message !== "") {   // Upload a message if it is not empty, and reset value after upload
             sendMessage(chatroomId, message, messageType);
             document.getElementById('messageForm').elements['messageContent'].value = "";
         }
     }
 
 
+    /**
+     * Submit the completed "timestampForm" and create the corresponding DateHeader object in Firestore.
+     * @param {FormEvent} event React HTML form event.
+     */
     function addDate(event) {
-        event.preventDefault();
+        event.preventDefault(); // Prevent form submission from refreshing page
 
         const date = document.getElementById('timestampForm').elements['formDate'].value;
         const time = document.getElementById('timestampForm').elements['formTime'].value;
@@ -30,23 +36,31 @@ function DebugMenu({chatroomId, setDeliveredMsg}) {
         sendTimestamp(chatroomId, date, time)
     }
 
-    function setTyping() {
 
+    /**
+     * Submit the value of "typingCheckbox" and to update the "isTyping" chatroom field in Firestore.
+     */
+    // TODO: Finish implementing this in other components, along with the autodetect option
+    function setTyping() {
         const val = document.getElementById('typingCheckbox').checked;
-        console.log(val)
         setTypingStatus(chatroomId, val)
     }
 
+
+    /**
+     * Submit the completed "imageForm" and create the corresponding file objects in Firestore and Firebase Storage.
+     * @param {FormEvent} event React HTML form event.
+     */
     function sendImageToServer(event) {
-        event.preventDefault();
+        event.preventDefault(); // Prevent form submission from refreshing page
 
         const imageType = document.getElementById('imageForm').elements['addImg'].value;
         const file = document.getElementById('imageForm').elements['imageUpload'].files[0];
 
         // Upload the file to a storage server, and upload a pointer to firestore
         fileUpload(chatroomId, imageType, file)
-
     }
+
 
     return (
         <div style = {{position:"sticky", bottom:"0px", padding:"10px", backgroundColor:"#ECECEC"}}>
@@ -56,10 +70,12 @@ function DebugMenu({chatroomId, setDeliveredMsg}) {
 
                 <form id = "messageForm" autoComplete='off' onSubmit={(e) => {e.preventDefault(); addMessage(e);}}>
                     <input type="radio" id = "addType0" name="addType" value = "clientMsg" defaultChecked/>
-                    <label >Sent Msg</label>
+                    <label >Sent Msg (Right)</label>
+
+                    <br/>
 
                     <input type="radio" id = "addType1" name="addType" value = "serverMsg"/>
-                    <label >Received Msg</label>
+                    <label >Received Msg (Left)</label>
 
                     <br/>
 
@@ -68,7 +84,6 @@ function DebugMenu({chatroomId, setDeliveredMsg}) {
 
                 </form>
 
-                {/* <button onClick={(event) => (sendDebugMessage(event, inputTextRef.current.value, inputRadioRef.current.elements["addType"].value))}>Add message</button> */}
             </div>
 
 
@@ -81,7 +96,6 @@ function DebugMenu({chatroomId, setDeliveredMsg}) {
                     <button onClick={(e) => (addDate(e))}>Add Date</button>
                 </form>
             </div>
-
 
 
             <div className="debugItem">
@@ -123,7 +137,6 @@ function DebugMenu({chatroomId, setDeliveredMsg}) {
                 <form id = "imageForm"> 
 
                     <input id = "imageUpload" ref = {imageSubmit} type='file' accept = "image/*" />
-
 
                     <br/>
 

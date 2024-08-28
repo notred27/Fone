@@ -135,24 +135,19 @@ button:hover{
     text-align:center;
 }
 
-.sentImg {
-  /* max-width:90%; */
+.chatImg {
   border-radius: 5px;
   max-height:40vh;
   max-width:80%;
+}
 
+.sentImg {
   float:right;
   margin-right: 10px;
 }
 
 .recievedImg {
-  border-radius: 5px;
-  max-height:40vh;
-  max-width:80%;
-
   margin-left: 10px;
-  /* max-width:90%; */
-  /* height:auto; */
 }
 
 
