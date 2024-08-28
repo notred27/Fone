@@ -3,8 +3,12 @@ import micImg from './images/mic.png'
 import uploadImg from './images/upload.png'
 import './App.css';
 
+import add_btn from './images/add_img.png'
+import {fileUpload} from './firebase.js'
+
 function Keyboard({createMessage, chatroomId}) {
     const inputRef = useRef("");
+    const fileSelectRef = useRef("")
     const [sendImg, setSendImg] = useState(micImg)
 
 
@@ -29,11 +33,30 @@ function Keyboard({createMessage, chatroomId}) {
         }
     }
 
+    function uploadImage(event) {
+        event.preventDefault();
+
+        const file = document.getElementById('keyboard_img_upload').files;
+        if(file.length >= 1) {
+            fileUpload(chatroomId, "sentImage", file[0])
+
+        }
+
+
+    }
+
     return (
         <div className='keyboard' style = {{position:"relative", bottom:"0px", backgroundColor:"white"}}>
             <form style ={{display:"flex", flexDirection:"row", justifyContent:"center"}} onSubmit={(e) => {e.preventDefault(); sendMessage(e)}}>
                 
-                <button style={{border:"0px", borderRadius:"40%", color:"#888888", paddingLeft:"6px", paddingRight:"6px", marginRight:"6px",marginLeft:"0px", fontWeight:"bold"}}>+</button>
+                <div>
+                    <img src ={add_btn} style={{height:"1.8em", marginRight:"10px"}} onClick={() => (fileSelectRef.current.click())}></img>
+                    {/* Workaround for styling the file select button */}
+                    <input id = "keyboard_img_upload" type="file" ref = {fileSelectRef} style={{display:"none"}} onChange={(e) => (uploadImage(e))}/>
+
+                </div>
+                
+                
                 
                 <div style ={{position:"relative", width:"80%"}}>
                     <input className='messageInput' ref = {inputRef} onChange={(e) => (changeSendIcon(e.target.value))} placeholder='Message' ></input>
