@@ -32,8 +32,7 @@ export const db = getFirestore(app)
  * @param {String} chatroomId   ID of the target chatroom.
  * @param {String} messageDocId ID of the document that is being deleted.
  */
-// TODO: Rename thsi function?
-export const deleteMessage = async (chatroomId, messageDocId) => {
+export const deleteItem = async (chatroomId, messageDocId) => {
   await deleteDoc(doc(db, "Chatrooms", chatroomId, "messages", messageDocId));
 }
 
@@ -69,6 +68,7 @@ export const sendTimestamp = async (chatroomId, date, time) => {
       date: date,
       time: time,
       type: "timestamp",
+      isShowing: true,
       createdAt: serverTimestamp(),
       uid,
       });
@@ -95,6 +95,7 @@ export const createConversation = async (roomName, userName, style) => {
       createdAt: serverTimestamp(),
     })
 
+  // TODO: change this to add collection?
   // Create a messages collection for this chatroom
   await addDoc(collection(db, "Chatrooms", chatId.id, "messages"), {
     createdAt: serverTimestamp(),
@@ -235,6 +236,7 @@ export const fileUpload = async (chatroomId, imageType, file) => {
         url: url,
         filename: filename,
         type: imageType,
+        isShowing: true,
         createdAt: serverTimestamp(),
         uid,
       })

@@ -1,15 +1,13 @@
 import React, {useState, useRef, useEffect} from 'react';
 
-import Message from './Message';
 import Header from './Header';
-import DateHeader from './DateHeader';
+import ChatItemWrapper from './ChatItemWrapper.js';
 import Keyboard from './Keyboard';
 import DebugMenu from './DebugMenu.js';
-import ChatroomImage from './ChatroomImage.js'
 
 // import typing from './images/typing.gif'
 import {query, orderBy, onSnapshot, limit, doc,  collection} from "firebase/firestore";
-import {db, deleteMessage, sendMessage} from './firebase.js';
+import {db, sendMessage} from './firebase.js';
 
 /**
  * A component that contains the functionality of a chatroom, and is linked to a specific Firestore database ID.
@@ -51,11 +49,11 @@ function ChatPane({chatroomId, exitRoom}) {
     //         console.log(q)
     // }, [])
 
-    // // Scroll to the most recent message when a new message is added / chatroom is entered
-    // useEffect(() => {
-    //     scrollPaneRef.current.scrollTop = scrollPaneRef.current.scrollHeight;
+    // Scroll to the most recent message when a new message is added / chatroom is entered
+    useEffect(() => {
+        scrollPaneRef.current.scrollTop = scrollPaneRef.current.scrollHeight;
 
-    // },[messages]);
+    },[messages]);
 
 
     // Query Firebase DB and render received messages
@@ -119,6 +117,7 @@ function ChatPane({chatroomId, exitRoom}) {
      * Toggles debug mode view for the user.
      */
     function enterDebug() {
+        // TODO: Maybe just change this to a boolean and have lower classes handel the render?
         if (debugMode) {
             setIsHidden("none");
         } else {
@@ -136,65 +135,15 @@ function ChatPane({chatroomId, exitRoom}) {
     }
 
 
-    // TODO: Move this into a single component that all 'sent' components are children of / extend
     const renderedMessages = messages.map((item) => {
-        switch(item.type) {
-            default: return null;
-
-            case "clientMsg":
-                return <Message msg = {item.text}
-                                id = {item.id} 
-                                key = {item.id} 
-
-                                msgStyle = {msgTheme + "Client"} 
-                                btnStyle = {isHidden}
-                                removeFunc = {deleteMessage}
-                                chatroomId = {chatroomId}
-                                tailShown = {item.tail}
-
-                                 />
-
-            case "serverMsg":
-                return <Message msg = {item.text}
-                                id = {item.id}
-                                key = {item.id} 
-
-                                msgStyle = {"serverMsg"}
-                                btnStyle = {isHidden}
-                                removeFunc = {deleteMessage} 
-                                chatroomId = {chatroomId}
-                                tailShown = {item.tail}
-
-
-                                />
-
-            case "timestamp":
-                return <DateHeader  date = {item.date}
-                                    time = {item.time}
-                                    id = {item.id}
-                                    key = {item.id} 
-                                    removeFunc = {deleteMessage} 
-
-                                    chatroomId = {chatroomId}
-
-                                    btnStyle = {isHidden} />
-
-            case "readFlair":
-                return <div key = "readFlair" className='chatMsg'  style ={{marginLeft:"auto", padding:"0px",marginTop:"0px",fontSize:"0.6em", color:"#777777"}}><span style={{ fontWeight:"bold"}}>{item["content"][0]}</span> {item["content"][1]}</div>
-
-            case "sentImage":
-
-                return <ChatroomImage imageType = {"sentImg"} id = {item.id} key = {item.id} url = {item.url} filename = {item.filename} chatroomId={chatroomId} btnStyle={isHidden} removeFunc = {deleteMessage}/>
-
-            case "recievedImage":
-
-                return <ChatroomImage imageType = {"recievedImg"} id = {item.id} key = {item.id} url = {item.url} filename = {item.filename} chatroomId={chatroomId} btnStyle={isHidden} removeFunc = {deleteMessage}/>
-                
-        }
+        return <ChatItemWrapper key = {item.id} data = {item} chatroomId = {chatroomId} chatroomStyle={msgTheme} isVisible = {isHidden} ></ChatItemWrapper>
+        
     })
 
     // Insert the message flair into the list of rendered components
     renderedMessages.splice(messages.length - deliveredIdx, 0, <p  className='chatMsg'  style ={{marginLeft:"auto", padding:"0px",marginTop:"0px",fontSize:"0.6em", color:"#777777", fontWeight:"bold"}}>{deliveredMsg}</p>)
+
+
 
     return (
         <div className='flexRow'>
@@ -205,6 +154,7 @@ function ChatPane({chatroomId, exitRoom}) {
                         <div className='date'><span style={{fontWeight:"bold"}}>Text Message</span></div>
 
                         {renderedMessages}
+
                 </div>
 
                 <Keyboard createMessage = {sendMessage} chatroomId = {chatroomId}  />
