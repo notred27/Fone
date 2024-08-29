@@ -68,7 +68,7 @@ function ChatItemWrapper({data, chatroomId, chatroomStyle, isVisible}) {
 
             case "clientMsg": return <div className={`chatMsg ${chatroomStyle}Client`}>{data.text}</div>
 
-            case "serverMsg": return <div className={`chatMsg serverMsg `}>{data.text}</div>
+            case "serverMsg": return <div className={`chatMsg ${chatroomStyle}Server`}>{data.text}</div>
 
             case "sentImage": 
                 return <div className='imageContainer'>

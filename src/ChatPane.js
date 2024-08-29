@@ -8,6 +8,8 @@ import DebugMenu from './DebugMenu.js';
 // import typing from './images/typing.gif'
 import {query, orderBy, onSnapshot, limit, doc,  collection} from "firebase/firestore";
 import {db, sendMessage} from './firebase.js';
+import GHeader from './GHeader.js';
+import GKeyboard from './GKeyboard.js';
 
 /**
  * A component that contains the functionality of a chatroom, and is linked to a specific Firestore database ID.
@@ -27,7 +29,7 @@ function ChatPane({chatroomId, exitRoom}) {
 
 
      // TODO: Make the styles into an enum (and export it) for ease of use
-     const [msgTheme, setMsgTheme] = useState("clientMsg");  // Holds a string that represents what style the chatroom should be.
+     const [msgTheme, setMsgTheme] = useState("imessage");  // Holds a string that represents what style the chatroom should be.
 
      // Set the chatroom theme on initial entry
      useEffect(() => {
@@ -144,12 +146,20 @@ function ChatPane({chatroomId, exitRoom}) {
     renderedMessages.splice(messages.length - deliveredIdx, 0, <p  className='chatMsg'  style ={{marginLeft:"auto", padding:"0px",marginTop:"0px",fontSize:"0.6em", color:"#777777", fontWeight:"bold"}}>{deliveredMsg}</p>)
 
 
+    // IDEA: Make separate chatPane objects depending on the style of the chatroom
 
     return (
         <div className='flexRow'>
+
+
             <div style = {{width:"min(100vw, 100vmin)", height:"100vh",  marginLeft:"auto", marginRight:"auto", backgroundColor:"white", position:"relative"}}>
-                <div ref = {scrollPaneRef} className= "disable-scrollbars" style={{width:"100%", height:"calc(100% - 40px)", overflowY:"scroll", overscrollBehaviorY:"none"}}>
-                    <Header chatroomId = {chatroomId} hideFunc = {enterDebug} exitRoom = {exitRoom} />
+                <div ref = {scrollPaneRef} className= {`disable-scrollbars ${msgTheme}Bg`} style={{}}>
+
+                    {msgTheme === "gmessage"?   //FIXME: Create a proper object that combines these two classes
+                        <GHeader chatroomId = {chatroomId} hideFunc = {enterDebug} exitRoom = {exitRoom} />
+                    :
+                        <Header chatroomId = {chatroomId} hideFunc = {enterDebug} exitRoom = {exitRoom} />
+                    }
                         {/* Header for Messages text */}
                         <div className='date'><span style={{fontWeight:"bold"}}>Text Message</span></div>
 
@@ -157,7 +167,8 @@ function ChatPane({chatroomId, exitRoom}) {
 
                 </div>
 
-                <Keyboard createMessage = {sendMessage} chatroomId = {chatroomId}  />
+                {/* <Keyboard createMessage = {sendMessage} chatroomId = {chatroomId}  /> */}
+                <GKeyboard chatroomId = {chatroomId}  />
             </div>
 
             {/* Display the debug menu to the right only when debug mode is active */}

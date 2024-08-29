@@ -14,6 +14,7 @@ import {query, orderBy, onSnapshot, limit, collection} from "firebase/firestore"
 import {db} from './firebase.js';
 
 
+
 const App = () => {
     const [user] = useAuthState(auth);
     const [chatrooms, setChatrooms] = useState([]);

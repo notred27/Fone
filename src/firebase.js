@@ -256,3 +256,15 @@ export const fileDeletion = async (path) => {
   // Delete the file from Firebase Storage
   deleteObject(storageRef)
 }
+
+
+/**
+ * Change the display name of a specified chatroom
+ * @param {String} chatroomId ID of the target chatroom.
+ * @param {String} newName    The new name of the chatroom 
+ */
+export const setChatroomName = async (chatroomId, newName) => {
+  setDoc(doc(db, "Chatrooms", chatroomId), {
+    roomName: newName
+  }, {merge:true})
+}

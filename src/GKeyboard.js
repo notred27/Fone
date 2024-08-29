@@ -6,7 +6,7 @@ import React, {useRef, useState} from 'react'
 import {fileUpload, sendMessage} from './firebase.js'
 
 
-function Keyboard({chatroomId}) {
+function GKeyboard({chatroomId}) {
     const inputRef = useRef("");                    // TODO: Change this to document.getElementById?
     const fileSelectRef = useRef("");               // HACK: Holds a reference to the file input so it can remain hidden but used
     const [sendImg, setSendImg] = useState(micImg); // Holds the current image for the submit button
@@ -54,8 +54,14 @@ function Keyboard({chatroomId}) {
     }
 
     return (
-        <div className='keyboard' style = {{position:"relative", bottom:"0px", backgroundColor:"white"}}>
+        <div className='keyboard' style = {{position:"relative", bottom:"0px", backgroundColor:"#111218"}}>
             <form style ={{display:"flex", flexDirection:"row", justifyContent:"center"}} onSubmit={(e) => {sendMessageToFirebase(e)}}>
+                <div style ={{position:"relative", width:"80%"}}>
+                    <input id = 'keyboard_input' className='gmessageInput' ref = {inputRef} onChange={(e) => (changeSendIcon(e.target.value))} placeholder='Text message' ></input>
+                    <img type = "submit" src = {sendImg} alt ="submit" onClick={(event) => sendMessageToFirebase(event)} style = {{height:"20px", position:"absolute", right:"2px", top:"6px"}}></img>
+                    
+                </div>
+                
                 <div>
                     <img src ={add_btn} alt = "add_image_icon" style={{height:"1.8em", marginRight:"10px"}} onClick={() => (fileSelectRef.current.click())}></img>
                     {/* Workaround for styling the file select button */}
@@ -63,14 +69,10 @@ function Keyboard({chatroomId}) {
 
                 </div>
                 
-                <div style ={{position:"relative", width:"80%"}}>
-                    <input id = 'keyboard_input' className='messageInput' ref = {inputRef} onChange={(e) => (changeSendIcon(e.target.value))} placeholder='Message' ></input>
-                    <img type = "submit" src = {sendImg} alt ="submit" onClick={(event) => sendMessageToFirebase(event)} style = {{height:"20px", position:"absolute", right:"2px", top:"6px"}}></img>
-                    
-                </div>
+                
             </form>
         </div>
     );
 }
 
-export default Keyboard;
+export default GKeyboard;

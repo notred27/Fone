@@ -59,7 +59,7 @@ function ConvoCard({chatroomId, chatroomName, enterChatroom, style}) {
                     </button>
 
                     {/* Some unexpected behavior, find a workaround for detecting clicks globally */}
-                    {isDropped && <div className='convoDropdownItems' style={{zIndex:"100"}}>
+                    {isDropped && <div className='convoDropdownItems' style={{zIndex:"100", border:"solid #ececec 1px", borderRadius:"5px"}}>
                         <div>Rename</div>
                         <div>Theme</div>
                         <div onClick={deleteCard} style={{color:"red"}}>Delete</div>
