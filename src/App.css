@@ -2,6 +2,10 @@ html, body {
   overscroll-behavior: none;
 }
 
+body:has(.requires-no-scroll) {
+  overflow: hidden;
+}
+
 button.convoCard {
   background-color:white;
   color:black;

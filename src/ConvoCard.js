@@ -3,7 +3,8 @@ import smsBanner from './images/smsBanner.png'
 import gmessageBanner from './images/gmessageBanner.png'
 
 import { useState } from 'react';
-import { deleteConversation } from './firebase.js';
+import { deleteConversation, setChatroomName, setChatroomTheme } from './firebase.js';
+import PopupWrapper from './PopupWrapper.js';
 
 /**
  * A card representing a chatroom. Can be clicked by a user to enter the corresponding chatroom.
@@ -11,6 +12,9 @@ import { deleteConversation } from './firebase.js';
  */
 function ConvoCard({chatroomId, chatroomName, enterChatroom, style}) {
     let [isDropped, setIsDropped] = useState(false);    // Boolean that holds if the dropdown is currently active
+    let [changingTheme, setChangingTheme] = useState(false);
+    let [changingName, setChangingName] = useState(false);
+
 
     // Display the appropriate theme card
     let cardTheme = null;
@@ -60,8 +64,8 @@ function ConvoCard({chatroomId, chatroomName, enterChatroom, style}) {
 
                     {/* Some unexpected behavior, find a workaround for detecting clicks globally */}
                     {isDropped && <div className='convoDropdownItems' style={{zIndex:"100", border:"solid #ececec 1px", borderRadius:"5px"}}>
-                        <div>Rename</div>
-                        <div>Theme</div>
+                        <div onClick={() => (setChangingName(true))}>Rename</div>
+                        <div onClick={() => (setChangingTheme(true))}>Theme</div>
                         <div onClick={deleteCard} style={{color:"red"}}>Delete</div>
                     </div>}
                 </div>
@@ -69,8 +73,85 @@ function ConvoCard({chatroomId, chatroomName, enterChatroom, style}) {
                 <h3 style={{paddingLeft:"10px", margin:"0px", width:"200px",  textOverflow:"ellipsis", overflow:"hidden", display:"block", whiteSpace:"nowrap"}}>{chatroomName}</h3>
                 <h6 style={{paddingLeft:"10px", paddingBottom:"10px", marginBottom:"0px", marginTop:"0px", color:"#777777"}}>15 messages</h6>
                 
+                
             </div>
 
+
+
+            {changingTheme &&
+                <PopupWrapper>
+
+                    <div className="centered" style={{backgroundColor:"white", width:"fit-content", padding:"50px", borderRadius:"10px"}}>
+                        <h3>Select Chatroom Theme:</h3>
+
+                        <form id = "theme_change_form" autoComplete='off' onSubmit={(e) => {e.preventDefault();}}>
+                            <input type="radio" id = "theme0" name="themeType" value = "imessage" defaultChecked/>
+                            <label >imessage</label>
+
+                            <br/>
+
+                            <input type="radio" id = "theme1" name="themeType" value = "sms" />
+                            <label >SMS</label>
+
+                            <br/>
+
+                            <input type="radio" id = "theme2" name="themeType" value = "gmessage" />
+                            <label >Google Messages</label>
+
+                            <br/>
+                            <br/>
+
+                      
+                            <button onClick={() => {
+                                
+                                if(style !== document.getElementById('theme_change_form').elements['themeType'].value){
+                                    setChatroomTheme(chatroomId, document.getElementById('theme_change_form').elements['themeType'].value)
+                                }
+
+
+                                setChangingTheme(false);
+                                setIsDropped(false)
+                                 
+                                 }}>Accept</button>
+
+                        </form>
+
+
+                        <button onClick={() => {setChangingTheme(false); setIsDropped(false)}}>Back</button>
+                        
+                    </div>
+                </PopupWrapper>
+            }
+
+            {changingName &&
+                <PopupWrapper>
+
+                    <div className="centered" style={{backgroundColor:"white", width:"fit-content", padding:"50px", borderRadius:"10px"}}>
+
+                        
+                        <h3>Current Name:</h3>
+                        <h4>{chatroomName}</h4>
+
+                        <h3>New Name:</h3>
+                        <input id = "name_change_input"></input>
+
+                        <br/>
+                        <br/>
+
+                        <button onClick={() => {
+                            if(document.getElementById("name_change_input").value !== "") {
+                                setChatroomName(chatroomId, document.getElementById("name_change_input").value);
+                            }
+                            setChangingName(false);
+                            setIsDropped(false);
+                              
+                            }}>Accept</button>
+                        <br/>
+                        <button onClick={() => {setChangingName(false); setIsDropped(false)}}>Back</button>
+                        
+                    </div>
+                </PopupWrapper>
+            }
         </div>
     )
 }

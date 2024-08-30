@@ -268,3 +268,14 @@ export const setChatroomName = async (chatroomId, newName) => {
     roomName: newName
   }, {merge:true})
 }
+
+/**
+ * Change the display name of a specified chatroom
+ * @param {String} chatroomId ID of the target chatroom.
+ * @param {String} newName    The new name of the chatroom 
+ */
+export const setChatroomTheme = async (chatroomId, newTheme) => {
+  setDoc(doc(db, "Chatrooms", chatroomId), {
+    style: newTheme
+  }, {merge:true})
+}
