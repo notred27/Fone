@@ -60,7 +60,7 @@ function GHeader({chatroomId, hideFunc, exitRoom}) {
     return (
         <div className= 'gmessageHeaderBox'>
             {/* Icon to exit this chatroom */}
-            <img src = {arrowImg} alt = "flair" style = {{placeSelf:"center", height:"24px"}} onClick={() => (exitRoom(null))}/>
+            <img src = {arrowImg} alt = "flair" style = {{placeSelf:"center", height:"22px"}} onClick={() => (exitRoom(null))}/>
 
             {isHidden ?
                 <img src = {userImg} alt = "user" style={{width:"30px", height:"30px", borderRadius:"20px"}} />
@@ -82,7 +82,7 @@ function GHeader({chatroomId, hideFunc, exitRoom}) {
             }
 
             {/* Icon to toggle showing the debug menu */}
-            <img src = {facetimeImg} alt = "toggleEdit" onClick={toggleDebug} style = {{alignSelf:"right", height:"24px"}}/>
+            <img src = {facetimeImg} alt = "toggleEdit" onClick={toggleDebug} style = {{alignSelf:"right", height:"22px"}}/>
         </div>
 
     )

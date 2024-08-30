@@ -7,7 +7,7 @@ import DebugMenu from './DebugMenu.js';
 
 // import typing from './images/typing.gif'
 import {query, orderBy, onSnapshot, limit, doc,  collection} from "firebase/firestore";
-import {db, sendMessage} from './firebase.js';
+import {db} from './firebase.js';
 import GHeader from './GHeader.js';
 import GKeyboard from './GKeyboard.js';
 
@@ -152,7 +152,7 @@ function ChatPane({chatroomId, exitRoom}) {
         <div className='flexRow'>
 
 
-            <div style = {{width:"min(100vw, 100vmin)", height:"100vh",  marginLeft:"auto", marginRight:"auto", backgroundColor:"white", position:"relative"}}>
+            <div style = {{width:"min(100vw, 100vmin)", height:"100vh",  marginLeft:"auto", marginRight:"auto", backgroundColor:`${msgTheme === "gmessage"? "#10131a" :"white"}`, position:"relative"}}>
                 <div ref = {scrollPaneRef} className= {`disable-scrollbars ${msgTheme}Bg`} >
 
                     {msgTheme === "gmessage"?   //FIXME: Create a proper object that combines these two classes

@@ -152,7 +152,7 @@ overscroll-behavior-y:none;
 
 .gmessageBg {
   width:100%;
-  height:calc(100vh - 2.3em);
+  height:calc(100vh - 3em);
   overflow-y:scroll;
   overscroll-behavior-y:none;
   background-color: #10131a;
@@ -210,7 +210,7 @@ overscroll-behavior-y:none;
 .gmessageInput {
   border-radius:20px;
   border:none;
-  padding:5px;
+  padding:10px;
   padding-left:10px;
   margin-left: 2%;
   width:100%;
@@ -234,10 +234,10 @@ overscroll-behavior-y:none;
 }
 
 .gmessageHeaderBox{
-  background-color:#24252c;
+  background-color:#20222b;
   height:fit-content;
   display:grid;
-  grid-template-columns:14% 14% 40% 32%;
+  grid-template-columns:14% 14% 38% 34%;
   text-align:center;
   position:sticky;
   top:0px;

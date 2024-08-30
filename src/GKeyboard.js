@@ -1,5 +1,5 @@
-import micImg from './images/mic.png'
-import uploadImg from './images/upload.png'
+import micImg from './images/gmMic.png'
+import uploadImg from './images/gcUpload.png'
 import add_btn from './images/gmAddImg.png'
 
 import React, {useRef, useState} from 'react'
@@ -54,12 +54,12 @@ function GKeyboard({chatroomId}) {
     }
 
     return (
-        <div style = {{position:"relative", bottom:"0px", backgroundColor:"#111218", paddingTop:"5px", paddingBottom:"5px"}}>
+        <div style = {{position:"relative", bottom:"0px", backgroundColor:"#10131a", paddingTop:"5px", paddingBottom:"5px"}}>
             <form style ={{display:"flex", flexDirection:"row"}} onSubmit={(e) => {sendMessageToFirebase(e)}}>
                 <div style ={{position:"relative", width:"80%"}}>
                     <input id = 'keyboard_input' className='gmessageInput' ref = {inputRef} onChange={(e) => (changeSendIcon(e.target.value))} placeholder='Text message' ></input>
                     
-                    <span style = {{position:"absolute", right:"-18px", borderRadius:"20px", top:"0.2em"}}>
+                    <span style = {{position:"absolute", right:"-18px", borderRadius:"20px", top:"0.5em"}}>
                         <img src ={add_btn} alt = "add_image_icon" style={{height:"1.2em"}} onClick={() => (fileSelectRef.current.click())}></img>
                         {/* Workaround for styling the file select button */}
                         <input id = "keyboard_img_upload" type="file" accept = "image/*" ref = {fileSelectRef} style={{display:"none"}} onChange={(e) => (uploadImage(e))}/>
@@ -69,7 +69,7 @@ function GKeyboard({chatroomId}) {
                 
                 
                 
-                {/* <img type = "submit" src = {sendImg} alt ="submit" onClick={(event) => sendMessageToFirebase(event)} style = {{height:"20px", position:"absolute", right:"2px", top:"6px"}}></img> */}
+                <img type = "submit" src = {sendImg} alt ="submit" onClick={(event) => sendMessageToFirebase(event)} style = {{height:"calc(1em + 20px)", position:"absolute", right:"5px"}}></img>
 
                 
             </form>
