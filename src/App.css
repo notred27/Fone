@@ -132,14 +132,14 @@ button:hover{
 }
 
 .gmessageClient {
-  background-color:rgb(165, 191, 218);
-  color:black;
+  background-color:#a3abc0;
+  color:#1b1a1f;
   margin-left:auto;
 }
 
 .gmessageServer{
-  background-color:rgb(49, 49, 49);
-  color:white;
+  background-color:#303032;
+  color:#e3e1e6;
 }
 
 
@@ -152,10 +152,10 @@ overscroll-behavior-y:none;
 
 .gmessageBg {
   width:100%;
-  height:calc(100vh - 40px);
+  height:calc(100vh - 2.3em);
   overflow-y:scroll;
   overscroll-behavior-y:none;
-  background-color: #111218;
+  background-color: #10131a;
 
 }
 
@@ -210,9 +210,12 @@ overscroll-behavior-y:none;
 .gmessageInput {
   border-radius:20px;
   border:none;
-  width:98%;
+  padding:5px;
+  padding-left:10px;
+  margin-left: 2%;
+  width:100%;
   caret-color: rgb(170, 170, 170);
-  background-color: rgb(32, 32, 37);
+  background-color: #2d3037;
   color: white;
 }
 
@@ -231,10 +234,10 @@ overscroll-behavior-y:none;
 }
 
 .gmessageHeaderBox{
-  background-color:rgb(32, 32, 37);
+  background-color:#24252c;
   height:fit-content;
   display:grid;
-  grid-template-columns:10% 10% 70% 10%;
+  grid-template-columns:14% 14% 40% 32%;
   text-align:center;
   position:sticky;
   top:0px;

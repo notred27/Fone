@@ -1,6 +1,6 @@
 import micImg from './images/mic.png'
 import uploadImg from './images/upload.png'
-import add_btn from './images/add_img.png'
+import add_btn from './images/gmAddImg.png'
 
 import React, {useRef, useState} from 'react'
 import {fileUpload, sendMessage} from './firebase.js'
@@ -54,21 +54,23 @@ function GKeyboard({chatroomId}) {
     }
 
     return (
-        <div className='keyboard' style = {{position:"relative", bottom:"0px", backgroundColor:"#111218"}}>
-            <form style ={{display:"flex", flexDirection:"row", justifyContent:"center"}} onSubmit={(e) => {sendMessageToFirebase(e)}}>
+        <div style = {{position:"relative", bottom:"0px", backgroundColor:"#111218", paddingTop:"5px", paddingBottom:"5px"}}>
+            <form style ={{display:"flex", flexDirection:"row"}} onSubmit={(e) => {sendMessageToFirebase(e)}}>
                 <div style ={{position:"relative", width:"80%"}}>
                     <input id = 'keyboard_input' className='gmessageInput' ref = {inputRef} onChange={(e) => (changeSendIcon(e.target.value))} placeholder='Text message' ></input>
-                    <img type = "submit" src = {sendImg} alt ="submit" onClick={(event) => sendMessageToFirebase(event)} style = {{height:"20px", position:"absolute", right:"2px", top:"6px"}}></img>
                     
-                </div>
-                
-                <div>
-                    <img src ={add_btn} alt = "add_image_icon" style={{height:"1.8em", marginRight:"10px"}} onClick={() => (fileSelectRef.current.click())}></img>
-                    {/* Workaround for styling the file select button */}
-                    <input id = "keyboard_img_upload" type="file" accept = "image/*" ref = {fileSelectRef} style={{display:"none"}} onChange={(e) => (uploadImage(e))}/>
+                    <span style = {{position:"absolute", right:"-18px", borderRadius:"20px", top:"0.2em"}}>
+                        <img src ={add_btn} alt = "add_image_icon" style={{height:"1.2em"}} onClick={() => (fileSelectRef.current.click())}></img>
+                        {/* Workaround for styling the file select button */}
+                        <input id = "keyboard_img_upload" type="file" accept = "image/*" ref = {fileSelectRef} style={{display:"none"}} onChange={(e) => (uploadImage(e))}/>
 
+                    </span>
                 </div>
                 
+                
+                
+                {/* <img type = "submit" src = {sendImg} alt ="submit" onClick={(event) => sendMessageToFirebase(event)} style = {{height:"20px", position:"absolute", right:"2px", top:"6px"}}></img> */}
+
                 
             </form>
         </div>

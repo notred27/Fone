@@ -153,7 +153,7 @@ function ChatPane({chatroomId, exitRoom}) {
 
 
             <div style = {{width:"min(100vw, 100vmin)", height:"100vh",  marginLeft:"auto", marginRight:"auto", backgroundColor:"white", position:"relative"}}>
-                <div ref = {scrollPaneRef} className= {`disable-scrollbars ${msgTheme}Bg`} style={{}}>
+                <div ref = {scrollPaneRef} className= {`disable-scrollbars ${msgTheme}Bg`} >
 
                     {msgTheme === "gmessage"?   //FIXME: Create a proper object that combines these two classes
                         <GHeader chatroomId = {chatroomId} hideFunc = {enterDebug} exitRoom = {exitRoom} />
@@ -167,8 +167,15 @@ function ChatPane({chatroomId, exitRoom}) {
 
                 </div>
 
-                {/* <Keyboard createMessage = {sendMessage} chatroomId = {chatroomId}  /> */}
-                <GKeyboard chatroomId = {chatroomId}  />
+                {msgTheme === "gmessage"?   //FIXME: Create a proper object that combines these two classes
+                        <GKeyboard chatroomId = {chatroomId}  />
+                    :
+                        <Keyboard chatroomId = {chatroomId}  />
+                    }
+
+
+                
+                
             </div>
 
             {/* Display the debug menu to the right only when debug mode is active */}

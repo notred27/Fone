@@ -94,10 +94,12 @@ function ChatItemWrapper({data, chatroomId, chatroomStyle, isVisible}) {
         } else if (chatroomStyle === "sms") {
             tail = <img src = {smsTail} alt = "msg_tail_icon" style = {{position:"absolute", width:"10px", right:"6px", bottom:"0px", zIndex:"1"}}></img>
             
-        } else if (chatroomStyle === "gmessage") {
-            tail = <img src = {imessageTail} alt = "msg_tail_icon" style = {{position:"absolute", width:"10px", right:"6px", bottom:"0px", zIndex:"1"}}></img>
         } 
     }
+
+    if (chatroomStyle === "gmessage") {
+        tail = null
+    } 
 
     return (
         <div style = {{position:"relative", width:"100%", opacity:`${isShowing ? "1" : "0.3"}`, display:`${!isShowing && isVisible === "none" ? "none" : "block"}`}}>
