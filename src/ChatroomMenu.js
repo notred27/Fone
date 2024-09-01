@@ -1,6 +1,8 @@
 import iPhoneConvoImage from './images/imessageConvo.png'
 import smsConvoImage from './images/smsConvo.png'
 import androidConvoImage from './images/gmessageConvo.png'
+import whatsappConvoImage from './images/whatsappConvo.png'
+
 
 import React, {useState, useEffect} from 'react'
 import {createConversation, getNumConversations} from './firebase.js';
@@ -74,6 +76,11 @@ function ChatroomMenu({hidePopup}) {
 
                             <input id = "gmessageRadio" type="radio" name="conversationTheme" value = "gmessage" onClick ={() => (setTheme(androidConvoImage))}/>
                             <label for ="gmessageRadio">G-Messages</label>
+
+                            <br/>
+
+                            <input id = "gmessageRadio" type="radio" name="conversationTheme" value = "whatsapp" onClick ={() => (setTheme(whatsappConvoImage))}/>
+                            <label for ="gmessageRadio">Whats App</label>
                         </div>
 
 

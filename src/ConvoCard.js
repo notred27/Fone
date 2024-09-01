@@ -1,10 +1,13 @@
 import imessageBanner from './images/imessageBanner.png'
 import smsBanner from './images/smsBanner.png'
 import gmessageBanner from './images/gmessageBanner.png'
+import whatsappBanner from './images/whatsappBanner.png'
+
 
 import { useState } from 'react';
 import { deleteConversation, setChatroomName, setChatroomTheme } from './firebase.js';
 import PopupWrapper from './PopupWrapper.js';
+import { CHATROOM_THEMES } from './ChatPane.js'; 
 
 /**
  * A card representing a chatroom. Can be clicked by a user to enter the corresponding chatroom.
@@ -19,17 +22,22 @@ function ConvoCard({chatroomId, chatroomName, enterChatroom, style}) {
     // Display the appropriate theme card
     let cardTheme = null;
     switch(style) {
-        case "sms":
+        case CHATROOM_THEMES.sms:
             cardTheme =  smsBanner;
             break;
 
-        case "imessage":
+        case CHATROOM_THEMES.imessage:
             cardTheme =  imessageBanner;
             break;
 
-        case "gmessage":
+        case CHATROOM_THEMES.gmessage:
             cardTheme =  gmessageBanner;
             break;
+
+        case CHATROOM_THEMES.whatsapp:
+            cardTheme =  whatsappBanner;
+            break;
+    
 
         default:
             cardTheme =  imessageBanner;
@@ -37,7 +45,7 @@ function ConvoCard({chatroomId, chatroomName, enterChatroom, style}) {
     } 
 
     /**
-     * Deletes the current conversation from Firebase after a positive prompt.
+     * Deletes the current conversation from Firebase after a confirmation prompt.
      */
     function deleteCard() {
         if(window.confirm("Are you sure you want to delete this conversation?")){
@@ -85,18 +93,23 @@ function ConvoCard({chatroomId, chatroomName, enterChatroom, style}) {
                         <h3>Select Chatroom Theme:</h3>
 
                         <form id = "theme_change_form" autoComplete='off' onSubmit={(e) => {e.preventDefault();}}>
-                            <input type="radio" id = "theme0" name="themeType" value = "imessage" defaultChecked/>
+                            <input type="radio" id = "theme0" name="themeType" value = {CHATROOM_THEMES.imessage} defaultChecked/>
                             <label >imessage</label>
 
                             <br/>
 
-                            <input type="radio" id = "theme1" name="themeType" value = "sms" />
+                            <input type="radio" id = "theme1" name="themeType" value = {CHATROOM_THEMES.sms} />
                             <label >SMS</label>
 
                             <br/>
 
-                            <input type="radio" id = "theme2" name="themeType" value = "gmessage" />
+                            <input type="radio" id = "theme2" name="themeType" value = {CHATROOM_THEMES.gmessage} />
                             <label >Google Messages</label>
+
+                            <br/>
+
+                            <input type="radio" id = "theme2" name="themeType" value = {CHATROOM_THEMES.whatsapp} />
+                            <label >Whats App</label>
 
                             <br/>
                             <br/>

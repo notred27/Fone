@@ -146,6 +146,21 @@ button:hover{
   color:#e3e1e6;
 }
 
+.whatsappClient {
+  background-color:#E0FDC4;
+  color:black;
+  margin-left:auto;
+  border-radius: 5px;
+}
+
+.whatsappServer{
+  background-color:white;
+  color:black;
+  border-radius: 5px;
+
+}
+
+
 
 .imessageBg {
 width:100%;
@@ -168,6 +183,14 @@ overscroll-behavior-y:none;
   height:calc(100vh - 40px);
   overflow-y:scroll;
   overscroll-behavior-y:none;
+}
+
+.whatsappBg{
+  width:100%;
+  height:calc(100vh - 40px);
+  overflow-y:scroll;
+  overscroll-behavior-y:none;
+  background-color: #E5DDD5;
 }
 
 
@@ -223,6 +246,18 @@ overscroll-behavior-y:none;
   color: white;
 }
 
+.whatsappInput {
+  border-radius:20px;
+  border:none;
+  padding:10px;
+  padding-left:10px;
+  margin-left: 2%;
+  width:100%;
+  caret-color: #075e55;
+  background-color: white;
+  color: black;
+}
+
 .headerBox {
   -webkit-backdrop-filter: blur(5px);
   backdrop-filter: blur(5px);
@@ -239,6 +274,20 @@ overscroll-behavior-y:none;
 
 .gmessageHeaderBox{
   background-color:#20222b;
+  height:fit-content;
+  display:grid;
+  grid-template-columns:14% 14% 38% 34%;
+  text-align:center;
+  position:sticky;
+  top:0px;
+  z-index:100;
+  text-align: left;
+  align-items: center;
+  color: white;
+}
+
+.whatsappHeaderBox{
+  background-color:#075e55;
   height:fit-content;
   display:grid;
   grid-template-columns:14% 14% 38% 34%;

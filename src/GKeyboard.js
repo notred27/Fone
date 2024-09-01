@@ -54,7 +54,7 @@ function GKeyboard({chatroomId}) {
     }
 
     return (
-        <div style = {{position:"relative", bottom:"0px", backgroundColor:"#10131a", paddingTop:"5px", paddingBottom:"5px"}}>
+        <div style = {{position:"fixed", width:"min(100vw, 100vmin)", bottom:"0px", backgroundColor:"#10131a", paddingTop:"5px", paddingBottom:"5px"}}>
             <form style ={{display:"flex", flexDirection:"row"}} onSubmit={(e) => {sendMessageToFirebase(e)}}>
                 <div style ={{position:"relative", width:"80%"}}>
                     <input id = 'keyboard_input' className='gmessageInput' ref = {inputRef} onChange={(e) => (changeSendIcon(e.target.value))} placeholder='Text message' ></input>

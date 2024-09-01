@@ -85,10 +85,14 @@ function ChatItemWrapper({data, chatroomId, chatroomStyle, isVisible}) {
 
     // FIXME: Fix this or take it down a component
     // TODO: Fix this so only the png needs to be swapped out?
-    let tail = <img src = {msgTail2} alt = "msg_tail_icon" style = {{position:"absolute", width:"20px", left:"2px", bottom:"-3px", zIndex:"1"}}></img>
+    let tail = null;
+    
 
-    if(data.type === "clientMsg"){
-        if(chatroomStyle === "imessage") {
+    if(chatroomStyle === "imessage" || chatroomStyle === "sms"){
+        if (data.type === "serverMsg") {
+            tail = <img src = {msgTail2} alt = "msg_tail_icon" style = {{position:"absolute", width:"20px", left:"2px", bottom:"-3px", zIndex:"1"}}></img>
+
+        } else if(chatroomStyle === "imessage") {
             tail = <img src = {imessageTail} alt = "msg_tail_icon" style = {{position:"absolute", width:"10px", right:"6px", bottom:"0px", zIndex:"1"}}></img>
 
         } else if (chatroomStyle === "sms") {
@@ -97,9 +101,7 @@ function ChatItemWrapper({data, chatroomId, chatroomStyle, isVisible}) {
         } 
     }
 
-    if (chatroomStyle === "gmessage") {
-        tail = null
-    } 
+
 
     return (
         <div style = {{position:"relative", width:"100%", opacity:`${isShowing ? "1" : "0.3"}`, display:`${!isShowing && isVisible === "none" ? "none" : "block"}`}}>
