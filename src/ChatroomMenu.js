@@ -6,6 +6,7 @@ import whatsappConvoImage from './images/whatsappConvo.png'
 
 import React, {useState, useEffect} from 'react'
 import {createConversation, getNumConversations} from './firebase.js';
+import PopupWrapper from './PopupWrapper.js'
 
 
 /**
@@ -51,67 +52,74 @@ function ChatroomMenu({hidePopup}) {
 
     return (
         <div >
-            <div style = {{backgroundColor:"rgba(0,0,0,0.2)", width:"100vw", height:"100vh", position:"fixed", zIndex:"200"}}/>
+            <PopupWrapper>
+                <form className="popupBg" id = "chatroomPopup" style={{padding:"25px"}} onSubmit={(e) => (createRoom(e))}  >
+                    
+                    <div className = "flexRow" style = {{ flexWrap:"wrap", alignContent:"center", justifyContent:"center", padding:"10px"}}>
 
-            <form id = "chatroomPopup" onSubmit={(e) => (createRoom(e))}  style={{position:"absolute", top:"20vh", left:"calc(50vw - 40vmin)", width:"80vmin", height:"auto", zIndex:"999", backgroundColor:"#ececec", borderRadius:"20px", border:"6px solid #888888"}}>
-                
-                <div className = "flexRow" style = {{ flexWrap:"wrap", alignContent:"center", justifyContent:"center", padding:"10px"}}>
+                        <div style = {{textAlign:"center", position:"relative", width:"fit-content", padding:"10px"}}>
 
-                    <div style = {{textAlign:"center", position:"relative", width:"150px", padding:"10px"}}>
+                            <h3 className='menuHeader'>Theme</h3>
 
-                        <h3>Theme</h3>
-                        <img src = {theme} alt = "chatroomTheme" style = {{width:"70%"}}/>
+                            <div className='flexRow'>
+                                <img src = {theme} alt = "chatroomTheme" style = {{width:"40%"}}/>
 
 
-                        <div style = {{textAlign:"left"}}>
-                            <input id = "imessageRadio" type="radio" name="conversationTheme" value = "imessage" defaultChecked onClick ={() => (setTheme(iPhoneConvoImage))} />
-                            <label for ="imessageRadio">iMessage</label>
+                                <span style = {{textAlign:"left"}}>
+                                    <input id = "imessageRadio" type="radio" name="conversationTheme" value = "imessage" defaultChecked onClick ={() => (setTheme(iPhoneConvoImage))} />
+                                    <label for ="imessageRadio">iMessage</label>
+
+                                    <br/>
+
+                                    <input id = "smsRadio" type="radio" name="conversationTheme" value = "sms" onClick ={() => (setTheme(smsConvoImage))}/>
+                                    <label for ="smsRadio">SMS</label>
+
+                                    <br/>
+
+                                    <input id = "gmessageRadio" type="radio" name="conversationTheme" value = "gmessage" onClick ={() => (setTheme(androidConvoImage))}/>
+                                    <label for ="gmessageRadio">G-Messages</label>
+
+                                    <br/>
+
+                                    <input id = "whatsappRadio" type="radio" name="conversationTheme" value = "whatsapp" onClick ={() => (setTheme(whatsappConvoImage))}/>
+                                    <label for ="whatsappRadio">Whats App</label>
+                                </span>
+
+                            </div>
+                            
+
+
+                        </div>
+                    
+
+
+                        <div style = {{padding:"10px", textAlign:"center"}}>
+                            <h3 className='menuHeader'>Chatroom Name</h3>
+                            <input id = "roomNameInput" className='menuInput' placeholder={`Room ${numRooms}`}/>
 
                             <br/>
-
-                            <input id = "smsRadio" type="radio" name="conversationTheme" value = "sms" onClick ={() => (setTheme(smsConvoImage))}/>
-                            <label for ="smsRadio">SMS</label>
-
                             <br/>
 
-                            <input id = "gmessageRadio" type="radio" name="conversationTheme" value = "gmessage" onClick ={() => (setTheme(androidConvoImage))}/>
-                            <label for ="gmessageRadio">G-Messages</label>
+
+                            <h3 className='menuHeader'>Display Name</h3>
+                            <input id = "displayNameInput" className='menuInput' placeholder="Username" />
 
                             <br/>
-
-                            <input id = "gmessageRadio" type="radio" name="conversationTheme" value = "whatsapp" onClick ={() => (setTheme(whatsappConvoImage))}/>
-                            <label for ="gmessageRadio">Whats App</label>
+                            <br/>
                         </div>
 
 
                     </div>
-                
+                    <button className='menuBack' style ={{position:"absolute", right:"10px", top:"10px"}} onClick={() =>(hidePopup(false))}>Back</button>
 
 
-                    <div style = {{padding:"10px"}}>
-                        <h3 style={{marginBottom:"0px"}}>Chatroom Name:</h3>
-                        <br/>
-                        <input id = "roomNameInput" placeholder={`Room ${numRooms}`}/>
+                    <button className="centered menuAccept" type = "submit"  > Create Chatroom! </button>
+                    
+                </form>
 
-                        <br/>
 
-                        <h3 style={{marginBottom:"0px"}}>Display Name:</h3>
-                        <br/>
-                        <input id = "displayNameInput" placeholder="Username" />
-
-                        <br/>
-
-                        <button type = "submit" style={{fontSize:"1.5em", backgroundColor:"#5c85ff", color:"white", border:"5px solid white", borderRadius:"20px", padding:"5px", marginTop:"20px"}} > Create Chatroom! </button>
-
-                        <br/>
-                       
-                    </div>
-
-                    <button style ={{position:"absolute", right:"10px", color:"white", backgroundColor:"#5c85ff", borderRadius:"20px", padding:"5px", border:"0px"}} onClick={() =>(hidePopup(false))}>Back</button>
-
-                </div>
-                
-            </form>
+            </PopupWrapper>
+            
         </div>)
 }
 

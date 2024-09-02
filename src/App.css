@@ -335,14 +335,53 @@ overscroll-behavior-y:none;
     flex-direction: row;
   }
 
-  input:focus {
-    outline:none;
-  }
 
+.menuInput {
+  border:none;
+  background-color:#ececec;
+  text-align:center;
+  border-radius: 5px;
+}
 
-  @keyframes logo-sway {
-    30% { rotate: 10deg}
-    60% {rotate: -10deg}
+.menuHeader{
+  text-decoration:underline;
+  margin:0px;
+}
 
-    100% {rotate: 0deg}
-  }
+.menuAccept{
+border:none;
+border-radius:5px;
+background-color:#6392ff;
+color:white;
+padding:5px;
+}
+
+.menuBack{
+  border:2px solid red;
+  background-color:white;
+  border-radius:5px;
+  padding:5px;
+  color:red; 
+}
+
+input:focus {
+  outline:none;
+}
+
+.popupBg {
+  background-color:white;
+  width:fit-content;
+  padding:50px;
+  border-radius:10px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+}
+
+@keyframes logo-sway {
+  30% { rotate: 10deg}
+  60% {rotate: -10deg}
+
+  100% {rotate: 0deg}
+}

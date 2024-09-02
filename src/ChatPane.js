@@ -1,8 +1,6 @@
 import React, {useState, useRef, useEffect} from 'react';
 
-import Header from './Header';
 import ChatItemWrapper from './ChatItemWrapper.js';
-import Keyboard from './Keyboard';
 import DebugMenu from './DebugMenu.js';
 
 // import typing from './images/typing.gif'

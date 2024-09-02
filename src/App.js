@@ -66,17 +66,13 @@ const App = () => {
                 <span >
                     {selectedRoom == null ? 
                         // If no chatroom is selected, display the chatroom select screen
-                        // TODO: Make this into a separate component
                         <div>
-
+                            {/* Header bar */}
                             <div style ={{display:"grid", gridTemplateColumns:" 50% 50%", alignItems:"center", backgroundColor:"#ececec", marginBottom:"20px", borderBottom:"2px solid #999999", padding:"5px"}} >
                                 <img src = {logo} alt = "logo_header" style = {{height:"40px"}}></img>
                                 
                                     
-                                <div className='flexRow' style={{alignItems:"center", backgroundColor:"#65a0ff", padding:"5px", width:"fit-content", height:"fit-content", borderRadius:"20px", marginRight:"0px", marginLeft:"auto"}}> 
-                                    <img src = {user.photoURL} alt = "userImg" style = {{width:"40px", height:"40px", borderRadius:"20px", paddingRight:"5px"}}></img>
-                                    <p>{user.displayName}</p>
-
+                                <div style={{alignItems:"right", marginLeft:"auto"}}> 
                                     <SignIn />
                                 </div>
                             </div>
@@ -86,7 +82,7 @@ const App = () => {
 
                             <div id = "convo_card_container" style = {{display:"flex", flexDirection:"row", flexWrap:"wrap", textAlign:"center"}}>
 
-                                <div className='conversationCard' style = {{display:"flex", justifyContent:"center", alignItems:"center", width:"250px", height:"215px", margin:"10px", backgroundColor:"white", borderRadius:"20px", boxShadow:"-2px 2px 2px gray"}} onClick = {() => (setChatroomPopupShowing(true))}>
+                                <div className='conversationCard' style = {{display:"flex", justifyContent:"center", alignItems:"center", width:"250px", maxWidth:"45vw", height:"215px", margin:"10px", backgroundColor:"white", borderRadius:"20px", boxShadow:"-2px 2px 2px gray"}} onClick = {() => (setChatroomPopupShowing(true))}>
                                     <h3>Create New<br/>Conversation!</h3>
                                 </div>
 

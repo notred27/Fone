@@ -55,13 +55,13 @@ function ConvoCard({chatroomId, chatroomName, enterChatroom, style}) {
 
 
     return (
-        <div style={{position:"relative", width:"250px", height:"fit-content", margin:"10px", boxShadow:"-2px 2px 2px gray", backgroundColor:"gray", borderRadius:"15px"}} >
+        <div style={{position:"relative", width:"250px", maxWidth:"45vw", height:"fit-content", margin:"10px", boxShadow:"-2px 2px 2px gray", backgroundColor:"white", borderRadius:"15px"}} >
 
-            <img className= "conversationCard" src={cardTheme} alt='style_banner' style={{margin:"0px", borderTopLeftRadius:"15px", borderTopRightRadius:"15px"}} onClick = {() => {enterChatroom(chatroomId)}}></img>
+            <img className= "conversationCard" src={cardTheme} alt='style_banner' style={{margin:"0px", borderTopLeftRadius:"15px", borderTopRightRadius:"15px", width:"100%"}} onClick = {() => {enterChatroom(chatroomId)}}></img>
 
-            <div style={{position:"relative", backgroundColor:"white", padding:"10px", textAlign:"left", borderBottomRightRadius:"15px", borderBottomLeftRadius:"15px"}}>
+            <div style={{position:"relative", backgroundColor:"white", padding:"12px", textAlign:"left", borderBottomRightRadius:"15px", borderBottomLeftRadius:"15px"}}>
 
-                <div className='convoDropdown' style = {{float:"right", position:"absolute", right:"4px", top:"0px", display:"inline-block"}}>
+                <div className='convoDropdown' style = {{float:"right", position:"absolute", right:"4px", top:"-6px", display:"inline-block"}}>
                     <button style={{ padding:"2px", backgroundColor:"white", border:"0px", borderRadius:"10px"}} onClick={() => setIsDropped(!isDropped)}>
                         <svg width="22" height="6" viewBox="0 0 22 6" fill="none" >
                             <circle cx="3" cy="3" r="3" fill="black"/>
@@ -73,7 +73,7 @@ function ConvoCard({chatroomId, chatroomName, enterChatroom, style}) {
                     {/* Some unexpected behavior, find a workaround for detecting clicks globally */}
                     {isDropped && <div className='convoDropdownItems' style={{zIndex:"100", border:"solid #ececec 1px", borderRadius:"5px"}}>
                         <div onClick={() => (setChangingName(true))}>Rename</div>
-                        <div onClick={() => (setChangingTheme(true))}>Theme</div>
+                        <div onClick={() => (setChangingTheme(imessageBanner))}>Theme</div>
                         <div onClick={deleteCard} style={{color:"red"}}>Delete</div>
                     </div>}
                 </div>
@@ -85,82 +85,97 @@ function ConvoCard({chatroomId, chatroomName, enterChatroom, style}) {
             </div>
 
 
-
-            {changingTheme &&
+            {/* Popup menu for changing a chatrooms theme */}
+            {changingTheme !== false &&
                 <PopupWrapper>
 
-                    <div className="centered" style={{backgroundColor:"white", width:"fit-content", padding:"50px", borderRadius:"10px"}}>
-                        <h3>Select Chatroom Theme:</h3>
+                    <div className="popupBg">
+                        <h3 className='menuHeader' >Select Chatroom Theme</h3>
+
+                        <img src={changingTheme} alt='style_banner' style={{margin:"0px"}} />
 
                         <form id = "theme_change_form" autoComplete='off' onSubmit={(e) => {e.preventDefault();}}>
-                            <input type="radio" id = "theme0" name="themeType" value = {CHATROOM_THEMES.imessage} defaultChecked/>
-                            <label >imessage</label>
+                            <input type="radio" id = "theme0" name="themeType" value = {CHATROOM_THEMES.imessage} onClick={() => (setChangingTheme(imessageBanner))} defaultChecked />
+                            <label for = "theme0">imessage</label>
 
                             <br/>
 
-                            <input type="radio" id = "theme1" name="themeType" value = {CHATROOM_THEMES.sms} />
-                            <label >SMS</label>
+                            <input type="radio" id = "theme1" name="themeType" value = {CHATROOM_THEMES.sms} onClick={() => (setChangingTheme(smsBanner))} />
+                            <label for = "theme1">SMS</label>
 
                             <br/>
 
-                            <input type="radio" id = "theme2" name="themeType" value = {CHATROOM_THEMES.gmessage} />
-                            <label >Google Messages</label>
+                            <input type="radio" id = "theme2" name="themeType" value = {CHATROOM_THEMES.gmessage} onClick={() => (setChangingTheme(gmessageBanner))} />
+                            <label for = "theme2">Google Messages</label>
 
                             <br/>
 
-                            <input type="radio" id = "theme2" name="themeType" value = {CHATROOM_THEMES.whatsapp} />
-                            <label >Whats App</label>
+                            <input type="radio" id = "theme3" name="themeType" value = {CHATROOM_THEMES.whatsapp} onClick={() => (setChangingTheme(whatsappBanner))} />
+                            <label for = "theme3">Whats App</label>
 
                             <br/>
                             <br/>
 
+                            <span className='flexRow' style={{justifyContent: "center", alignItems: "center"}} >
                       
-                            <button onClick={() => {
-                                
-                                if(style !== document.getElementById('theme_change_form').elements['themeType'].value){
-                                    setChatroomTheme(chatroomId, document.getElementById('theme_change_form').elements['themeType'].value)
-                                }
+                                <button className='menuAccept' style={{marginRight:"20%"}} onClick={() => {
+                                    
+                                    if(style !== document.getElementById('theme_change_form').elements['themeType'].value){
+                                        setChatroomTheme(chatroomId, document.getElementById('theme_change_form').elements['themeType'].value)
+                                    }
 
 
-                                setChangingTheme(false);
-                                setIsDropped(false)
-                                 
-                                 }}>Accept</button>
+                                    setChangingTheme(false);
+                                    setIsDropped(false)
+                                    
+                                    }}>Accept</button>
 
+
+                                <button className='menuBack'  onClick={() => {setChangingTheme(false); setIsDropped(false)}}>Back</button>
+                            </span>
                         </form>
 
 
-                        <button onClick={() => {setChangingTheme(false); setIsDropped(false)}}>Back</button>
                         
                     </div>
                 </PopupWrapper>
             }
 
+
+            {/* Popup menu for changing a chatrooms name */}
             {changingName &&
                 <PopupWrapper>
 
-                    <div className="centered" style={{backgroundColor:"white", width:"fit-content", padding:"50px", borderRadius:"10px"}}>
+                    <div className="popupBg">
 
                         
-                        <h3>Current Name:</h3>
-                        <h4>{chatroomName}</h4>
+                        <h3 className='menuHeader' >Current Name</h3>
+                        <h4 style={{margin:"0px"}}>{chatroomName}</h4>
 
-                        <h3>New Name:</h3>
-                        <input id = "name_change_input"></input>
+                        <br/>
+                        <h3   className='menuHeader' >New Name</h3>
+                        <input id = "name_change_input" className='menuInput'/>
 
                         <br/>
                         <br/>
 
-                        <button onClick={() => {
-                            if(document.getElementById("name_change_input").value !== "") {
-                                setChatroomName(chatroomId, document.getElementById("name_change_input").value);
-                            }
-                            setChangingName(false);
-                            setIsDropped(false);
-                              
-                            }}>Accept</button>
-                        <br/>
-                        <button onClick={() => {setChangingName(false); setIsDropped(false)}}>Back</button>
+                        <span className='flexRow' style={{justifyContent: "center", alignItems: "center"}} >
+
+                            <button className='menuAccept' style={{marginRight:"20%"}} onClick={() => {
+                                if(document.getElementById("name_change_input").value !== "") {
+                                    setChatroomName(chatroomId, document.getElementById("name_change_input").value);
+                                }
+                                setChangingName(false);
+                                setIsDropped(false);
+                                
+                                }}>Accept</button>
+
+
+                            <button className='menuBack' onClick={() => {setChangingName(false); setIsDropped(false)}}>Back</button>
+
+                            <br/>
+                        </span>
+
                         
                     </div>
                 </PopupWrapper>
