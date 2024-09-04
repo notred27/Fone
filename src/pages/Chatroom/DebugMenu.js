@@ -1,5 +1,5 @@
 import React, {useRef} from 'react'
-import {sendMessage, sendTimestamp, setMessageFlair, fileUpload, setTypingStatus} from './firebase.js';
+import {sendMessage, sendTimestamp, setMessageFlair, fileUpload, setTypingStatus} from '../../firebase.js';
 
 
 function DebugMenu({chatroomId, setDeliveredMsg}) {

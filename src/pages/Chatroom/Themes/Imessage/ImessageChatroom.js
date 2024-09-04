@@ -1,6 +1,6 @@
 import React from 'react';
-import Header from './Header';
-import Keyboard from './Keyboard';
+import ImessageHeader from './ImessageHeader';
+import ImessageKeyboard from './ImessageKeyboard';
 
 /**
  * A component that contains the styled elements of an imessage chatroom, and is linked to a specific Firestore database ID.
@@ -11,14 +11,14 @@ function ImessageChatroom({chatroomId, renderedMessages, enterDebug, exitRoom}) 
     return (
 
         <div>
-            <Header chatroomId = {chatroomId} hideFunc = {enterDebug} exitRoom = {exitRoom} />
+            <ImessageHeader chatroomId = {chatroomId} hideFunc = {enterDebug} exitRoom = {exitRoom} />
         
             {/* Header for Messages text */}
             <div className='date'><span style={{fontWeight:"bold"}}>Text Message</span></div>
 
             {renderedMessages}
 
-            <Keyboard chatroomId = {chatroomId} />
+            <ImessageKeyboard chatroomId = {chatroomId} />
         </div>
 
     )

@@ -1,12 +1,12 @@
-import micImg from './images/whatsappMic.png'
-import uploadImg from './images/whatsappUpload.png'
-import add_btn from './images/whatsappAddImg.png'
+import micImg from '../../../../assets/mic.png'
+import uploadImg from '../../../../assets/upload.png'
+import add_btn from '../../../../assets/add_img.png'
 
 import React, {useRef, useState} from 'react'
-import {fileUpload, sendMessage} from './firebase.js'
+import {fileUpload, sendMessage} from '../../../../firebase.js'
 
 
-function WhatsappKeyboard({chatroomId}) {
+function ImessageKeyboard({chatroomId}) {
     const inputRef = useRef("");                    // TODO: Change this to document.getElementById?
     const fileSelectRef = useRef("");               // HACK: Holds a reference to the file input so it can remain hidden but used
     const [sendImg, setSendImg] = useState(micImg); // Holds the current image for the submit button
@@ -54,27 +54,23 @@ function WhatsappKeyboard({chatroomId}) {
     }
 
     return (
-        <div style = {{position:"fixed", width:"min(100vw, 100vmin)", bottom:"0px", paddingTop:"5px", paddingBottom:"5px", backgroundColor:"#E5DDD5"}}>
-            <form style ={{display:"flex", flexDirection:"row"}} onSubmit={(e) => {sendMessageToFirebase(e)}}>
-                <div style ={{position:"relative", width:"80%"}}>
-                    <input id = 'keyboard_input' className='whatsappInput' ref = {inputRef} onChange={(e) => (changeSendIcon(e.target.value))} placeholder='Type a message' ></input>
-                    
-                    <span style = {{position:"absolute", right:"-18px", borderRadius:"20px", top:"0.5em"}}>
-                        <img src ={add_btn} alt = "add_image_icon" style={{height:"1.2em"}} onClick={() => (fileSelectRef.current.click())}></img>
-                        {/* Workaround for styling the file select button */}
-                        <input id = "keyboard_img_upload" type="file" accept = "image/*" ref = {fileSelectRef} style={{display:"none"}} onChange={(e) => (uploadImage(e))}/>
+        <div className='keyboard' style = {{position:"fixed", width:"min(100vw, 100vmin)", bottom:"0px", backgroundColor:"white"}}>
+            <form style ={{display:"flex", flexDirection:"row", justifyContent:"center"}} onSubmit={(e) => {sendMessageToFirebase(e)}}>
+                <div>
+                    <img src ={add_btn} alt = "add_image_icon" style={{height:"1.8em", marginRight:"10px"}} onClick={() => (fileSelectRef.current.click())}></img>
+                    {/* Workaround for styling the file select button */}
+                    <input id = "keyboard_img_upload" type="file" accept = "image/*" ref = {fileSelectRef} style={{display:"none"}} onChange={(e) => (uploadImage(e))}/>
 
-                    </span>
                 </div>
                 
-                
-                
-                <img type = "submit" src = {sendImg} alt ="submit" onClick={(event) => sendMessageToFirebase(event)} style = {{height:"calc(1em + 20px)", position:"absolute", right:"5px"}}></img>
-
-                
+                <div style ={{position:"relative", width:"80%"}}>
+                    <input id = 'keyboard_input' className='messageInput' ref = {inputRef} onChange={(e) => (changeSendIcon(e.target.value))} placeholder='Message' ></input>
+                    <img type = "submit" src = {sendImg} alt ="submit" onClick={(event) => sendMessageToFirebase(event)} style = {{height:"20px", position:"absolute", right:"2px", top:"6px"}}></img>
+                    
+                </div>
             </form>
         </div>
     );
 }
 
-export default WhatsappKeyboard;
+export default ImessageKeyboard;

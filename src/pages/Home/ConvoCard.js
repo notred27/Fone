@@ -1,13 +1,15 @@
-import imessageBanner from './images/imessageBanner.png'
-import smsBanner from './images/smsBanner.png'
-import gmessageBanner from './images/gmessageBanner.png'
-import whatsappBanner from './images/whatsappBanner.png'
+import imessageBanner from '../../assets/imessageBanner.png'
+import smsBanner from '../../assets/smsBanner.png'
+import gmessageBanner from '../../assets/gmessageBanner.png'
+import whatsappBanner from '../../assets/whatsappBanner.png'
 
 
 import { useState } from 'react';
-import { deleteConversation, setChatroomName, setChatroomTheme } from './firebase.js';
-import PopupWrapper from './PopupWrapper.js';
-import { CHATROOM_THEMES } from './ChatPane.js'; 
+import { deleteConversation, setChatroomName, setChatroomTheme } from '../../firebase.js';
+import PopupWrapper from '../../PopupWrapper.js';
+import { CHATROOM_THEMES } from '../../index.js'; 
+import { Link } from 'react-router-dom';
+
 
 /**
  * A card representing a chatroom. Can be clicked by a user to enter the corresponding chatroom.
@@ -57,7 +59,9 @@ function ConvoCard({chatroomId, chatroomName, enterChatroom, style}) {
     return (
         <div style={{position:"relative", width:"250px", maxWidth:"45vw", height:"fit-content", margin:"10px", boxShadow:"-2px 2px 2px gray", backgroundColor:"white", borderRadius:"15px"}} >
 
-            <img className= "conversationCard" src={cardTheme} alt='style_banner' style={{margin:"0px", borderTopLeftRadius:"15px", borderTopRightRadius:"15px", width:"100%"}} onClick = {() => {enterChatroom(chatroomId)}}></img>
+            <Link to={`/chatroom/${chatroomId}`}>
+                <img className= "conversationCard" src={cardTheme} alt='style_banner' style={{margin:"0px", borderTopLeftRadius:"15px", borderTopRightRadius:"15px", width:"100%"}} ></img>
+            </Link>
 
             <div style={{position:"relative", backgroundColor:"white", padding:"12px", textAlign:"left", borderBottomRightRadius:"15px", borderBottomLeftRadius:"15px"}}>
 

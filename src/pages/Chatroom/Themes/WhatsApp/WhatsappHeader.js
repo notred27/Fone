@@ -1,13 +1,13 @@
-import defaultImg from './images/user.png';
-import facetimeImg from './images/whatsappFacetime.png';
-import arrowImg from './images/whatsappArrow.png';
+import defaultImg from '../../../../assets/user.png';
+import facetimeImg from '../../../../assets/whatsappFacetime.png';
+import arrowImg from '../../../../assets/whatsappArrow.png';
 
 import React, {useRef, useState, useEffect} from 'react';
 import {query, onSnapshot, doc} from "firebase/firestore";
-import {db, setDisplayName, profilePicUpload} from './firebase.js';
+import {db, setDisplayName, profilePicUpload} from '../../../../firebase.js';
 
 
-// IDEA: CHange header to fixed to avoid movement on mobile?
+// IDEA: Change header to fixed to avoid movement on mobile?
 
 function Header({chatroomId, hideFunc, exitRoom}) {
     const [isHidden, setIsHidden] = useState(true);     // Boolean for if debug mode is currently active

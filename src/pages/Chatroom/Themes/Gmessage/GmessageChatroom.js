@@ -1,6 +1,6 @@
 import React from 'react';
-import GHeader from './GHeader';
-import GKeyboard from './GKeyboard';
+import GmessageHeader from './GmessageHeader';
+import GmessageKeyboard from './GmessageKeyboard';
 
 /**
  * A component that contains the styled elements of an imessage chatroom, and is linked to a specific Firestore database ID.
@@ -11,14 +11,14 @@ function GmessageChatroom({chatroomId, renderedMessages, enterDebug, exitRoom}) 
     return (
 
         <div>
-            <GHeader chatroomId = {chatroomId} hideFunc = {enterDebug} exitRoom = {exitRoom} />
+            <GmessageHeader chatroomId = {chatroomId} hideFunc = {enterDebug} exitRoom = {exitRoom} />
         
             {/* Header for Messages text */}
             <div className='date'><span style={{fontWeight:"bold"}}>Text Message</span></div>
 
             {renderedMessages}
 
-            <GKeyboard chatroomId = {chatroomId} />
+            <GmessageKeyboard chatroomId = {chatroomId} />
         </div>
 
     )

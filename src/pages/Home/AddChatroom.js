@@ -1,23 +1,24 @@
-import iPhoneConvoImage from './images/imessageConvo.png'
-import smsConvoImage from './images/smsConvo.png'
-import androidConvoImage from './images/gmessageConvo.png'
-import whatsappConvoImage from './images/whatsappConvo.png'
+import iPhoneConvoImage from '../../assets/imessageConvo.png'
+import smsConvoImage from '../../assets/smsConvo.png'
+import androidConvoImage from '../../assets/gmessageConvo.png'
+import whatsappConvoImage from '../../assets/whatsappConvo.png'
 
 
 import React, {useState, useEffect} from 'react'
-import {createConversation, getNumConversations} from './firebase.js';
-import PopupWrapper from './PopupWrapper.js'
+import {createConversation, getNumConversations} from '../../firebase.js';
+import PopupWrapper from '../../PopupWrapper.js'
 
 
 /**
  * Popup menu that is used to create a new chatroom.
  * @param {Array<Function>} props Array containing function to dismiss this popup. 
  */
-function ChatroomMenu({hidePopup}) {
+function AddChatroom() {
     const [theme, setTheme] = useState(iPhoneConvoImage);  // Holds the currently selected theme image of the new chatroom
     const [numRooms, setNumRooms] = useState("");          // Holds the current number of accessible conversations
+    const [chatroomPopupShowing, setChatroomPopupShowing] = useState(false);
 
-
+    
     // Get the current number of accessible conversations
     useEffect(() => {
         async function getNum() {
@@ -46,13 +47,17 @@ function ChatroomMenu({hidePopup}) {
 
         // After creating the chatroom in firebase, hide this popup
         createConversation(roomName, displayName, roomTheme);
-        hidePopup(false); 
+        setChatroomPopupShowing(false); 
     }
 
 
     return (
         <div >
-            <PopupWrapper>
+            <div className='conversationCard' style = {{display:"flex", justifyContent:"center", alignItems:"center", width:"250px", maxWidth:"45vw", height:"215px", margin:"10px", backgroundColor:"white", borderRadius:"20px", boxShadow:"-2px 2px 2px gray"}} onClick = {() => (setChatroomPopupShowing(true))}>
+                <h3>Create New<br/>Conversation!</h3>
+            </div>
+
+            {chatroomPopupShowing && <PopupWrapper>
                 <form className="popupBg" id = "chatroomPopup" style={{padding:"25px"}} onSubmit={(e) => (createRoom(e))}  >
                     
                     <div className = "flexRow" style = {{ flexWrap:"wrap", alignContent:"center", justifyContent:"center", padding:"10px"}}>
@@ -86,20 +91,14 @@ function ChatroomMenu({hidePopup}) {
                                 </span>
 
                             </div>
-                            
-
-
                         </div>
                     
-
-
                         <div style = {{padding:"10px", textAlign:"center"}}>
                             <h3 className='menuHeader'>Chatroom Name</h3>
                             <input id = "roomNameInput" className='menuInput' placeholder={`Room ${numRooms}`}/>
 
                             <br/>
                             <br/>
-
 
                             <h3 className='menuHeader'>Display Name</h3>
                             <input id = "displayNameInput" className='menuInput' placeholder="Username" />
@@ -108,20 +107,15 @@ function ChatroomMenu({hidePopup}) {
                             <br/>
                         </div>
 
-
                     </div>
-                    <button className='menuBack' style ={{position:"absolute", right:"10px", top:"10px"}} onClick={() =>(hidePopup(false))}>Back</button>
-
-
+                    <button className='menuBack' style ={{position:"absolute", right:"10px", top:"10px"}} onClick={() =>(setChatroomPopupShowing(false))}>Back</button>
                     <button className="centered menuAccept" type = "submit"  > Create Chatroom! </button>
                     
                 </form>
-
-
-            </PopupWrapper>
+            </PopupWrapper>}
             
         </div>)
 }
 
 
-export default ChatroomMenu;
+export default AddChatroom;

@@ -1,15 +1,15 @@
-import defaultImg from './images/user.png';
-import facetimeImg from './images/gmFacetime.png';
-import arrowImg from './images/gmArrow.png';
+import defaultImg from '../../../../assets/user.png';
+import facetimeImg from '../../../../assets/facetime.png';
+import arrowImg from '../../../../assets/arrow.png';
 
 import React, {useRef, useState, useEffect} from 'react';
 import {query, onSnapshot, doc} from "firebase/firestore";
-import {db, setDisplayName, profilePicUpload} from './firebase.js';
+import {db, setDisplayName, profilePicUpload} from '../../../../firebase.js';
 
 
 // IDEA: CHange header to fixed to avoid movement on mobile?
 
-function GHeader({chatroomId, hideFunc, exitRoom}) {
+function ImessageHeader({chatroomId, hideFunc, exitRoom}) {
     const [isHidden, setIsHidden] = useState(true);     // Boolean for if debug mode is currently active
     const [name, setName] = useState("_");              // Stores the current username of the "reciever"
     const [userImg, setUserImg] = useState(defaultImg); // Stores the current profile picture of the "reciever"
@@ -58,34 +58,36 @@ function GHeader({chatroomId, hideFunc, exitRoom}) {
     }
     
     return (
-        <div className= 'gmessageHeaderBox'>
+        <div className= 'headerBox' style={{alignItems:"center"}}>
             {/* Icon to exit this chatroom */}
-            <img src = {arrowImg} alt = "flair" style = {{placeSelf:"center", height:"22px"}} onClick={() => (exitRoom(null))}/>
+            <img src = {arrowImg} alt = "flair" style = {{placeSelf:"center", height:"15px"}} onClick={() => (exitRoom(null))}/>
 
-            {isHidden ?
-                <img src = {userImg} alt = "user" style={{width:"30px", height:"30px", borderRadius:"20px"}} />
-            :
-                <div>
-                    <img src = {userImg} alt = "user" style={{width:"30px"}} />
-                    <label>
-                        <input id = "profilePicInput" type = "file"  accept = "image/*" onChange={uploadPicture} />
-                    </label>
-                </div>
-            }
-            
-        
-            
             {isHidden ? 
-                <h4 >{name}</h4>
+                // Display the header information in normal mode
+                <figure style = {{placeSelf:"center", margin:"5px", marginTop:"10px"}}>
+                    <img src = {userImg} alt = "user" style={{width:"30px", height:"30px", borderRadius:"20px"}} />
+                    <figcaption className='title' style={{textAlign:"center"}}>{name}</figcaption>
+                </figure>
             :
-                <input ref = {nameBarRef} placeholder={name} style = {{height:"1em"}} />
+                // Display editable information in debug mode
+                <div style = {{placeSelf:"center", margin:"5px"}}>
+                    <div >
+                        <img src = {userImg} alt = "user" style={{width:"30px"}} />
+                        <label>
+                            <input id = "profilePicInput" type = "file"  accept = "image/*" onChange={uploadPicture} />
+                        </label>
+                    </div>
+
+                    <input ref = {nameBarRef} placeholder={name} style = {{height:"1em"}} />
+
+                </div>
             }
 
             {/* Icon to toggle showing the debug menu */}
-            <img src = {facetimeImg} alt = "toggleEdit" onClick={toggleDebug} style = {{alignSelf:"right", height:"22px"}}/>
+            <img src = {facetimeImg} alt = "toggleEdit" onClick={toggleDebug} style = {{placeSelf:"center",height:"15px"}}/>
         </div>
 
     )
 }
 
-export default GHeader
+export default ImessageHeader;

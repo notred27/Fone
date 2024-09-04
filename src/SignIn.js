@@ -1,21 +1,30 @@
-import signInImage from "./images/branding_guideline_sample_lt_rd_lg.svg";
+import signInImage from "./assets/branding_guideline_sample_lt_rd_lg.svg";
 
 import React, { useState } from 'react';
 import {auth} from './firebase.js';
 import {useAuthState} from 'react-firebase-hooks/auth';
 import {GoogleAuthProvider, signInWithPopup} from 'firebase/auth';
 import PopupWrapper from "./PopupWrapper.js";
+import { useNavigate } from "react-router-dom";
 
 
 const SignIn = () => {
     const [user] = useAuthState(auth);  // Holds the user info of the current authenticated user
     const [signingOut, setSigningOut] = useState(false)
+
+    const nav = useNavigate()
     /**
      * Sign into the application using Google authentication. This will create a popup window for the user to sign in.
      */
     const googleSignIn = async () => {
         const provider = new GoogleAuthProvider();
-        await signInWithPopup(auth, provider);
+        await signInWithPopup(auth, provider)
+        .then(() => (nav("/home")))
+        .catch(error => {
+          // TODO: Find a catch for this?
+          console.log("Login Failed: ")
+          console.log(error)
+        })
     };
 
     /**
@@ -24,6 +33,7 @@ const SignIn = () => {
     const signOut = () => {
         auth.signOut();
     };
+
 
 
     return (
@@ -41,7 +51,7 @@ const SignIn = () => {
             <div className="popupBg">
               <h3>Would you like to sign out?</h3>
               <span className='flexRow' style={{justifyContent: "center", alignItems: "center"}} >
-                <button className="menuAccept" style={{marginRight:"20%"}} onClick = {() => {setSigningOut(false); signOut();}}> Sign Out </button>
+                <button className="menuAccept" style={{marginRight:"20%"}} onClick = {() => {setSigningOut(false); signOut(); nav("/");}}> Sign Out </button>
                 <button className="menuBack" onClick = {() => (setSigningOut(false))}> Back </button>
               </span>
             </div>

@@ -1,7 +1,7 @@
 import React from 'react';
 import WhatsappHeader from './WhatsappHeader.js';
 import WhatsappKeyboard from './WhatsappKeyboard.js';
-import WhatsappBg from './images/whatsappBg.png'
+import WhatsappBg from '../../../../assets/whatsappBg.png'
 
 /**
  * A component that contains the styled elements of an imessage chatroom, and is linked to a specific Firestore database ID.

@@ -1,12 +1,12 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { showMessage, hideMessage, deleteItem, fileDeletion } from './firebase.js';
 import { query, onSnapshot, doc } from "firebase/firestore";
 import { db } from "./firebase.js"
 
 
-import imessageTail from './images/imessageTail.png'
-import smsTail from './images/smsTail.png'
-import msgTail2 from './images/serverTail.png'
+import imessageTail from './assets/imessageTail.png'
+import smsTail from './assets/smsTail.png'
+import msgTail2 from './assets/serverTail.png'
 
 
 function ChatItemWrapper({data, chatroomId, chatroomStyle, isVisible}) {
@@ -34,7 +34,7 @@ function ChatItemWrapper({data, chatroomId, chatroomStyle, isVisible}) {
     function removeItemFromDatabase() {
         deleteItem(chatroomId, data.id);
 
-        if(data.type === "sentImage" || data.type == "recievedImage") {
+        if(data.type === "sentImage" || data.type === "recievedImage") {
             fileDeletion(data.filename) // Remove file in Firebase Storage
         }
         

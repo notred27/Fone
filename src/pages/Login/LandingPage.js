@@ -1,7 +1,8 @@
 
-import SignIn from './SignIn.js';
-import logoImg from './images/logo.png'
+import SignIn from '../../SignIn.js';
+import logoImg from '../../assets/logo.png'
 
+// FIXME: This is obsolete, only here so App.js doesn't break
 
 /**
  * Simple landing page with a button to sign in.

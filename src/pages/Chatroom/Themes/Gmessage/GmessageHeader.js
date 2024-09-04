@@ -1,15 +1,15 @@
-import defaultImg from './images/user.png';
-import facetimeImg from './images/facetime.png';
-import arrowImg from './images/arrow.png';
+import defaultImg from '../../../../assets/user.png';
+import facetimeImg from '../../../../assets/gmFacetime.png';
+import arrowImg from '../../../../assets/gmArrow.png';
 
 import React, {useRef, useState, useEffect} from 'react';
 import {query, onSnapshot, doc} from "firebase/firestore";
-import {db, setDisplayName, profilePicUpload} from './firebase.js';
+import {db, setDisplayName, profilePicUpload} from '../../../../firebase.js';
 
 
 // IDEA: CHange header to fixed to avoid movement on mobile?
 
-function Header({chatroomId, hideFunc, exitRoom}) {
+function GmessageHeader({chatroomId, hideFunc, exitRoom}) {
     const [isHidden, setIsHidden] = useState(true);     // Boolean for if debug mode is currently active
     const [name, setName] = useState("_");              // Stores the current username of the "reciever"
     const [userImg, setUserImg] = useState(defaultImg); // Stores the current profile picture of the "reciever"
@@ -58,36 +58,34 @@ function Header({chatroomId, hideFunc, exitRoom}) {
     }
     
     return (
-        <div className= 'headerBox' style={{alignItems:"center"}}>
+        <div className= 'gmessageHeaderBox'>
             {/* Icon to exit this chatroom */}
-            <img src = {arrowImg} alt = "flair" style = {{placeSelf:"center", height:"15px"}} onClick={() => (exitRoom(null))}/>
+            <img src = {arrowImg} alt = "flair" style = {{placeSelf:"center", height:"22px"}} onClick={() => (exitRoom(null))}/>
 
-            {isHidden ? 
-                // Display the header information in normal mode
-                <figure style = {{placeSelf:"center", margin:"5px", marginTop:"10px"}}>
-                    <img src = {userImg} alt = "user" style={{width:"30px", height:"30px", borderRadius:"20px"}} />
-                    <figcaption className='title' style={{textAlign:"center"}}>{name}</figcaption>
-                </figure>
+            {isHidden ?
+                <img src = {userImg} alt = "user" style={{width:"30px", height:"30px", borderRadius:"20px"}} />
             :
-                // Display editable information in debug mode
-                <div style = {{placeSelf:"center", margin:"5px"}}>
-                    <div >
-                        <img src = {userImg} alt = "user" style={{width:"30px"}} />
-                        <label>
-                            <input id = "profilePicInput" type = "file"  accept = "image/*" onChange={uploadPicture} />
-                        </label>
-                    </div>
-
-                    <input ref = {nameBarRef} placeholder={name} style = {{height:"1em"}} />
-
+                <div>
+                    <img src = {userImg} alt = "user" style={{width:"30px"}} />
+                    <label>
+                        <input id = "profilePicInput" type = "file"  accept = "image/*" onChange={uploadPicture} />
+                    </label>
                 </div>
+            }
+            
+        
+            
+            {isHidden ? 
+                <h4 >{name}</h4>
+            :
+                <input ref = {nameBarRef} placeholder={name} style = {{height:"1em"}} />
             }
 
             {/* Icon to toggle showing the debug menu */}
-            <img src = {facetimeImg} alt = "toggleEdit" onClick={toggleDebug} style = {{placeSelf:"center",height:"15px"}}/>
+            <img src = {facetimeImg} alt = "toggleEdit" onClick={toggleDebug} style = {{alignSelf:"right", height:"22px"}}/>
         </div>
 
     )
 }
 
-export default Header
+export default GmessageHeader;

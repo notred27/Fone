@@ -1,34 +1,33 @@
 import React, {useState, useRef, useEffect} from 'react';
 
-import ChatItemWrapper from './ChatItemWrapper.js';
+import ChatItemWrapper from '../../ChatItemWrapper.js';
 import DebugMenu from './DebugMenu.js';
 
 // import typing from './images/typing.gif'
 import {query, orderBy, onSnapshot, limit, doc,  collection} from "firebase/firestore";
-import {db} from './firebase.js';
+import {db} from '../../firebase.js';
 
-import ImessageChatroom from './ImessageChatroom.js';
-import GmessageChatroom from './GmessageChatroom.js';
-import WhatsappChatroom from './WhatsappChatroom.js';
+import ImessageChatroom from './Themes/Imessage/ImessageChatroom.js';
+import GmessageChatroom from './Themes/Gmessage/GmessageChatroom.js';
+import WhatsappChatroom from './Themes/WhatsApp/WhatsappChatroom.js';
+
+import { useParams, useNavigate } from 'react-router-dom';
 
 
-export const CHATROOM_THEMES = {
-    "imessage": "imessage",
-    "sms": "sms",
-    "gmessage": "gmessage",
-    "whatsapp": "whatsapp",
-}
+import {CHATROOM_THEMES} from '../../index.js'
 
 
 /**
  * A component that contains the functionality of a chatroom, and is linked to a specific Firestore database ID.
  * @param {Array<String, Function>} props The ID of the selected chatroom, and a function to set the value of the selected chatroom.
  */
-function ChatPane({chatroomId, exitRoom}) {
+function Chatroom() {
+    const {chatroomId} = useParams();   // Holds the id of the current chatroom
+    const nav = useNavigate();  // Navigate to /home 
+
     const [messages, setMessages] = useState([]);      //Array of internal objects that the user can see / interact with.
     const [isHidden, setIsHidden] = useState("none");  // Holds style information ("block" | "none") that determines if "hidden" components should be rendered.
     const [debugMode, setDebugMode] = useState(false); // Holds boolean for if the user is currently in debug mode.
-
 
     const [deliveredIdx, setDeliveredIdx] = useState(0);    // Holds the index of the last message that the user has sent.
     const [deliveredMsg, setDeliveredMsg] = useState("");   // Holds flair text (e.g., "Sent", "Seen") that may be displayed under the user's last sent message.
@@ -37,20 +36,24 @@ function ChatPane({chatroomId, exitRoom}) {
     const scrollPaneRef = useRef(null); // Holds a reference to the div that contains all message and content components
 
 
-     // TODO: Make the styles into an enum (and export it) for ease of use
-     const [msgTheme, setMsgTheme] = useState(CHATROOM_THEMES.imessage);  // Holds a string that represents what style the chatroom should be.
+    // TODO: Make the styles into an enum (and export it) for ease of use
+    const [msgTheme, setMsgTheme] = useState(CHATROOM_THEMES.imessage);  // Holds a string that represents what style the chatroom should be.
 
-     // Set the chatroom theme on initial entry
-     useEffect(() => {
-         if(chatroomId !== null) {
-             const q = query(doc(db, "Chatrooms", chatroomId))
-             onSnapshot(q, (snapshot) => {
-                 setMsgTheme(snapshot.data().style);
-                 setDeliveredMsg(snapshot.data().messageflair);
-             })
-         }
-     },[chatroomId]);
+    // Set the chatroom theme on initial entry
+    useEffect(() => {
+        if(chatroomId !== null) {
+            const q = query(doc(db, "Chatrooms", chatroomId))
+            onSnapshot(q, (snapshot) => {
+                setMsgTheme(snapshot.data().style);
+                setDeliveredMsg(snapshot.data().messageflair);
+            })
+        }
+    },[chatroomId]);
 
+
+    function exitRoom() {
+        nav("/home");
+    }
 
     // FIXME: Error with updating scroll
     // useEffect(() => {
@@ -63,7 +66,6 @@ function ChatPane({chatroomId, exitRoom}) {
     // Scroll to the most recent message when a new message is added / chatroom is entered
     useEffect(() => {
         scrollPaneRef.current.scrollTop = scrollPaneRef.current.scrollHeight;
-
     },[messages]);
 
 
@@ -113,15 +115,7 @@ function ChatPane({chatroomId, exitRoom}) {
         });
         return () => unsubscribe;
         // FIXME: change this to depend on something?? I put db but this could be wrong
-        // eslint-disable-next-line
       }, [db]);
-
-
-    
-
-
-
-
 
 
     /**
@@ -145,10 +139,8 @@ function ChatPane({chatroomId, exitRoom}) {
         scrollPaneRef.current.scrollTop = scrollPaneRef.current.scrollHeight;
     }
 
-
     const renderedMessages = messages.map((item) => {
         return <ChatItemWrapper key = {item.id} data = {item} chatroomId = {chatroomId} chatroomStyle={msgTheme} isVisible = {isHidden} ></ChatItemWrapper>
-        
     })
 
     // Insert the message flair into the list of rendered components
@@ -173,8 +165,6 @@ function ChatPane({chatroomId, exitRoom}) {
         case CHATROOM_THEMES.whatsapp:
             roomUi = <WhatsappChatroom chatroomId = {chatroomId} renderedMessages = {renderedMessages} enterDebug = {enterDebug} exitRoom = {exitRoom} />
             break;
-
-
     }
 
 
@@ -184,13 +174,6 @@ function ChatPane({chatroomId, exitRoom}) {
         <div className='flexRow'>
             <div style = {{width:"min(100vw, 100vmin)", height:"100vh",  marginLeft:"auto", marginRight:"auto", backgroundColor:`${msgTheme === "gmessage"? "#10131a" :"white"}`, position:"relative"}}>
                 <div ref = {scrollPaneRef} className= {`disable-scrollbars ${msgTheme}Bg`} >
-{/* 
-                    {msgTheme === CHATROOM_THEMES.gmessage ?
-                        <GmessageChatroom chatroomId = {chatroomId} renderedMessages = {renderedMessages} enterDebug = {enterDebug} exitRoom = {exitRoom}></GmessageChatroom>
-                    :
-                        <ImessageChatroom chatroomId = {chatroomId} renderedMessages = {renderedMessages} enterDebug = {enterDebug} exitRoom = {exitRoom}></ImessageChatroom>
-                    } */}
-
                     {roomUi}
                 </div>
             </div>
@@ -202,4 +185,4 @@ function ChatPane({chatroomId, exitRoom}) {
     )
 }
 
-export default ChatPane;
+export default Chatroom;
