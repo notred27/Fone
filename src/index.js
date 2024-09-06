@@ -28,12 +28,12 @@ const router = createBrowserRouter([
     errorElement: <PageNotFound />,      
   },
 
-  {
-    path: "/login",
-    element: <Login />,
-    errorElement: <PageNotFound />,    
+  // {
+  //   path: "/login",
+  //   element: <Login />,
+  //   errorElement: <PageNotFound />,    
 
-  },
+  // },
 
   {
     path: "/home",

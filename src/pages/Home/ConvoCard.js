@@ -57,7 +57,7 @@ function ConvoCard({chatroomId, chatroomName, enterChatroom, style}) {
 
 
     return (
-        <div style={{position:"relative", width:"250px", maxWidth:"45vw", height:"fit-content", margin:"10px", boxShadow:"-2px 2px 2px gray", backgroundColor:"white", borderRadius:"15px"}} >
+        <div className='convoCardElement' >
 
             <Link to={`/chatroom/${chatroomId}`}>
                 <img className= "conversationCard" src={cardTheme} alt='style_banner' style={{margin:"0px", borderTopLeftRadius:"15px", borderTopRightRadius:"15px", width:"100%"}} ></img>

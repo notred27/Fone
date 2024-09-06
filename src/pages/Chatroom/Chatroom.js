@@ -64,9 +64,9 @@ function Chatroom() {
     // }, [])
 
     // Scroll to the most recent message when a new message is added / chatroom is entered
-    useEffect(() => {
-        scrollPaneRef.current.scrollTop = scrollPaneRef.current.scrollHeight;
-    },[messages]);
+    // useEffect(() => {
+    //     scrollPaneRef.current.scrollTop = scrollPaneRef.current.scrollHeight;
+    // },[messages]);
 
 
     // Query Firebase DB and render received messages

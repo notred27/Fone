@@ -29,7 +29,7 @@ function ChatItemWrapper({data, chatroomId, chatroomStyle, isVisible}) {
 
 
     /**
-     * Delete the current Message object, and all references to it in Firebase.
+     * Delete the current chat item object, and all references to it in Firebase.
      */
     function removeItemFromDatabase() {
         deleteItem(chatroomId, data.id);
@@ -90,7 +90,7 @@ function ChatItemWrapper({data, chatroomId, chatroomStyle, isVisible}) {
 
     if(chatroomStyle === "imessage" || chatroomStyle === "sms"){
         if (data.type === "serverMsg") {
-            tail = <img src = {msgTail2} alt = "msg_tail_icon" style = {{position:"absolute", width:"20px", left:"2px", bottom:"-3px", zIndex:"1"}}></img>
+            tail = <img src = {msgTail2} alt = "msg_tail_icon" style = {{position:"absolute", width:"10px", left:"6px", bottom:"-1px", zIndex:"1"}}></img>
 
         } else if(chatroomStyle === "imessage") {
             tail = <img src = {imessageTail} alt = "msg_tail_icon" style = {{position:"absolute", width:"10px", right:"6px", bottom:"0px", zIndex:"1"}}></img>
@@ -105,15 +105,23 @@ function ChatItemWrapper({data, chatroomId, chatroomStyle, isVisible}) {
 
     return (
         <div style = {{position:"relative", width:"100%", opacity:`${isShowing ? "1" : "0.3"}`, display:`${!isShowing && isVisible === "none" ? "none" : "block"}`}}>
-            {renderComponent(data)}
+            
+            
+            <div style={{position:"relative"}}>
+                {renderComponent(data)}
 
-            {/* FIXME: See above */}
-            {data.tail && tail}
+                {/* FIXME: See above */}
+                {data.tail && tail}
+            </div>
 
-            <span className='flexRow'>
+            {/* IDEA: In each firestore object, have a boolean that represents if it was sent by the client, reciever, or system. 
+                        This eliminates redundant naming schemes, and would make it easier to set things like the just.Content tag below */}
+            
+            <span className='flexRow' style={{justifyContent:"flex-end", marginBottom:"10px"}}>
                 <button className = "HideButton" onClick={removeItemFromDatabase} style = {{display:`${isVisible}`, position:"relative"}}>Remove</button>
                 <button className = "HideButton" onClick = {toggleItemShow} style = {{display:`${isVisible}`, position:"relative"}}>{isShowing ? "Hide" : "Show"}</button>
             </span>
+            
 
             
 

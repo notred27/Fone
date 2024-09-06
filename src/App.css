@@ -385,6 +385,19 @@ input:focus {
   flex-direction:row;
   flex-wrap:wrap;
   text-align:center;
+  justify-content: center;
+  align-items: left;
+}
+
+.convoCardElement {
+position:relative;
+width:20vmax;
+min-width:200px;
+height:100%;
+margin:1%;
+box-shadow:-2px 2px 2px gray;
+background-color:white;
+border-radius:15px;
 }
 
 #homeHeader {
