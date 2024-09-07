@@ -53,7 +53,7 @@ function AddChatroom() {
 
     return (
         <div >
-            <div className='conversationCard' style = {{display:"flex", justifyContent:"center", alignItems:"center", width:"20vmax", minWidth:"200px", height:"90%", margin:"1vw", backgroundColor:"white", borderRadius:"20px", boxShadow:"-2px 2px 2px gray"}} onClick = {() => (setChatroomPopupShowing(true))}>
+            <div className='conversationCard' style = {{display:"flex", justifyContent:"center", alignItems:"center", width:"20vmax", minWidth:"200px", maxWidth:"300px", height:"90%", margin:"1vw", backgroundColor:"white", borderRadius:"20px", boxShadow:"-2px 2px 2px gray"}} onClick = {() => (setChatroomPopupShowing(true))}>
                 <h3>Create New<br/>Conversation!</h3>
             </div>
 
