@@ -1,4 +1,4 @@
-![](src/assets/logo.png)
+![](src/assets/logo.png) 
 # Fone! Fake Conversations, Real Projects
 
 [Fone](https://main.df41y9bj358vt.amplifyapp.com) is a real-time chatting application where users can customize every part of the conversation. 
