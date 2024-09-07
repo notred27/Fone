@@ -1,5 +1,5 @@
-![](assets/logo.png)
-# Fone!
+![](src/assets/logo.png)
+# Fone! Fake Conversations, Real Projects
 
 Fone is a real-time chatting application where users can customize every part of the conversation. 
 Choose from a selection of well known messaging app themes to get started, and then get started setting anything
