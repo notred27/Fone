@@ -46,7 +46,7 @@
 | type  | string | ["client" \| "server"] | Signifies if the message should be displayed as a client or server message.
 | filename  | string |  | Name (and path) of the file as saved in Firebase Storage.
 | url  | string |  | Firebase Storage api URL to display this image.
-| isShowing  | boolean |  | Signifies if the message should be displayed as a client or server message.
+| isShowing  | boolean |  | Signifies if the message should be displayed to the user.
 
 
 <br/>
@@ -57,3 +57,4 @@
 | obj  | string | "Timestamp" | Signifies that this document represents a Timestamp component.
 | date  | string |  | The bolded date component of the tag.s
 | time  | string |  | The time component of the tag.
+| isShowing  | boolean |  | Signifies if the message should be displayed to the user.

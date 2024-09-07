@@ -5,7 +5,7 @@ import whatsappBanner from '../../assets/whatsappBanner.png'
 
 
 import { useState } from 'react';
-import { deleteConversation, setChatroomName, setChatroomTheme } from '../../firebase.js';
+import { deleteConversation, setChatroomName, setChatroomTheme } from './HomeScripts.js';
 import PopupWrapper from '../../PopupWrapper.js';
 import { CHATROOM_THEMES } from '../../index.js'; 
 import { Link } from 'react-router-dom';

@@ -4,7 +4,8 @@ import arrowImg from '../../../../assets/gmArrow.png';
 
 import React, {useRef, useState, useEffect} from 'react';
 import {query, onSnapshot, doc} from "firebase/firestore";
-import {db, setDisplayName, profilePicUpload} from '../../../../firebase.js';
+import {db} from '../../../../firebase.js';
+import {setUsername, setProfilePic} from '../../ChatItemMethods.js';
 
 
 // IDEA: CHange header to fixed to avoid movement on mobile?
@@ -24,8 +25,8 @@ function GmessageHeader({chatroomId, hideFunc, exitRoom}) {
             onSnapshot(q, (snapshot) => {
                 setName(snapshot.data().username);
 
-                if(snapshot.data().profile_picture !== undefined){
-                    setUserImg(snapshot.data().profile_picture)
+                if(snapshot.data().profilePic !== undefined){
+                    setUserImg(snapshot.data().profilePic)
                 }
             })
         }
@@ -42,7 +43,7 @@ function GmessageHeader({chatroomId, hideFunc, exitRoom}) {
         if(!isHidden && nameBarRef.current.value !== "") {
             // If debug mode is being closed, update the display name in firestore
             setName(nameBarRef.current.value);
-            setDisplayName( chatroomId, nameBarRef.current.value);
+            setUsername(chatroomId, nameBarRef.current.value);
         }
     }
 
@@ -53,7 +54,7 @@ function GmessageHeader({chatroomId, hideFunc, exitRoom}) {
     function uploadPicture() {
         if(document.getElementById('profilePicInput').files.length >= 1) {
             const img = document.getElementById('profilePicInput').files[0];
-            profilePicUpload(chatroomId, img);
+            setProfilePic(chatroomId, img);
         }
     }
     

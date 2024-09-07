@@ -3,7 +3,8 @@ import uploadImg from '../../../../assets/whatsappUpload.png'
 import add_btn from '../../../../assets/whatsappAddImg.png'
 
 import React, {useRef, useState} from 'react'
-import {fileUpload, sendMessage} from '../../../../firebase.js'
+import {addImage, addMessage} from '../../ChatItemMethods.js'
+
 
 
 function WhatsappKeyboard({chatroomId}) {
@@ -20,7 +21,7 @@ function WhatsappKeyboard({chatroomId}) {
         event.preventDefault(); // Prevent page from refreshing on form submission
         
         if(inputRef.current.value !== "") { // Upload the message if one exists, and reset the input's value
-            sendMessage(chatroomId, inputRef.current.value, "clientMsg");
+            addMessage(chatroomId, inputRef.current.value, "client");
             inputRef.current.value = "";
             setSendImg(micImg); // Reset the upload icon to the microphone icon
         }
@@ -49,7 +50,7 @@ function WhatsappKeyboard({chatroomId}) {
 
         const file = document.getElementById('keyboard_img_upload').files;
         if(file.length >= 1) {  // Upload the image file (if it exists)
-            fileUpload(chatroomId, "sentImage", file[0])
+            addImage(chatroomId, "client", file[0])
         }
     }
 

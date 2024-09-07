@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { showMessage, hideMessage, deleteItem, fileDeletion } from './firebase.js';
 import { query, onSnapshot, doc } from "firebase/firestore";
-import { db } from "./firebase.js"
+import { db } from "../../firebase.js"
 
+import {removeChatComponent, removeImage, setMessageVisibility} from './ChatItemMethods.js'
 
-import imessageTail from './assets/imessageTail.png'
-import smsTail from './assets/smsTail.png'
-import msgTail2 from './assets/serverTail.png'
+import imessageTail from '../../assets/imessageTail.png'
+import smsTail from '../../assets/smsTail.png'
+import msgTail2 from '../../assets/serverTail.png'
 
 
 function ChatItemWrapper({data, chatroomId, chatroomStyle, isVisible}) {
@@ -32,10 +32,10 @@ function ChatItemWrapper({data, chatroomId, chatroomStyle, isVisible}) {
      * Delete the current chat item object, and all references to it in Firebase.
      */
     function removeItemFromDatabase() {
-        deleteItem(chatroomId, data.id);
+        removeChatComponent(chatroomId, data.id);
 
         if(data.type === "sentImage" || data.type === "recievedImage") {
-            fileDeletion(data.filename) // Remove file in Firebase Storage
+            removeImage(data.filename) // Remove file in Firebase Storage
         }
         
     }
@@ -44,12 +44,13 @@ function ChatItemWrapper({data, chatroomId, chatroomStyle, isVisible}) {
     /**
      * Toggles if the item is currently hidden in the Firestore database
     */
+//    TODO: Fix this method
     function toggleItemShow() {
         if(isShowing) {
-            hideMessage(chatroomId, data.id)
+            setMessageVisibility(chatroomId, data.id, false)
             setIsShowing(false)
         } else {
-            showMessage(chatroomId, data.id)
+            setMessageVisibility(chatroomId, data.id, true)
             setIsShowing(true)
         }
     }
@@ -61,24 +62,20 @@ function ChatItemWrapper({data, chatroomId, chatroomStyle, isVisible}) {
  * @returns {HTML} The HTML to render the object
  */
     function renderComponent(data) {
-        switch(data.type) {
+        switch(data.obj) {
             default: return null;
 
-            case "timestamp": return <div className='date'> <span style={{ fontWeight:"bold"}}>{data.date},</span><span>{data.time}</span></div>
+            case "Timestamp": return <div className='date'> <span style={{ fontWeight:"bold"}}>{data.date},</span><span>{data.time}</span></div>
 
-            case "clientMsg": return <div className={`chatMsg ${chatroomStyle}Client`}>{data.text}</div>
+            case "Message":
+                return <div className={`chatMsg ${chatroomStyle}_${data.type}`}>{data.text}</div>
 
-            case "serverMsg": return <div className={`chatMsg ${chatroomStyle}Server`}>{data.text}</div>
 
-            case "sentImage": 
+            case "Image": 
                 return <div className='imageContainer'>
-                            <img className={`chatImg sentImg`} src = {data.url} alt = "msg_pic" />
+                            <img className={`chatImg ${data.type}Image`} src = {data.url} alt = "msg_pic" />
                         </div>
 
-            case "recievedImage": 
-                return <div className='imageContainer'>
-                            <img className={`chatImg recievedImage`} src = {data.url} alt = "msg_pic" />
-                        </div>
         }
     }
 
@@ -89,7 +86,7 @@ function ChatItemWrapper({data, chatroomId, chatroomStyle, isVisible}) {
     
 
     if(chatroomStyle === "imessage" || chatroomStyle === "sms"){
-        if (data.type === "serverMsg") {
+        if (data.type === "server") {
             tail = <img src = {msgTail2} alt = "msg_tail_icon" style = {{position:"absolute", width:"10px", left:"6px", bottom:"-1px", zIndex:"1"}}></img>
 
         } else if(chatroomStyle === "imessage") {
@@ -100,6 +97,25 @@ function ChatItemWrapper({data, chatroomId, chatroomStyle, isVisible}) {
             
         } 
     }
+
+    console.log(data)
+
+    // Position the hide/remove buttons according to the item's position
+    let btnPosition = ""
+    switch(data.type) {
+        case "client": 
+            btnPosition = "flex-end"
+            break;
+
+        case "server": 
+            btnPosition = "flex-start"
+            break;
+
+        default: 
+            btnPosition = "center";
+            break;
+    }
+
 
 
 
@@ -117,7 +133,7 @@ function ChatItemWrapper({data, chatroomId, chatroomStyle, isVisible}) {
             {/* IDEA: In each firestore object, have a boolean that represents if it was sent by the client, reciever, or system. 
                         This eliminates redundant naming schemes, and would make it easier to set things like the just.Content tag below */}
             
-            <span className='flexRow' style={{justifyContent:"flex-end", marginBottom:"10px"}}>
+            <span className='flexRow' style={{justifyContent:`${btnPosition}`, marginBottom:"2px"}}>
                 <button className = "HideButton" onClick={removeItemFromDatabase} style = {{display:`${isVisible}`, position:"relative"}}>Remove</button>
                 <button className = "HideButton" onClick = {toggleItemShow} style = {{display:`${isVisible}`, position:"relative"}}>{isShowing ? "Hide" : "Show"}</button>
             </span>

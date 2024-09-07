@@ -5,7 +5,7 @@ import whatsappConvoImage from '../../assets/whatsappConvo.png'
 
 
 import React, {useState, useEffect} from 'react'
-import {createConversation, getNumConversations} from '../../firebase.js';
+import {createConversation, getNumConversations} from './HomeScripts.js';
 import PopupWrapper from '../../PopupWrapper.js'
 
 
@@ -38,11 +38,15 @@ function AddChatroom() {
         
         // Get the information about the new chatroom from the 'chatroomPopup' form
         const roomTheme = document.getElementById('chatroomPopup').elements['conversationTheme'].value;
-        const displayName = document.getElementById('chatroomPopup').elements['displayNameInput'].value;
+        let displayName = document.getElementById('chatroomPopup').elements['displayNameInput'].value;
         let roomName = document.getElementById('chatroomPopup').elements['roomNameInput'].value;
 
         if(roomName === "") {   //If no room name is specified, set the name to the current number of rooms
             roomName = `Room ${numRooms}`;
+        }
+
+        if(displayName === "") {
+            displayName = "User";
         }
 
         // After creating the chatroom in firebase, hide this popup

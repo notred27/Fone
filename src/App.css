@@ -113,47 +113,47 @@ button:hover{
 }
 
 
-.imessageClient {
+.imessage_client {
   background-color:rgb(17, 136, 255);
   color:white;
   margin-left:auto;
 }
 
-.imessageServer{
+.imessage_server{
   background-color:rgb(233, 233, 233);
   color:black;
 }
 
-.smsClient {
+.sms_client {
   background-color:rgb(46, 213, 88);
   color:white;
   margin-left:auto;
 }
 
-.smsServer{
+.sms_server{
   background-color:rgb(233, 233, 233);
   color:black; 
 }
 
-.gmessageClient {
+.gmessage_client {
   background-color:#a3abc0;
   color:#1b1a1f;
   margin-left:auto;
 }
 
-.gmessageServer{
+.gmessage_server{
   background-color:#303032;
   color:#e3e1e6;
 }
 
-.whatsappClient {
+.whatsapp_client {
   background-color:#E0FDC4;
   color:black;
   margin-left:auto;
   border-radius: 5px;
 }
 
-.whatsappServer{
+.whatsapp_server{
   background-color:white;
   color:black;
   border-radius: 5px;
@@ -215,12 +215,12 @@ overscroll-behavior-y:none;
   margin-bottom:5px;
 }
 
-.sentImg {
+.clientImage {
   float:right;
   margin-right: 10px;
 }
 
-.recievedImg {
+.serverImage {
   margin-left: 10px;
 }
 

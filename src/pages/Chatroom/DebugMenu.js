@@ -1,6 +1,5 @@
 import React, {useRef} from 'react'
-import {sendMessage, sendTimestamp, setMessageFlair, fileUpload, setTypingStatus} from '../../firebase.js';
-
+import { addMessage, addTimestamp, addImage, setIsTyping, setMessageFlair } from './ChatItemMethods.js';
 
 function DebugMenu({chatroomId, setDeliveredMsg}) {
     const imageSubmit = useRef(null);   // Stores the currently selected file from the "imageForm" form
@@ -10,14 +9,14 @@ function DebugMenu({chatroomId, setDeliveredMsg}) {
      * Submit the completed "messageForm" and create the corresponding message object in Firestore.
      * @param {FormEvent} event React HTML form event.
      */
-    function addMessage(event) {
+    function addMessageComponent(event) {
         event.preventDefault(); // Prevent form submission from refreshing page
 
         const messageType = document.getElementById('messageForm').elements['addType'].value;
         const message = document.getElementById('messageForm').elements['messageContent'].value;
 
         if (message !== "") {   // Upload a message if it is not empty, and reset value after upload
-            sendMessage(chatroomId, message, messageType);
+            addMessage(chatroomId, message, messageType);
             document.getElementById('messageForm').elements['messageContent'].value = "";
         }
     }
@@ -33,7 +32,7 @@ function DebugMenu({chatroomId, setDeliveredMsg}) {
         const date = document.getElementById('timestampForm').elements['formDate'].value;
         const time = document.getElementById('timestampForm').elements['formTime'].value;
 
-        sendTimestamp(chatroomId, date, time)
+        addTimestamp(chatroomId, date, time)
     }
 
 
@@ -43,7 +42,7 @@ function DebugMenu({chatroomId, setDeliveredMsg}) {
     // TODO: Finish implementing this in other components, along with the autodetect option
     function setTyping() {
         const val = document.getElementById('typingCheckbox').checked;
-        setTypingStatus(chatroomId, val)
+        setIsTyping(chatroomId, val)
     }
 
 
@@ -58,7 +57,7 @@ function DebugMenu({chatroomId, setDeliveredMsg}) {
         const file = document.getElementById('imageForm').elements['imageUpload'].files[0];
 
         // Upload the file to a storage server, and upload a pointer to firestore
-        fileUpload(chatroomId, imageType, file)
+        addImage(chatroomId, imageType, file)
     }
 
 
@@ -68,19 +67,19 @@ function DebugMenu({chatroomId, setDeliveredMsg}) {
             <div className="debugItem">
                 <h3 style={{margin:"5px"}}>Message</h3>
 
-                <form id = "messageForm" autoComplete='off' onSubmit={(e) => {e.preventDefault(); addMessage(e);}}>
-                    <input type="radio" id = "addType0" name="addType" value = "clientMsg" defaultChecked/>
+                <form id = "messageForm" autoComplete='off' onSubmit={(e) => {e.preventDefault();}}>
+                    <input type="radio" id = "addType0" name="addType" value = "client" defaultChecked/>
                     <label >Sent Msg (Right)</label>
 
                     <br/>
 
-                    <input type="radio" id = "addType1" name="addType" value = "serverMsg"/>
+                    <input type="radio" id = "addType1" name="addType" value = "server"/>
                     <label >Received Msg (Left)</label>
 
                     <br/>
 
                     <input id ="messageContent" placeholder="Message" />
-                    <button onClick={(e) => (addMessage(e))}>Add message</button>
+                    <button onClick={(e) => (addMessageComponent(e))}>Add message</button>
 
                 </form>
 
@@ -140,10 +139,10 @@ function DebugMenu({chatroomId, setDeliveredMsg}) {
 
                     <br/>
 
-                    <input type="radio" id = "addImg0" name="addImg" value = "sentImage" defaultChecked/>
+                    <input type="radio" id = "addImg0" name="addImg" value = "client" defaultChecked/>
                     <label >Sent Image</label>
 
-                    <input type="radio" id = "addImg1" name="addImg" value = "recievedImage"/>
+                    <input type="radio" id = "addImg1" name="addImg" value = "server"/>
                     <label >Received Image</label>
 
                     <br/>

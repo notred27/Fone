@@ -1,6 +1,6 @@
 import React, {useState, useRef, useEffect} from 'react';
 
-import ChatItemWrapper from '../../ChatItemWrapper.js';
+import ChatItemWrapper from './ChatItemWrapper.js';
 import DebugMenu from './DebugMenu.js';
 
 // import typing from './images/typing.gif'
@@ -36,7 +36,6 @@ function Chatroom() {
     const scrollPaneRef = useRef(null); // Holds a reference to the div that contains all message and content components
 
 
-    // TODO: Make the styles into an enum (and export it) for ease of use
     const [msgTheme, setMsgTheme] = useState(CHATROOM_THEMES.imessage);  // Holds a string that represents what style the chatroom should be.
 
     // Set the chatroom theme on initial entry
@@ -56,17 +55,17 @@ function Chatroom() {
     }
 
     // FIXME: Error with updating scroll
-    // useEffect(() => {
-    //     const q = query(
-    //         doc(db, "Chatrooms", chatroomId));
+    useEffect(() => {
+        const q = query(
+            doc(db, "Chatrooms", chatroomId));
 
-    //         console.log(q)
-    // }, [])
+            console.log(q)
+    }, [])
 
     // Scroll to the most recent message when a new message is added / chatroom is entered
-    // useEffect(() => {
-    //     scrollPaneRef.current.scrollTop = scrollPaneRef.current.scrollHeight;
-    // },[messages]);
+    useEffect(() => {
+        scrollPaneRef.current.scrollTop = scrollPaneRef.current.scrollHeight;
+    },[db, messages]);
 
 
     // Query Firebase DB and render received messages
@@ -80,29 +79,30 @@ function Chatroom() {
             const fetchedMessages = [];
             // Find the index of the last message sent by the "display user".
             // OPTIMIZE: This inner method can probably be changed to be more efficient
+            // FIXME: Also need to account for when the first message is sent by the user, and disable hidden messages as counting towards the running calculation
             let idx = 0;
             let clientSeen = true
             let swap = null   //true means last message was a server message
             
             QuerySnapshot.forEach((doc) => {
-            if(doc.data().type === "serverMsg" && clientSeen) {
+            if(doc.data().obj === "Message" && doc.data().type === "server" && clientSeen) {
                 idx += 1;
             } else {
                 clientSeen = false;
                 setDeliveredIdx(idx)
             }
 
-            if(!(doc.data().type === "serverMsg" || doc.data().type === "clientMsg")){
+            if(!((doc.data().obj === "Message" && doc.data().type === "server") || (doc.data().obj === "Message" && doc.data().type === "client"))){
                 swap = null;
             }
 
-            if(swap == null && (doc.data().type === "serverMsg" || doc.data().type === "clientMsg")) {
+            if(swap == null && ((doc.data().obj === "Message" && doc.data().type === "server") || (doc.data().obj === "Message" && doc.data().type === "client"))) {
                 fetchedMessages.push({ ...doc.data(), id: doc.id, tail: true });
                 swap = doc.data().type !== "serverMsg"
             }
 
             // If the next message does not match the type of the last message, make this new message have
-            else if((doc.data().type === "serverMsg" && swap) || (doc.data().type === "clientMsg" && !swap)) {
+            else if((doc.data().obj === "Message" && doc.data().type === "server" && swap) || (doc.data().obj === "Message" && doc.data().type === "client" && !swap)) {
                 swap = !swap;
                 fetchedMessages.push({ ...doc.data(), id: doc.id, tail: true });
 
@@ -115,6 +115,7 @@ function Chatroom() {
         });
         return () => unsubscribe;
         // FIXME: change this to depend on something?? I put db but this could be wrong
+        // eslint-disable-next-line
       }, [db]);
 
 
@@ -165,10 +166,13 @@ function Chatroom() {
         case CHATROOM_THEMES.whatsapp:
             roomUi = <WhatsappChatroom chatroomId = {chatroomId} renderedMessages = {renderedMessages} enterDebug = {enterDebug} exitRoom = {exitRoom} />
             break;
+
+        default:
+            roomUi = <span> Unimplemented Component</span>
+            break;
     }
 
 
-    // IDEA: Make separate chatPane objects depending on the style of the chatroom
 
     return (
         <div className='flexRow'>
