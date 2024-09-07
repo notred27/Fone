@@ -4,7 +4,7 @@
 
 | FIELD | DATATYPE | DESCRIPTION |
 | :--- | :---     | :---        |
-| CreatedAt | timestamp | Date and time at which the document was added to firebase.
+| CreatedAt | timestamp | Date and time at which the document was added to Firebase.
 | createdBy | string | uid of the user that created this document.
 <!-- | obj | string | Signifies what type of component this document represents. -->
 
@@ -15,7 +15,7 @@
 | FIELD | DATATYPE | VALUE | DESCRIPTION |
 | :--- | :---   | :---  | :---        |
 | style | string | ["imessage" \| "sms" \| "gmessage" \| "whatsapp"] | The theme of the chatroom.
-| messageflair | string|  ["" \| "seen" \| "delivered"] | Represents the 'received' status of the users most recent message.
+| messageflair | string|  ["" \| "seen" \| "delivered"] | Represents the 'received' status of the user's most recent message.
 | roomName | string | | The display name of the chatroom.
 | username | string | | The display name of the contact in the chatroom.
 | profilePic | string | | Firebase Storage api URL for the contact's profile picture.
@@ -23,7 +23,7 @@
 
 | COLLECTION  | DESCRIPTION
 | :---  | :---
-| messages | A collection of documents that represent components that are displayed in the chatroom.
+| messages | A collection of documents representing components that are displayed in the chatroom.
 
 
 <br/>
