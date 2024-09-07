@@ -14,7 +14,7 @@ couldn't change the display settings they wanted to.
 - Custom chatroom configuration.
 - Support for both desktop and mobile devices (including installable [PWAs](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps)).
 - User authentication (through Google Auth).
-- Google Firestore and Firebase Storage integration. The database structure for this project can be found [here](database.md).
+- Google Firestore and Firebase Storage integration. The database structure for this project can be found [here](Database.md).
 
 
 # Project Description
