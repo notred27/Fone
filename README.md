@@ -23,7 +23,7 @@ Fone was built using React to render the website and a Google Firebase database 
 - Firebase was chosen for their real-time Firestore database, and their Storage functionality to host images from users.
 - React was chosen due to its compatibility with many devices and ability to generate a Progressive Web APP (PWA) that can be directly downloaded to a user's phone. Other React frameworks such as [React Router](https://reactrouter.com/en/main) were also used.
 
-Additionally, AWS Amplify was used to host a test version of this application, which can be found [here](https://main.df41y9bj358vt.amplifyapp.com).
+Additionally, AWS Amplify was used to host a test version of this application, which can be found [here](https://main.dtrjhr0w2mwu1.amplifyapp.com).
 
 
 # Hosting This Project
