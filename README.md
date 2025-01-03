@@ -1,11 +1,12 @@
-<img src="src/assets/logo.png"></img>
-
 # Fone! Fake Conversations, Real Projects
 
 <b>Create custom real-time conversations for movies, pranks, and more!</b>
 
 
 ## Introduction
+
+> <img src="src/assets/logo.png" align="right"/>
+
 
 [Fone](https://main.df41y9bj358vt.amplifyapp.com) is a real-time chatting application that allows users to customize every part of their conversations. 
 Choose from a selection of well-known messaging app themes to get started, and then get started by setting anything
