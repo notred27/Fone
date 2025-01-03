@@ -20,6 +20,9 @@ couldn't change the display settings they wanted to.
 
 ## Features
 
+> <img src="fone-demo.gif" align="right" width="380px"/>
+
+
 - Real-time messaging that supports both text and images.
 - Custom chatroom configuration.
   - 4 chatroom themes based on popular messaging apps.
